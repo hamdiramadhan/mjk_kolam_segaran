@@ -8,6 +8,7 @@ use App\Models\PengajuanAlasan;
 use App\Models\PengajuanUsulan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use PDF;
 
 class PengajuanController extends Controller
 {
@@ -70,6 +71,29 @@ class PengajuanController extends Controller
 
         session()->put('status', 'Pengajuan baru berhasil ditambahkan! ' );
         return redirect()->route('pengajuan.index');
+    }
+    public function print_pengajuan(Request $request,$id)
+    {
+        $id = decrypt(($id));
+        $data = Pengajuan::find($id);
+        $tahun = Auth::user()->tahun;
+        $opd_id = Auth::user()->opd_id;
+        $opd =Opd::find($opd_id);
+        $pengajuan_alasan = PengajuanAlasan::where('pengajuan_id',$id)->get();
+        $usulan = PengajuanUsulan::all();
+    
+        $judul = 'Usulan Pergeseran Anggaran Dalam APBD TA '.$tahun;
+        $url = env('APP_URL'); 
+
+        $pdf = PDF::loadView('pengajuan.print_pengajuan', compact('opd','url','usulan','pengajuan_alasan','data', 'tahun', 'id','judul'));
+        $customPaper = array(0,0,595.35,935.55);
+        $pdf->setPaper($customPaper);
+        $pdf->output();
+        $canvas = $pdf->getDomPDF()->getCanvas();
+        $height = $canvas->get_height();
+        $width = $canvas->get_width();
+        return $pdf->stream('Pengajuan_'.$tahun.'_'.date('Ymd-His').'.pdf');
+
     }
 
     /**

@@ -112,6 +112,14 @@
                                         style="width:100%" class="btn btn-success px-5"><i
                                             class="bx bx-pencil mr-1"></i>Edit</a>
 
+                                    <form target="_blank" action="{{ route('pengajuan.print', encrypt($p->id)) }}"
+                                        method="POST">
+                                        @csrf
+                                        <button href="{{ route('jenis_usulan.edit', encrypt($r->id)) }}" type="submit"
+                                            style="width:100%" class="btn btn-success px-5"><i
+                                                class="bx bx-pencil mr-1"></i>Cetak</button>
+                                    </form>
+
                                     <form method="POST" onsubmit="return confirm('Anda yakin menghapus data ini ??')"
                                         action="{{ route('jenis_usulan.destroy', encrypt($r->id)) }}">
                                         @csrf
