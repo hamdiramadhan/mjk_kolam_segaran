@@ -6,8 +6,10 @@ use App\Imports\ImportKegiatan;
 use App\Imports\ImportKegiatan2;
 use App\Models\MasterSubKegiatan;
 use App\Models\MasterKegiatan;
+use App\Models\MasterProgram;
 use App\Models\Menu;
 use App\Models\Opd;
+use App\Models\RincianRekening;
 use App\Models\Satuan;
 use DateTime;
 use Illuminate\Http\Request;
@@ -31,7 +33,7 @@ class SubKegiatanController extends Controller
      */
     public function index()
     { 
-        return view('pokja_sub_kegiatan.index', ['nama_header'=> 'Sub Kegiatan']);
+        return view('sub_kegiatan.index', ['nama_header'=> 'Sub Kegiatan']);
     }
 
     /**
@@ -43,7 +45,7 @@ class SubKegiatanController extends Controller
     {
         $satuan = Satuan::orderBy('satuan')->get();
         $kegiatan = MasterKegiatan::orderBy('kode_kegiatan')->where('tahun', Auth::user()->tahun)->get(); 
-        return view('pokja_sub_kegiatan.create', ['nama_header'=> 'Master Sub Kegiatan'],compact('kegiatan','satuan'));   
+        return view('sub_kegiatan.create', ['nama_header'=> 'Master Sub Kegiatan'],compact('kegiatan','satuan'));   
     }
 
     /**
@@ -82,7 +84,7 @@ class SubKegiatanController extends Controller
         $id = $arr[1]; 
         $kegiatan = MasterKegiatan::all();
         $sub_keg = MasterSubKegiatan::find($id);
-        return view('pokja_sub_kegiatan.edit',['nama_header'=> 'Master Sub Kegiatan'],compact('kegiatan','sub_keg'));
+        return view('sub_kegiatan.edit',['nama_header'=> 'Master Sub Kegiatan'],compact('kegiatan','sub_keg'));
     }
 
     /**
@@ -97,7 +99,7 @@ class SubKegiatanController extends Controller
         $kegiatan = MasterKegiatan::all();
         $sub_keg = MasterSubKegiatan::find($id); 
         $satuan = Satuan::orderBy('satuan')->get();
-        return view('pokja_sub_kegiatan.edit',['nama_header'=> 'Master Sub Kegiatan'],compact('kegiatan','sub_keg','satuan'));
+        return view('sub_kegiatan.edit',['nama_header'=> 'Master Sub Kegiatan'],compact('kegiatan','sub_keg','satuan'));
     }
 
     /**
@@ -229,6 +231,7 @@ class SubKegiatanController extends Controller
     
     public function dataawal_progkeg()
     {
+        /* mecahin kode yang nyampur */
         $datas = DB::table('dataawal_progkeg')->orderBy('id')->get();
         foreach($datas as $d)
         { 
@@ -285,6 +288,8 @@ class SubKegiatanController extends Controller
     
     public function dataawal_progkeg_syncopd()
     {
+        /* insert opd */
+
         $del = Opd::where('id','<>',0)->delete();
 
         DB::statement("
@@ -303,12 +308,115 @@ class SubKegiatanController extends Controller
     
     public function dataawal_progkeg_programkegiatan()
     {
+        /* insert program s/d sub kegiatan */
+        $sync_kode = date('YmdHis') . '_' . rand(1000,9999);
         $opds = Opd::all();
 
         foreach($opds as $o)
         {
-            dd($o);
+            $jmlsub=0;
+            $programs = DB::table("dataawal_progkeg")
+            ->where('kode_sub_opd', $o->unit_id)
+            ->select('kode_urusan', 'nama_urusan', 'kode_program','nama_program')
+            ->distinct()
+            ->get();
+            foreach($programs as $p)
+            {
+                $np = new MasterProgram();
+                $np->opd_id = $o->id;
+                $np->kode_urusan = $p->kode_urusan;
+                $np->kode_program = $p->kode_program;
+                $np->nama_program = $p->nama_program;
+                $np->sync_kode = $sync_kode;
+                $np->tahun = 2023;
+                $np->save();
+
+                $kegiatans = DB::table("dataawal_progkeg")
+                ->where('kode_sub_opd', $o->unit_id)
+                ->where('kode_program', $p->kode_program)
+                ->select('kode_urusan', 'nama_urusan', 'kode_program','nama_program', 'kode_kegiatan','nama_kegiatan')
+                ->distinct()
+                ->get();
+                foreach($kegiatans as $k)
+                {
+                    $nk = new MasterKegiatan();
+                    $nk->opd_id = $o->id;
+                    $nk->master_program_id = $np->id; 
+                    $nk->kode_kegiatan = $k->kode_kegiatan;
+                    $nk->nama_kegiatan = $k->nama_kegiatan;
+                    $nk->sync_kode = $sync_kode;
+                    $nk->tahun = 2023;
+                    $nk->save(); 
+
+                    $subkegiatans = DB::table("dataawal_progkeg")
+                    ->where('kode_sub_opd', $o->unit_id)
+                    ->where('kode_program', $p->kode_program)
+                    ->where('kode_kegiatan', $k->kode_kegiatan)
+                    ->select('kode_urusan', 'nama_urusan', 'kode_program','nama_program', 'kode_kegiatan','nama_kegiatan', 'kode_sub_kegiatan','nama_sub_kegiatan')
+                    ->distinct()
+                    ->get();
+                    foreach($subkegiatans as $k)
+                    {
+                        $ns = new MasterSubKegiatan();
+                        $ns->opd_id = $o->id;
+                        $ns->master_kegiatan_id = $nk->id;  
+                        $ns->kode_sub_kegiatan = $k->kode_sub_kegiatan;
+                        $ns->nama_sub_kegiatan = $k->nama_sub_kegiatan; 
+                        $ns->sync_kode = $sync_kode;
+                        $ns->tahun = 2023;
+                        $ns->save();
+                        $jmlsub++;
+
+                        $rekenings = DB::table("dataawal_progkeg")
+                        ->where('kode_sub_opd', $o->unit_id)
+                        ->where('kode_program', $p->kode_program)
+                        ->where('kode_kegiatan', $k->kode_kegiatan)
+                        ->where('kode_sub_kegiatan', $k->kode_sub_kegiatan) 
+                        ->get();
+                        foreach($rekenings as $r)
+                        {
+                            if(!empty($r->kode_rekening))
+                            {
+                                $nr = new RincianRekening();
+                                $nr->opd_id = $o->id;
+                                $nr->unit_id = $o->unit_id;
+                                $nr->master_sub_kegiatan_id = $ns->id;  
+                                $nr->kode_sub_kegiatan = $k->kode_sub_kegiatan;
+                                $nr->kode_rekening = $r->kode_rekening;
+                                $nr->nama_rekening = $r->nama_rekening; 
+                                $nr->harga = $r->total; 
+                                $nr->sync_kode = $sync_kode;
+                                $nr->tahun = 2023;
+                                $nr->save(); 
+                            }
+                        }
+                    }
+                }
+            }
+            echo $o->unit_name . ' -- ' . $jmlsub . '<br>'; 
         }
 
+    }
+
+
+
+    public function sub_kegiatan_rincian(Request $request)
+    {
+        $tahun = Auth::user()->tahun;
+        $opd_id = Auth::user()->opd_id;
+        
+        $opd = Opd::find($opd_id);
+         
+        $data_sub_kegiatan = MasterSubKegiatan::where('opd_id', $opd_id)
+            ->where('tahun', $tahun) 
+            ->orderBy('kode_sub_kegiatan')
+            ->get(); 
+        
+        $data_opd = Opd::orderBy('unit_id')->get();
+        return view('sub_kegiatan.rincian',['nama_header'=>'Rincian Sub kegiatan'],
+            compact('data_sub_kegiatan', 'opd_id', 'opd', 'tahun','data_opd')
+        );
+
+        // return response($fusion);
     }
 }

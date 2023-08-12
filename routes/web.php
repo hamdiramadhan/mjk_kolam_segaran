@@ -41,6 +41,7 @@ Route::group(['middleware' => ['XSS']], function () {
             Route::get('dataawal_progkeg', [SubKegiatanController::class, 'dataawal_progkeg'])->name('dataawal_progkeg');  
             Route::get('dataawal_progkeg_syncopd', [SubKegiatanController::class, 'dataawal_progkeg_syncopd'])->name('dataawal_progkeg_syncopd');  
             Route::get('dataawal_progkeg_programkegiatan', [SubKegiatanController::class, 'dataawal_progkeg_programkegiatan'])->name('dataawal_progkeg_programkegiatan');  
+            
             Route::get('sub_kegiatan', [SubKegiatanController::class, 'index'])->name('sub_kegiatan');  
             Route::get('create/sub_kegiatan',[SubKegiatanController::class, 'create'])->name('create_sub_kegiatan');
             Route::get('edit/sub_kegiatan/{id}',[SubKegiatanController::class, 'edit'])->name('edit_sub_kegiatan');
@@ -49,6 +50,11 @@ Route::group(['middleware' => ['XSS']], function () {
             Route::post('sub_kegiatan-import', [SubKegiatanController::class, 'import'])->name('sub_kegiatan.import');
             Route::post('sub_kegiatan-ajax', [SubKegiatanController::class, 'ajax'])->name('sub_kegiatan.ajax');
         // SUB KEGIATAN
+
+        // RINCIAN
+            Route::get('sub_kegiatan_rincian',[SubKegiatanController::class, 'sub_kegiatan_rincian'])->name('sub_kegiatan_rincian');
+            Route::post('pindah_sub_kegiatan', [PekerjaanController::class, 'pindah_sub_kegiatan'])->name('pindah_sub_kegiatan');
+        // RINCIAN
 
         // START MASTER OPD
             Route::get('/master_opd', [OpdController::class, 'index'])->name('master_opd');

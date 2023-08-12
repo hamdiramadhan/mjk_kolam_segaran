@@ -21,7 +21,8 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('sub_kegiatan') ? 'active' : '' }}" href="{{ route('sub_kegiatan') }}">
+                    <a class="nav-link {{ Request::is('sub_kegiatan') ? 'active' : '' }}"
+                        href="{{ route('sub_kegiatan') }}">
                         <div class="parent-icon">
                             <i class="lni lni-bookmark-alt"></i>
                         </div>
@@ -29,7 +30,8 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('sub_kegiatan') }}">
+                    <a class="nav-link {{ Request::is('sub_kegiatan_rincian') ? 'active' : '' }}"
+                        href="{{ route('sub_kegiatan_rincian') }}">
                         <div class="parent-icon">
                             <i class="fadeIn animated bx bx-shape-polygon"></i>
                         </div>
@@ -57,8 +59,8 @@
                     <a class="nav-link dropdown-toggle dropdown-toggle-nocaret 
                         {{ Request::is('master_opd*') ? 'active' : '' }}
                         {{ Request::is('master_sub_opd*') ? 'active' : '' }}
-                        " href="javascript:;"
-                        data-bs-toggle="dropdown">
+                        "
+                        href="javascript:;" data-bs-toggle="dropdown">
                         <div class="parent-icon"><i class='bx bx-cube'></i>
                         </div>
                         <div class="menu-title d-flex align-items-center">Master</div>
@@ -73,17 +75,18 @@
                             <a class="dropdown-item" href="{{ route('jenis_usulan.index') }}">
                                 Jenis Usulan
                             </a>
-                        </li> 
+                        </li>
                         <li>
-                            <a class="dropdown-item {{ Request::is('master_opd*') ? 'active' : '' }}" href="{{ route('master_opd') }}">
+                            <a class="dropdown-item {{ Request::is('master_opd*') ? 'active' : '' }}"
+                                href="{{ route('master_opd') }}">
                                 SKPD
                             </a>
                         </li>
                         <li><a class="dropdown-item" href="{{ route('master_sub_opd') }}">Sub SKPD</a></li>
-                        
+
                         <li style="text-align: center">
                             <span style="text-align: center"><b><u>Pengguna</u></b></span>
-                        </li> 
+                        </li>
                         <li>
                             <a class="dropdown-item" href="{{ route('users.index') }}">
                                 User

@@ -3,11 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class MasterSubKegiatan extends Model
 {
     protected $table = "master_sub_kegiatan";
+
+
+    public function get_total_komponen($master_sub_kegiatan_id)
+    { 
+        $data = RincianRekening::where('master_sub_kegiatan_id', $master_sub_kegiatan_id)
+            ->select(DB::raw("SUM(harga) as jumlah")) 
+            ->first();
+        return $data->jumlah;
+    }
 
     public function kegiatan()
     {
