@@ -35,7 +35,7 @@
                         <div class="parent-icon">
                             <i class="fadeIn animated bx bx-shape-polygon"></i>
                         </div>
-                        <div class="menu-title d-flex align-items-center">Rincian</div>
+                        <div class="menu-title d-flex align-items-center">Rincian Murni</div>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -43,7 +43,7 @@
                         <div class="parent-icon">
                             <i class="fadeIn animated bx bx-comment-check"></i>
                         </div>
-                        <div class="menu-title d-flex align-items-center">Pengajuan Perubahan {{ Auth::user()->tahun }}
+                        <div class="menu-title d-flex align-items-center">Pengajuan Perubahan
                         </div>
                     </a>
                 </li>

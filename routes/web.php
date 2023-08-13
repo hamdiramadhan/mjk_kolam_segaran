@@ -53,7 +53,8 @@ Route::group(['middleware' => ['XSS']], function () {
 
         // RINCIAN
             Route::get('sub_kegiatan_rincian',[SubKegiatanController::class, 'sub_kegiatan_rincian'])->name('sub_kegiatan_rincian');
-            Route::post('pindah_sub_kegiatan', [PekerjaanController::class, 'pindah_sub_kegiatan'])->name('pindah_sub_kegiatan');
+            Route::post('pindah_sub_kegiatan', [SubKegiatanController::class, 'pindah_sub_kegiatan'])->name('pindah_sub_kegiatan');
+            Route::post('sub_kegiatan_rincian_detail', [SubKegiatanController::class, 'sub_kegiatan_rincian_detail'])->name('sub_kegiatan_rincian_detail');
         // RINCIAN
 
         // START MASTER OPD

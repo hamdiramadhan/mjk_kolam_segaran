@@ -21,7 +21,10 @@ class CreateRekeningsTable extends Migration
             $table->string('kode_sub_kegiatan')->nullable(); 
             $table->string('kode_rekening')->nullable(); 
             $table->string('nama_rekening')->nullable();  
+
             $table->double('harga')->nullable(); 
+            $table->double('harga_perubahan')->nullable(); 
+
             $table->integer('tahun')->nullable();
             $table->string('sync_kode')->nullable();
             $table->timestamps();

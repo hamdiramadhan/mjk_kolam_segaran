@@ -26,11 +26,17 @@ class CreateDetailTable extends Migration
             $table->string('detail')->nullable();
             $table->string('merk')->nullable();
             $table->string('spek')->nullable();
+
             $table->double('volume')->nullable();
-            $table->double('nilai')->nullable();
+            $table->string('koefisien')->nullable();
             $table->double('harga')->nullable();
-            $table->string('satuan')->nullable();
-            $table->string('koefisien')->nullable(); 
+            $table->double('ppn')->nullable();
+            $table->double('volume_perubahan')->nullable();
+            $table->string('koefisien_perubahan')->nullable();
+            $table->double('harga_perubahan')->nullable();
+            $table->double('ppn_perubahan')->nullable();
+            
+            $table->string('satuan')->nullable(); 
             $table->string('subtitle')->nullable(); 
             $table->string('subtitle2')->nullable(); 
             $table->integer('tahun')->nullable();

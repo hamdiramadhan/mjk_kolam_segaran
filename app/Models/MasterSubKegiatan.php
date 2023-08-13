@@ -18,6 +18,11 @@ class MasterSubKegiatan extends Model
         return $data->jumlah;
     }
 
+    public function opd()
+    {
+        return $this->belongsTo(Opd::class, 'opd_id', 'id');
+    }
+
     public function kegiatan()
     {
         return $this->belongsTo(MasterKegiatan::class, 'master_kegiatan_id', 'id');

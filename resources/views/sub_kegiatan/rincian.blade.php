@@ -71,59 +71,61 @@
                 </div>
             </div>
 
-            <table class="table text-md-nowrap datatable-basic-subkegiatan ">
-                <thead>
-                    <tr>
-                        <th style="width: 5%">No</th>
-                        <th style="background-color: #ccf6c8">Program</th>
-                        <th style="background-color: #ccf6c8">Kegiatan</th>
-                        <th style="width: 180px">Kode</th>
-                        <th>Nama</th>
-                        <th scope='col'>Nilai
-                            <br>
-                            <span class="badge badge-primary txt_total_pagu">0</span>
-                        </th>
-                        <th scope='col' style="width: 1%">Act</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $n = 0;
-                    $total_pagu = 0;
-                    ?>
-                    @foreach ($data_sub_kegiatan as $dk)
-                        <?php $n++;
-                        $pagu = $dk->get_total_komponen($dk->id);
-                        $total_pagu += $pagu; ?>
+            <div class="scrollable">
+                <table class="table text-md-nowrap datatable-basic-subkegiatan ">
+                    <thead>
                         <tr>
-                            <td>{{ $n }}</td>
-                            <td style="background-color: #ccf6c8 !important">
-                                Prog : {{ $dk->kegiatan->program->kode_program }}
-                                {{ $dk->kegiatan->program->nama_program }}
-                            </td>
-                            <td style="background-color: #ccf6c8 !important">
-                                &nbsp;&nbsp;&nbsp;&nbsp;Keg : {{ $dk->kegiatan->kode_kegiatan }}
-                                {{ $dk->kegiatan->nama_kegiatan }}
-                            </td>
-                            <td style="word-break: break-word !important;"><input class="form-check-input" type="checkbox"
-                                    value="{{ $dk->id }}" name="sub_kegiatan[]" id="checks" onclick="Checkeds()"
-                                    style="display:none"> {{ $dk->kode_sub_kegiatan }}</td>
-                            <td> {{ $dk->nama_sub_kegiatan }}</td>
-                            <td style="min-width: 150px !important;" align="right">
-                                <span class="badge badge-warning">
-                                    {{ number_format($pagu, 0, ',', '.') }}
-                                </span>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-primary btn-sm" data-popup="tooltip" title="Komponen"
-                                    onclick=" $('#ModalBiruLabel').html('Detail Komponen'); show_kegiatan_per_rekening('{{ csrf_token() }}','{{ $opd_id }}','{{ $dk->id }}')">
-                                    <i class="fa fa-list"></i>
-                                </button>
-                            </td>
+                            <th style="width: 5%">No</th>
+                            <th style="background-color: #ccf6c8">Program</th>
+                            <th style="background-color: #ccf6c8">Kegiatan</th>
+                            <th style="width: 180px">Kode</th>
+                            <th>Nama</th>
+                            <th scope='col'>Nilai
+                                <br>
+                                <span class="badge badge-primary txt_total_pagu">0</span>
+                            </th>
+                            <th scope='col' style="width: 1%">Act</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $n = 0;
+                        $total_pagu = 0;
+                        ?>
+                        @foreach ($data_sub_kegiatan as $dk)
+                            <?php $n++;
+                            $pagu = $dk->get_total_komponen($dk->id);
+                            $total_pagu += $pagu; ?>
+                            <tr>
+                                <td>{{ $n }}</td>
+                                <td style="background-color: #ccf6c8 !important">
+                                    Prog : {{ $dk->kegiatan->program->kode_program }}
+                                    {{ $dk->kegiatan->program->nama_program }}
+                                </td>
+                                <td style="background-color: #ccf6c8 !important">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;Keg : {{ $dk->kegiatan->kode_kegiatan }}
+                                    {{ $dk->kegiatan->nama_kegiatan }}
+                                </td>
+                                <td style="word-break: break-word !important;"><input class="form-check-input" type="checkbox"
+                                        value="{{ $dk->id }}" name="sub_kegiatan[]" id="checks" onclick="Checkeds()"
+                                        style="display:none"> {{ $dk->kode_sub_kegiatan }}</td>
+                                <td> {{ $dk->nama_sub_kegiatan }}</td>
+                                <td style="min-width: 150px !important;" align="right">
+                                    <span class="badge badge-warning">
+                                        {{ number_format($pagu, 0, ',', '.') }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-primary btn-sm" data-popup="tooltip" title="Komponen"
+                                        onclick=" sub_kegiatan_rincian_detail('{{ csrf_token() }}','{{ $dk->id }}')">
+                                        <i class="fa fa-list"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -135,7 +137,7 @@
                     <h6 class="modal-title" id="ModalBiruSmLabel" style="color:white">
                         Judul
                     </h6>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form method="POST" action="{{ route('pindah_sub_kegiatan') }}" enctype="multipart/form-data">
                     {!! csrf_field() !!}
@@ -163,9 +165,7 @@
         </div>
     </div>
 @endsection
-
-@push('scripts')
-@endpush
+ 
 @push('scripts')
     <script type="text/javascript">
         // START SCRIPT TABEL 
@@ -184,9 +184,7 @@
                 }
             });
         });
-        // END SCRIPT TABEL  
-    </script>
-    <script>
+        // END SCRIPT TABEL   
         function numberWithCommas(x) {
             return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
@@ -216,6 +214,24 @@
                 $('.showOpd').hide(500);
                 $('.form-check-input').hide(500);
             }
+        }
+
+        function sub_kegiatan_rincian_detail(token, id_sub_kegiatan) { 
+            $("#ModalFull").modal("show");
+            $("#ModalFullIsi").html('loading...');
+            $("#ModalFullLabel").html("Detail Komponen");
+
+            var act = "{{ route('sub_kegiatan_rincian_detail') }}";
+            $.post(
+                act, {
+                    _token: token, 
+                    id_sub_kegiatan: id_sub_kegiatan,
+                },
+                function(data) {
+                    $("#ModalFullIsi").html(data);
+                    $("#ModalFull").modal("show");
+                }
+            );
         }
     </script>
 @endpush

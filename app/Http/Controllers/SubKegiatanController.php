@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Imports\ImportKegiatan;
 use App\Imports\ImportKegiatan2;
+use App\Models\Detail;
 use App\Models\MasterSubKegiatan;
 use App\Models\MasterKegiatan;
 use App\Models\MasterProgram;
@@ -388,12 +389,35 @@ class SubKegiatanController extends Controller
                                 $nr->sync_kode = $sync_kode;
                                 $nr->tahun = 2023;
                                 $nr->save(); 
+
+
+                                // $nd = new Detail();
+                                // $nd->opd_id = $o->id;
+                                // $nd->unit_id = $o->unit_id;
+                                // $nd->master_sub_kegiatan_id = $ns->id;  
+                                // $nd->kode_sub_kegiatan = $k->kode_sub_kegiatan;
+                                // $nd->rekenings_id = $nr->id;
+                                // $nr->kode_rekening = $r->kode_rekening;
+                                // $nd->nama_rekening = $r->nama_rekening; 
+                                // $nr->kode_detail = $r->kode_rekening;
+                                // $nd->detail = $r->nama_rekening; 
+                                // $nd->volume = 1; 
+                                // $nr->harga = $r->total;
+                                // $nr->koefisien = '1 Data Awal';
+                                // $nd->sync_kode = $sync_kode;
+                                // $nd->tahun = 2023;
+                                // $nd->save(); 
                             }
                         }
                     }
                 }
             }
             echo $o->unit_name . ' -- ' . $jmlsub . '<br>'; 
+
+            $q="INSERT INTO detail (opd_id, unit_id, master_sub_kegiatan_id, kode_sub_kegiatan, rekenings_id, kode_rekening, nama_rekening,kode_detail, detail, volume, harga, koefisien, sync_kode, tahun) 
+            SELECT opd_id, unit_id, master_sub_kegiatan_id, kode_sub_kegiatan, id, kode_rekening, nama_rekening,kode_rekening, nama_rekening, 1, harga, '1 Data Awal', sync_kode, tahun 
+            FROM rekenings
+            ";
         }
 
     }
@@ -418,5 +442,35 @@ class SubKegiatanController extends Controller
         );
 
         // return response($fusion);
+    }
+
+    public function pindah_sub_kegiatan(Request $request)
+    {
+        if (!empty($request->id_sub_kegiatan)) {
+            $list_kegiatan = explode(', ', $request->id_sub_kegiatan);
+            $kegiatan = MasterSubKegiatan::whereIn('id', $list_kegiatan)->update([
+                'opd_id' => $request->opd_id,
+            ]);
+            return back()->with('status', 'Data berhasil dipindah');
+        } else {
+            return back()->with('statusGagal', 'Data Gagal dipindah, Pastikan sudah mencentang pada kolom sub kegiatan !!');
+        }
+    } 
+
+    public function sub_kegiatan_rincian_detail(Request $request)
+    {
+        $id_sub_kegiatan = $request->id_sub_kegiatan; 
+        $sub_keg = MasterSubKegiatan::find($id_sub_kegiatan);
+        $kode_sub_kegiatan = $sub_keg->kode_sub_kegiatan;
+        $unit_id = $sub_keg->opd->unit_id;
+
+    	$details = Detail::select('master_sub_kegiatan_id', 'subtitle')
+                    ->where('master_sub_kegiatan_id', $id_sub_kegiatan)
+                    ->distinct()
+                    ->orderBy('subtitle')
+                    ->get(); 
+        return view('sub_kegiatan.detail', compact('id_sub_kegiatan', 'sub_keg', 'kode_sub_kegiatan', 'unit_id','details') );
+        
+
     }
 }
