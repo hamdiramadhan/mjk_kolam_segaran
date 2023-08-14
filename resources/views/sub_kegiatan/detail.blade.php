@@ -16,10 +16,10 @@
         background-color: #ccf6c8
     }
 </style> 
-{{-- <a href="{{ route('detail_komponen', encrypt($id_kegiatan)) }}" target="_blank" class="btn btn-success btn-sm "
+<a href="{{ route('sub_kegiatan_rincian_komponen', encrypt($id_sub_kegiatan)) }}" target="_blank" class="btn btn-success btn-sm "
     data-popup="tooltip" title="Aksi Komponen" style="margin-bottom:20px">
     <i class="fas fa-plus"></i> Aksi Komponen
-</a> --}}
+</a>
 <table class="table table-bordered table-hover">
     <thead>
         <tr>

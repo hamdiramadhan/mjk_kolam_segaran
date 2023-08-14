@@ -15,33 +15,22 @@
         </div>
         <div class="ms-auto">
 
-            <a href="{{ route('users.create') }}" type="button" class="btn btn-primary px-5"><i
+            <a href="{{ route('users.create') }}" type="button" class="btn btn-sm btn-primary px-5"><i
                     class="bx bx-plus mr-1"></i>Tambah</a>
         </div>
     </div>
-
     <!--end breadcrumb-->
-    <a href="{{ route('users.create') }}" type="button" class="btn btn-primary px-5"><i
-            class="bx bx-plus mr-1"></i>Tambah</a>
-    <br><br>
-    <div class="card radius-10 w-100">
-        <div class="card-header">
-            <div class="d-flex align-items-center">
-                <div>
-                    <h6 class="mb-0">{{ $nama_header }}</h6>
-                </div>
-            </div>
-        </div>
+    <div class="card">
         <div class="card-body">
-            <div class="table-responsive">
-                <table id="example" class="table table-striped table-bordered">
+            <div class="table-responsive"> 
+                <table class="table table-sm table-bordered key-buttons border-bottom datatable-basic">
                     <thead>
                         <tr>
                             <th>No</th>
                             <th>Nama</th>
                             <th>Username</th>
                             <th>Role</th>
-                            <th width="15%">Act</th>
+                            <th width="1%">Act</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -52,19 +41,22 @@
                                 <td>{{ $no }}</td>
                                 <td>{{ $r->name }}</td>
                                 <td>{{ $r->username }}</td>
-                                <td>{{ $r->role->name }}</td>
+                                <td>{{ $r->role->name ?? $r->role_id }}</td>
                                 <td>
-                                    <a href="{{ route('users.edit', encrypt($r->id)) }}" type="button" style="width:100%"
-                                        class="btn btn-success px-5"><i class="bx bx-pencil mr-1"></i>Edit</a>
+                                    <div class="d-flex p-2 txt-bold">
+                                        <a href="{{ route('users.edit', encrypt($r->id)) }}"
+                                            class="btn btn-sm btn-outline-primary">
+                                            <i class='bx bx-edit me-0'></i>
+                                        </a>
 
-                                    <form method="POST" onsubmit="return confirm('Anda yakin menghapus data ini ??')"
-                                        action="{{ route('users.destroy', encrypt($r->id)) }}">
-                                        @csrf
-
-                                        <button type="submit" onclick="hapus_data('{{ $r->id }}')"
-                                            style="width:100%" class="btn btn-danger px-5"><i
-                                                class="bx bx-trash mr-1"></i>Hapus</button>
-                                    </form>
+                                        <form method="POST" onsubmit="return confirm('Anda yakin menghapus data ini ??')"
+                                            action="{{ route('users.destroy', encrypt($r->id)) }}">
+                                            @csrf 
+                                            <button type="submit" onclick="hapus_data('{{ $r->id }}')" class="btn btn-sm btn-outline-danger">
+                                                <i class="bx bx-trash me-0"></i>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
@@ -87,8 +79,4 @@
             }
         }
     </script>
-@endpush
-<!--app JS-->
-</body>
-
-</html>
+@endpush 

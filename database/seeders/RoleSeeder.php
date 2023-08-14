@@ -18,19 +18,24 @@ class RoleSeeder extends Seeder
         DB::table('roles')->insert([
             'id' => 1
             , 'name' => 'Administrator' 
+            , 'guard_name' => 'web' 
         ]); 
         DB::table('roles')->insert([
             'id' => 2
-            , 'name' => '(OPD) Bidang' 
+            , 'name' => 'SKPD' 
+            , 'guard_name' => 'web'
         ]);
         DB::table('roles')->insert([
             'id' => 3
             , 'name' => '(Anggaran) Verifikator' 
+            , 'guard_name' => 'web'
         ]);
 
         DB::table('roles')->insert([
             'id' => 7
             , 'name' => 'Monitoring' 
+            , 'guard_name' => 'web'
         ]); 
+        
     }
 }

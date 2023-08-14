@@ -46,7 +46,7 @@
                                     <th>Sub Kegiatan</th>
                                     <th>Satuan</th>
                                     <th>Tahun</th>
-                                    <th>Aksi</th>
+                                    <th style="width: 1%;">Act</th> 
                                 </tr>
                             </thead>
                             <tbody id="data">

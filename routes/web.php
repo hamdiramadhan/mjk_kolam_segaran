@@ -53,8 +53,14 @@ Route::group(['middleware' => ['XSS']], function () {
 
         // RINCIAN
             Route::get('sub_kegiatan_rincian',[SubKegiatanController::class, 'sub_kegiatan_rincian'])->name('sub_kegiatan_rincian');
-            Route::post('pindah_sub_kegiatan', [SubKegiatanController::class, 'pindah_sub_kegiatan'])->name('pindah_sub_kegiatan');
-            Route::post('sub_kegiatan_rincian_detail', [SubKegiatanController::class, 'sub_kegiatan_rincian_detail'])->name('sub_kegiatan_rincian_detail');
+            Route::post('pindah_sub_kegiatan', [SubKegiatanController::class, 'pindah_sub_kegiatan'])->name('pindah_sub_kegiatan'); //xxx
+            Route::post('sub_kegiatan_rincian_detail', [SubKegiatanController::class, 'sub_kegiatan_rincian_detail'])->name('sub_kegiatan_rincian_detail'); // modal / pop up
+            Route::get('sub_kegiatan_rincian_komponen/{id_sub_kegiatan}', [SubKegiatanController::class, 'sub_kegiatan_rincian_komponen'])->name('sub_kegiatan_rincian_komponen'); // page sendiri
+
+            Route::post('add_komponen', [SubKegiatanController::class, 'add_komponen'])->name('add_komponen');
+            Route::post('edit_komponen/{id}', [SubKegiatanController::class, 'edit_komponen'])->name('edit_komponen');
+            Route::post('update_komponen', [SubKegiatanController::class, 'update_komponen'])->name('update_komponen');
+            Route::post('destroy_komponen/{id}', [SubKegiatanController::class, 'destroy_komponen'])->name('destroy_komponen');
         // RINCIAN
 
         // START MASTER OPD

@@ -16,7 +16,7 @@
 
         <div class="ms-auto">
             @if (Auth::user()->role_id == 1)
-                <a href="{{ route('create_master_opd') }}" class="btn waves-effect btn-primary btn-md">
+                <a href="{{ route('create_master_opd') }}" class="btn btn-sm waves-effect btn-primary btn-md">
                     <i class="fas fa-plus"></i> Tambah Data
                 </a>
             @endif
@@ -32,7 +32,7 @@
                     <div class="table-responsive">
 
                         @if (Auth::user()->role_id == 1 || Auth::user()->role_id == 6)
-                            <button type="button" class="btn btn-primary btn-md btn_setting_template"
+                            <button type="button" class="btn btn-sm btn-primary btn-md btn_setting_template"
                                 onclick="
                                     var list_id = $('#list_id').val();
                                     if(list_id == '' || list_id == null){
@@ -43,7 +43,7 @@
                                     ">
                                 Buka Usulan Semua SKPD Tercentang
                             </button>
-                            <button type="button" class="btn btn-danger btn-md btn_setting_template"
+                            <button type="button" class="btn btn-sm btn-danger btn-md btn_setting_template"
                                 onclick="
                                     var list_id = $('#list_id').val();
                                     if(list_id == '' || list_id == null){
@@ -102,10 +102,10 @@
                                                 <?php
                                                 $key = hamdi_encrypt($r->id . $r->created_at . '##' . $r->id . '##' . $r->id . $r->created_at, 'progstylysbyhamdi');
                                                 ?>
-                                                <a href="{{ route('edit_master_opd', $key) }}" class="btn btn-outline-primary"><i class='bx bx-edit me-0'></i>
+                                                <a href="{{ route('edit_master_opd', $key) }}" class="btn btn-sm btn-outline-primary"><i class='bx bx-edit me-0'></i>
                                                 </a>
                                                 @if (Auth::user()->role_id == 1)
-                                                <button type="button" class="btn btn-outline-danger" onclick="delete_opd('{{ csrf_token() }}','{{ $r->id }}')"><i class='bx bx-trash me-0'></i>
+                                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="delete_opd('{{ csrf_token() }}','{{ $r->id }}')"><i class='bx bx-trash me-0'></i>
                                                 </button>
                                                 @endif 
                                             </div>

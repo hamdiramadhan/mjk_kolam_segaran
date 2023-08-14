@@ -8,6 +8,7 @@ use App\Models\Detail;
 use App\Models\MasterSubKegiatan;
 use App\Models\MasterKegiatan;
 use App\Models\MasterProgram;
+use App\Models\MasterRekening;
 use App\Models\Menu;
 use App\Models\Opd;
 use App\Models\RincianRekening;
@@ -220,8 +221,13 @@ class SubKegiatanController extends Controller
                 ->addColumn('aksi', function($row){ 
                 $key = \Illuminate\Support\Facades\Crypt::encrypt($row->id);
                     $res = '';
-                    if(Auth::user()->role_id == 1){
-                        $res = " <a href='".route('edit_sub_kegiatan',$key)."' title='Ubah Data'  class='btn btn-icon btn-sm  btn-success'><i class='fa fa-edit'></i> ";
+                    if(Auth::user()->role_id == 1){ 
+                        $res = '
+                        <a href="'.route('edit_sub_kegiatan',$key).'" title="Ubah Data"
+                            class="btn btn-sm btn-outline-primary">
+                            <i class="bx bx-edit me-0"></i>
+                        </a>
+                        ';
                     }
                     return $res;
                 })
@@ -459,6 +465,7 @@ class SubKegiatanController extends Controller
 
     public function sub_kegiatan_rincian_detail(Request $request)
     {
+         // modal / pop up 
         $id_sub_kegiatan = $request->id_sub_kegiatan; 
         $sub_keg = MasterSubKegiatan::find($id_sub_kegiatan);
         $kode_sub_kegiatan = $sub_keg->kode_sub_kegiatan;
@@ -472,5 +479,97 @@ class SubKegiatanController extends Controller
         return view('sub_kegiatan.detail', compact('id_sub_kegiatan', 'sub_keg', 'kode_sub_kegiatan', 'unit_id','details') );
         
 
+    }
+    public function sub_kegiatan_rincian_komponen($id_sub_kegiatan)
+    {
+        // page sendiri 
+        $id_sub_kegiatan = decrypt($id_sub_kegiatan);
+        $sub_keg = MasterSubKegiatan::find($id_sub_kegiatan);
+        $kode_sub_kegiatan = $sub_keg->kode_sub_kegiatan;
+        $unit_id = $sub_keg->opd->unit_id;
+        $data_rekening = MasterRekening::orderBy('kode_rek')->get();
+
+    	$details = Detail::select('master_sub_kegiatan_id', 'subtitle')
+                    ->where('master_sub_kegiatan_id', $id_sub_kegiatan)
+                    ->distinct()
+                    ->orderBy('subtitle')
+                    ->get(); 
+        return view('sub_kegiatan.komponen', ['nama_header'=>'Detail Komponen'], compact('id_sub_kegiatan', 'sub_keg', 'kode_sub_kegiatan', 'unit_id','details','data_rekening') );  
+    } 
+   
+    public function add_komponen(Request $request)
+    {
+        if (!empty($request->unit_id)) {
+            Detail::create([
+                'unit_id' => $request->unit_id,
+                'kode_kegiatan' => $request->kode_kegiatan,
+                'id_kegiatan' => $request->id_kegiatan,
+                'sipd_id_program' => $request->sipd_id_program,
+                'sipd_id_giat' => $request->sipd_id_giat,
+                'sipd_id_sub_giat' => $request->sipd_id_sub_giat,
+                'sipd_id_skpd' => $request->sipd_id_skpd,
+                'sipd_id_sub_skpd' => $request->sipd_id_sub_skpd,
+                'tahun' => $request->tahun,
+                'kode_rekening' => $request->kode_rekening,
+                'subtitle' => $request->subtitle,
+                'subtitle2' => $request->subtitle2,
+                'detail' => $request->detail,
+                'spek' => $request->spek,
+                'satuan' => $request->satuan,
+                'volume' => $request->volume,
+                'harga' => $request->harga,
+                'nilai' => 0,
+                'koefisien' => $request->volume . ' ' . $request->satuan,
+                'ppn' => $request->ppn,
+                'jenis_belanja' => substr(($request->kode_rekening), 0, 3),
+                'jenis_belanja_2' => substr(($request->kode_rekening), 0, 6),
+                'id_jadwal' => Auth::user()->id_jadwal,
+            ]);
+
+            session()->put('status', 'Data berhasil ditambah');
+        } else {
+            session()->put('statusGagal', 'Data Gagal ditambah');
+        }
+        return back();
+    }
+
+    public function edit_komponen($id)
+    {
+        $data_rekening = MasterRekening::where('kode', 'like', '5.%')->get();
+        $data = Detail::findOrFail($id);
+        return view('kegiatan.modal_ubah_komponen', compact('data','data_rekening'));
+    }
+
+    public function update_komponen(Request $request)
+    {
+        if (!empty($request->id)) {
+            Detail::where('id', $request->id)->update([
+                'kode_rekening' => $request->kode_rekening,
+                'subtitle' => $request->subtitle,
+                'subtitle2' => $request->subtitle2,
+                'detail' => $request->detail,
+                'satuan' => $request->satuan,
+                'kode_rekening' => $request->kode_rekening,
+                'volume' => $request->volume,
+                'harga' => $request->harga,
+                'nilai' => 0,
+                'koefisien' => $request->volume . ' ' . $request->satuan,
+                'ppn' => $request->ppn,
+                'jenis_belanja' => substr(($request->kode_rekening), 0, 3),
+                'jenis_belanja_2' => substr(($request->kode_rekening), 0, 6),
+            ]);
+            session()->put('status', 'Data berhasil diubah');
+        } else {
+            session()->put('statusGagal', 'Data Gagal diubah');
+        }
+        return back();
+    }
+
+    public function destroy_komponen($id)
+    {
+        $data = Detail::find($id);
+        session()->put('status', 'Data Berhasil dihapus');
+        $data->delete();
+        return back();
     }
 }

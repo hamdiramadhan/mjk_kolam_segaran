@@ -115,11 +115,11 @@
                                         {{ number_format($pagu, 0, ',', '.') }}
                                     </span>
                                 </td>
-                                <td>
-                                    <button type="button" class="btn btn-primary btn-sm" data-popup="tooltip" title="Komponen"
+                                <td> 
+                                    <button type="button" class="btn btn-sm btn-outline-primary" data-popup="tooltip" title="Komponen"
                                         onclick=" sub_kegiatan_rincian_detail('{{ csrf_token() }}','{{ $dk->id }}')">
-                                        <i class="fa fa-list"></i>
-                                    </button>
+                                        <i class="fa fa-list me-0"></i> 
+                                    </button> 
                                 </td>
                             </tr>
                         @endforeach
