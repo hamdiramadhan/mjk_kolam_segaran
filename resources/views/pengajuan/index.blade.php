@@ -108,17 +108,9 @@
                                         class="badge bg-{{ $p->stat->color_div }} text-white shadow-sm w-100">{{ $p->stat->nama }}</span>
                                 </td>
                                 <td>
-                                    <a href="{{ route('jenis_usulan.edit', encrypt($r->id)) }}" type="button"
-                                        style="width:100%" class="btn btn-success px-5"><i
-                                            class="bx bx-pencil mr-1"></i>Edit</a>
-
-                                    <form target="_blank" action="{{ route('pengajuan.print', encrypt($p->id)) }}"
-                                        method="POST">
-                                        @csrf
-                                        <button href="{{ route('jenis_usulan.edit', encrypt($r->id)) }}" type="submit"
+                                    <form><a href="{{ route('jenis_usulan.edit', encrypt($r->id)) }}" type="button"
                                             style="width:100%" class="btn btn-success px-5"><i
-                                                class="bx bx-pencil mr-1"></i>Cetak</button>
-                                    </form>
+                                                class="bx bx-pencil mr-1"></i>Edit</a></form>
 
                                     <form method="POST" onsubmit="return confirm('Anda yakin menghapus data ini ??')"
                                         action="{{ route('jenis_usulan.destroy', encrypt($r->id)) }}">
@@ -127,6 +119,21 @@
                                         <button type="submit" onclick="hapus_data('{{ $r->id }}')"
                                             style="width:100%" class="btn btn-danger px-5"><i
                                                 class="bx bx-trash mr-1"></i>Hapus</button>
+                                    </form>
+                                    <form target="_blank" action="{{ route('pengajuan.print', encrypt($p->id)) }}"
+                                        method="POST">
+                                        @csrf
+                                        <button href="{{ route('jenis_usulan.edit', encrypt($r->id)) }}" type="submit"
+                                            style="width:100%" class="btn btn-warning px-5"><i
+                                                class="bx bx-printer mr-1"></i>Cetak</button>
+                                    </form>
+
+                                    <form method="POST" onsubmit="return confirm('Anda yakin mengirim data ini ??')"
+                                        action="{{ route('pengajuan.send', encrypt($p->id)) }}">
+                                        @csrf
+
+                                        <button type="submit" style="width:100%" class="btn btn-primary px-5"><i
+                                                class="bx bx-send mr-1"></i>Kirim</button>
                                     </form>
                                 </td>
                             </tr>
