@@ -109,10 +109,6 @@
                     {{ str_replace('https://', '', str_replace('http://', '', url('/'))) }}
                     {{-- - * merupakan usulan OPD lain. ** merupakan data manual --}}
                 </td>
-                <td style="text-align: right">
-                    pantat<br>
-                    draft
-                </td>
             </tr>
         </table>
     </footer>

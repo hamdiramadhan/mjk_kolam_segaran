@@ -9,5 +9,6 @@ Route::get('pengajuan', [PengajuanController::class, 'index'])->name('pengajuan.
 Route::get('/pengajuan/create', [PengajuanController::class, 'create'])->name('pengajuan.create');
 Route::post('/pengajuan/store', [PengajuanController::class, 'store'])->name('pengajuan.store');
 Route::post('/pengajuan/print/{id}', [PengajuanController::class, 'print_pengajuan'])->name('pengajuan.print');
+Route::post('/pengajuan/send/{id}', [PengajuanController::class, 'send'])->name('pengajuan.send');
 // END PENGAJUAN PERUBAHAN //
 ?>

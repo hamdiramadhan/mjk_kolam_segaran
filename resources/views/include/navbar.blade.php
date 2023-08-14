@@ -46,6 +46,27 @@
                         <div class="menu-title d-flex align-items-center">Pengajuan Perubahan
                         </div>
                     </a>
+
+                </li>
+
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="javascript:;"
+                        data-bs-toggle="dropdown">
+                        <div class="parent-icon"><i class='bx bx-cube'></i>
+                        </div>
+                        <div class="menu-title d-flex align-items-center">Pengajuan Perubahan</div>
+                        <div class="ms-auto dropy-icon"><i class='bx bx-chevron-down'></i></div>
+                    </a>
+                    <ul class="dropdown-menu">
+
+
+                        <li><a class="dropdown-item" href="{{ route('pengajuan.index') }}">Draft</a></li>
+                        <li><a class="dropdown-item" href="#">Proses</a>
+                        </li>
+                        <li><a class="dropdown-item" href="#">Siap
+                                Cetak</a></li>
+                    </ul>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('sub_kegiatan') }}">
@@ -69,7 +90,7 @@
                     <ul class="dropdown-menu">
 
                         <li style="text-align: center">
-                            <span style="text-align: center"><b><u>SKPD</u></b></span>
+                            <span style="text-align: center"><b><u>OPD</u></b></span>
                         </li>
                         <li>
                             <a class="dropdown-item" href="{{ route('jenis_usulan.index') }}">
