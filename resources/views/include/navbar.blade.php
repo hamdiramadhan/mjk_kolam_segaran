@@ -38,34 +38,37 @@
                         <div class="menu-title d-flex align-items-center">Rincian Murni</div>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('pengajuan.index') }}">
-                        <div class="parent-icon">
-                            <i class="fadeIn animated bx bx-comment-check"></i>
-                        </div>
-                        <div class="menu-title d-flex align-items-center">Pengajuan Perubahan
-                        </div>
-                    </a>
-
-                </li>
 
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="javascript:;"
-                        data-bs-toggle="dropdown">
-                        <div class="parent-icon"><i class='bx bx-cube'></i>
+                    <a class="nav-link dropdown-toggle dropdown-toggle-nocaret 
+                    {{ Request::is('pengajuan*') ? 'active' : '' }}"
+                        href="javascript:;" data-bs-toggle="dropdown">
+                        <div class="parent-icon"><i class='bx bx-comment'></i>
                         </div>
                         <div class="menu-title d-flex align-items-center">Pengajuan Perubahan</div>
                         <div class="ms-auto dropy-icon"><i class='bx bx-chevron-down'></i></div>
                     </a>
                     <ul class="dropdown-menu">
-
-
-                        <li><a class="dropdown-item" href="{{ route('pengajuan.index') }}">Draft</a></li>
-                        <li><a class="dropdown-item" href="#">Proses</a>
+                        <li style="text-align: center">
+                            <span style="text-align: center"><b><u>OPD</u></b></span>
                         </li>
-                        <li><a class="dropdown-item" href="#">Siap
-                                Cetak</a></li>
+                        <li><a class="dropdown-item {{ Request::is('pengajuan') ? 'active' : '' }}"
+                                href="{{ route('pengajuan.index') }}">Draft</a></li>
+                        <li><a class="dropdown-item {{ Request::is('pengajuan/proses') ? 'active' : '' }}"
+                                href="{{ route('pengajuan.proses') }}">Proses</a>
+                        </li>
+                        <li><a class="dropdown-item {{ Request::is('pengajuan/selesai') ? 'active' : '' }}"
+                                href="{{ route('pengajuan.selesai') }}">Selesai</a></li>
+
+                        <li style="text-align: center">
+                            <span style="text-align: center"><b><u>Verifikator</u></b></span>
+                        </li>
+
+                        <li><a class="dropdown-item {{ Request::is('pengajuan/masuk') ? 'active' : '' }}"
+                                href="{{ route('pengajuan.masuk') }}">Usulan Masuk</a></li>
+                        <li><a class="dropdown-item {{ Request::is('pengajuan/selesai_verif') ? 'active' : '' }}"
+                                href="{{ route('pengajuan.selesai_verif') }}">Selesai</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
@@ -80,6 +83,7 @@
                     <a class="nav-link dropdown-toggle dropdown-toggle-nocaret 
                         {{ Request::is('master_opd*') ? 'active' : '' }}
                         {{ Request::is('master_sub_opd*') ? 'active' : '' }}
+                        {{ Request::is('usulan*') ? 'active' : '' }}
                         "
                         href="javascript:;" data-bs-toggle="dropdown">
                         <div class="parent-icon"><i class='bx bx-cube'></i>
@@ -93,7 +97,8 @@
                             <span style="text-align: center"><b><u>OPD</u></b></span>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="{{ route('jenis_usulan.index') }}">
+                            <a class="dropdown-item {{ Request::is('usulan*') ? 'active' : '' }}"
+                                href="{{ route('jenis_usulan.index') }}">
                                 Jenis Usulan
                             </a>
                         </li>

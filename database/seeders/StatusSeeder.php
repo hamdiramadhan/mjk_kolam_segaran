@@ -26,7 +26,7 @@ class StatusSeeder extends Seeder
         DB::table('master_statuses')->insert([
             'id' => 2
             , 'kode' => 1
-            , 'nama' => 'Pending' 
+            , 'nama' => 'Menunggu di Verifikasi' 
             , 'ket' => 'Menunggu tim Verifikator untuk memverifikasi.'
             , 'color' => 'yellow'
             , 'color_div' => 'warning'
@@ -43,7 +43,7 @@ class StatusSeeder extends Seeder
             'id' => 4
             , 'kode' => 3
             , 'nama' => 'Tolak' 
-            , 'ket' => 'Ditolak Pergeserah Anggaran'
+            , 'ket' => 'Ditolak Perubahan Anggaran'
             , 'color' => 'red'
             , 'color_div' => 'danger'
         ]); 
