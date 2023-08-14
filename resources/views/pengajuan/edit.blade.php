@@ -17,38 +17,42 @@
     <!--end breadcrumb-->
     <div class="card">
         <div class="card-body p-4">
-            <h5 class="mb-4">Tambah Pengajuan</h5>
-            <form class="row g-3" method="POST" action="{{ route('pengajuan.store') }}">
+            <h5 class="mb-4">Ubah Pengajuan</h5>
+            <form class="row g-3" method="POST" action="{{ route('pengajuan.update', encrypt($pengajuan->id)) }}">
                 @csrf
                 <div class="col-md-12">
                     <label for="nomor_surat" class="form-label">Nomor Surat</label>
-                    <input type="text" class="form-control" name="nomor_surat" id="nomor_surat"
-                        placeholder="Masukkan Nomor Surat">
+                    <input type="text" class="form-control" value="{{ $pengajuan->nomor_surat }}" name="nomor_surat"
+                        id="nomor_surat" placeholder="Masukkan Nomor Surat">
                 </div>
 
                 <div class="col-md-12">
                     <label for="Nama" class="form-label">Tanggal Surat</label>
-                    <input type="date" class="form-control" name="tanggal_surat" id="tanggal_surat"
-                        value="<?= date('Y-m-d') ?>">
+                    <input type="date" class="form-control" value="{{ $pengajuan->tanggal_surat }}" name="tanggal_surat"
+                        id="tanggal_surat" value="<?= date('Y-m-d') ?>">
                 </div>
 
                 <div class="col-md-12">
                     <label for="sifat_surat" class="form-label">Sifat Surat</label>
-                    <input type="text" class="form-control" name="sifat_surat" id="sifat_surat"
-                        placeholder="Masukkan Sifat Surat">
+                    <input type="text" class="form-control" value="{{ $pengajuan->sifat_surat }}" name="sifat_surat"
+                        id="sifat_surat" placeholder="Masukkan Sifat Surat">
                 </div>
 
                 <div class="col-md-12">
                     <label for="lampiran" class="form-label">Lampiran</label>
-                    <input type="text" class="form-control" name="lampiran" id="lampiran"
-                        placeholder="Masukkan Lampiran">
+                    <input type="text" class="form-control" value="{{ $pengajuan->lampiran }}" name="lampiran"
+                        id="lampiran" placeholder="Masukkan Lampiran">
                 </div>
 
                 <div class="col-md-12">
                     <label for="lampiran" class="form-label">Usulan</label>
                     <select name="usulan_id" id="usulan_id" style="width:100%" class="select22">
                         @foreach ($usulan as $r)
-                            <option value="{{ $r->id }}">{{ $r->usulan }}</option>
+                            @php $selected = ''; @endphp
+                            @if ($r->id == $pengajuan->usulan_id)
+                                @php $selected = 'selected'; @endphp
+                            @endif
+                            <option {{ $selected }} value="{{ $r->id }}">{{ $r->usulan }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -62,6 +66,13 @@
                     </div>
                 </div>
                 <div id="AddAlasan">
+                    @foreach ($pengajuan_alasan as $r)
+                        <div class="col-md-12"> <label for="lampiran" class="form-label">Tambah Alasan</label>
+                            <textarea name="alasan[]" class="form-control" id="alasan' +
+                        noUrut + '"
+                                placeholder="Masukkan Alasan disini">{{ $r->alasan }}</textarea>
+                        </div>
+                    @endforeach
                 </div>
                 <div class="col-md-2">
                     <div class="d-md-flex d-grid align-items-center gap-3">

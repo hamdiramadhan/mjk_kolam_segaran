@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MasterStatus;
 use App\Models\Opd;
 use App\Models\Pengajuan;
 use App\Models\PengajuanAlasan;
@@ -19,11 +20,46 @@ class PengajuanController extends Controller
      */
     public function index()
     {
-        $pengajuan = Pengajuan::all();
-        $pengajuan_id = Pengajuan::pluck('id');
+        $opd = Opd::find(Auth::user()->opd_id);
+        $pengajuan = Pengajuan::where('status',0)->where('opd_id',$opd->id)->where('tahun',Auth::user()->tahun)->get();
+        if(Auth::user()->role_id == 1 || Auth::user()->role_id == 3){
+            $pengajuan = Pengajuan::where('status',0)->get();
+        }
         $pengajuan_alasan = PengajuanAlasan::All();
+        $count_pengajuan = Pengajuan::whereIn('status',[0,1,2])->where('opd_id',$opd->id)->where('tahun',Auth::user()->tahun)->count();
+        $status = MasterStatus::whereNotIn('kode',[0,1])->get();
+        $nama_header = 'Pengajuan Perubahan '.$opd->unit_name .' '. Auth::user()->tahun;
+        return view('pengajuan.index',['nama_header'=>$nama_header],compact('pengajuan','pengajuan_alasan','count_pengajuan','status'));
+    }
+
+
+    public function proses()
+    {
+        $opd = Opd::find(Auth::user()->opd_id);
+        $pengajuan = Pengajuan::where('status',1)->where('opd_id',$opd->id)->where('tahun',Auth::user()->tahun)->get();
+        if(Auth::user()->role_id == 1 || Auth::user()->role_id == 3){
+            $pengajuan = Pengajuan::where('status',1)->get();
+        }
+        $pengajuan_alasan = PengajuanAlasan::All();
+        $count_pengajuan = Pengajuan::whereIn('status',[0,1,2])->where('opd_id',$opd->id)->where('tahun',Auth::user()->tahun)->count();
+        $status = MasterStatus::whereNotIn('kode',[0,1])->get();
         $nama_header = 'Pengajuan Perubahan';
-        return view('pengajuan.index',['nama_header'=>$nama_header],compact('pengajuan','pengajuan_alasan'));
+        return view('pengajuan.index',['nama_header'=>$nama_header],compact('pengajuan','pengajuan_alasan','count_pengajuan','status'));
+    }
+
+
+    public function selesai()
+    {
+        $opd = Opd::find(Auth::user()->opd_id);
+        $pengajuan = Pengajuan::where('status',2)->where('opd_id',$opd->id)->where('tahun',Auth::user()->tahun)->get();
+        if(Auth::user()->role_id == 1 || Auth::user()->role_id == 3){
+            $pengajuan = Pengajuan::where('status',2)->get();
+        }
+        $pengajuan_alasan = PengajuanAlasan::All();
+        $count_pengajuan = Pengajuan::whereIn('status',[0,1,2])->where('opd_id',$opd->id)->count();
+        $status = MasterStatus::whereNotIn('kode',[0,1])->get();
+        $nama_header = 'Pengajuan Perubahan';
+        return view('pengajuan.index',['nama_header'=>$nama_header],compact('pengajuan','pengajuan_alasan','count_pengajuan','status'));
     }
 
     /**
@@ -47,6 +83,7 @@ class PengajuanController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->all());
         $alasan = $request->alasan;
         $opd_id = Auth::user()->opd_id;
         $tahun = Auth::user()->tahun;
@@ -62,12 +99,15 @@ class PengajuanController extends Controller
         $pengajuan->usulan_id = $request->usulan_id;
         $pengajuan->status = 0;
         $pengajuan->save();
-        for($i=0; $i<sizeof($alasan); $i++){
-            $pengajuanAlasan = new PengajuanAlasan();
-            $pengajuanAlasan->pengajuan_id = $pengajuan->id;
-            $pengajuanAlasan->alasan = $alasan[$i];
-            $pengajuanAlasan->save();
+        if($alasan!= null){
+            for($i=0; $i<sizeof($alasan); $i++){
+                $pengajuanAlasan = new PengajuanAlasan();
+                $pengajuanAlasan->pengajuan_id = $pengajuan->id;
+                $pengajuanAlasan->alasan = $alasan[$i];
+                $pengajuanAlasan->save();
+            }
         }
+        
 
         session()->put('status', 'Pengajuan baru berhasil ditambahkan! ' );
         return redirect()->route('pengajuan.index');
@@ -97,7 +137,7 @@ class PengajuanController extends Controller
             $height = $canvas->get_height();
             $width = $canvas->get_width();
             $canvas->set_opacity(0.2,"Multiply"); 
-            $canvas->page_text($width/3.5, $height/2.5, @$data->stat->nama, null, 40, array(1,0,0),2,2,0);
+            $canvas->page_text($width/5.5, $height/2.5, @$data->stat->nama, null, 40, array(1,0,0),2,2,0);
         }
         return $pdf->stream('Pengajuan_'.$tahun.'_'.date('Ymd-His').'.pdf');
 
@@ -111,6 +151,17 @@ class PengajuanController extends Controller
         $data->save();
         session()->put('status', 'Pengajuan berhasil dikirim! ' );
         return redirect()->route('pengajuan.index');
+    }
+
+    public function verif(Request $request,$id)
+    {
+        $id = decrypt($id);
+        $data = Pengajuan::find($id);
+        $data->status = $request->status_id;
+        $data->keterangan_status = $request->keterangan_status;
+        $data->save();
+        session()->put('status', 'Pergeserah berhasil di Verifikasi' );
+        return redirect()->back();
     }
 
     /**
@@ -132,7 +183,13 @@ class PengajuanController extends Controller
      */
     public function edit($id)
     {
-        //
+        $id = decrypt($id);
+        $opd = Opd::find(Auth::user()->opd_id);
+        $usulan = PengajuanUsulan::all();
+        $pengajuan = Pengajuan::find($id);
+        $pengajuan_alasan = PengajuanAlasan::where('pengajuan_id',$id)->get();
+        $nama_header = 'Pengajuan Perubahan '.$opd->unit_name;
+        return view('pengajuan.edit',['nama_header'=>$nama_header],compact('opd','usulan','pengajuan','pengajuan_alasan'));
     }
 
     /**
@@ -144,7 +201,37 @@ class PengajuanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $id = decrypt($id);
+        $pengajuan_alasan = PengajuanAlasan::where('pengajuan_id',$id)->pluck('id');
+        $pengajuan = PengajuanAlasan::whereIn('id', $pengajuan_alasan)->delete();
+
+        $alasan = $request->alasan;
+        $opd_id = Auth::user()->opd_id;
+        $tahun = Auth::user()->tahun;
+        $opd = Opd::find($opd_id);
+        $pengajuan = new Pengajuan();
+        $pengajuan->opd_id = $opd_id;
+        $pengajuan->unit_id = $opd->unit_id;
+        $pengajuan->nomor_surat = $request->nomor_surat;
+        $pengajuan->tanggal_surat = $request->tanggal_surat;
+        $pengajuan->sifat_surat = $request->sifat_surat;
+        $pengajuan->lampiran = $request->lampiran;
+        $pengajuan->tahun = $tahun;
+        $pengajuan->usulan_id = $request->usulan_id;
+        $pengajuan->status = 0;
+        $pengajuan->save();
+        if($alasan!= null){
+            for($i=0; $i<sizeof($alasan); $i++){
+                $pengajuanAlasan = new PengajuanAlasan();
+                $pengajuanAlasan->pengajuan_id = $pengajuan->id;
+                $pengajuanAlasan->alasan = $alasan[$i];
+                $pengajuanAlasan->save();
+            }
+        }
+        
+
+        session()->put('status', 'Pengajuan baru berhasil ditambahkan! ' );
+        return redirect()->route('pengajuan.index');
     }
 
     /**
@@ -153,8 +240,13 @@ class PengajuanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
-    }
+     public function destroy($id)
+     {
+         $id = decrypt($id);
+         $pengajuan_alasan = PengajuanAlasan::where('pengajuan_id',$id)->delete();
+         $data = Pengajuan::find($id);
+         session()->put('status', 'Data User dengan nama: ' . $data->nama . ', Berhasil dihapus!');
+         $data->delete();
+         return redirect()->back();
+     }
 }
