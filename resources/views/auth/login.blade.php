@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--favicon-->
-    <link rel="icon" href="{{ asset('images/logo.png') }}" type="image/png" />
+    <link rel="icon" href="{{ asset('images/logo2.png') }}" type="image/png" />
     <!--plugins-->
     <link href="{{ asset('assets/plugins/simplebar/css/simplebar.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css') }}" rel="stylesheet" />
@@ -23,7 +23,7 @@
     <title>{!! env('APP_NAME') !!}</title>
 </head>
 
-<body style="background-image: url('{{ asset('images/cover.jpg') }}');background-size: cover;">
+<body style="background-image: url('{{ asset('images/cover2.jpg') }}');background-size: cover;">
     <!--wrapper-->
     <div class="wrapper">
         <div class="section-authentication-signin d-flex align-items-center justify-content-center my-5 my-lg-0">
@@ -34,7 +34,7 @@
                             <div class="card-body">
                                 <div class="p-4">
                                     <div class="mb-3 text-center">
-                                        <img src="{{ asset('images/logo.png') }}" width="50%" alt="" />
+                                        <img src="{{ asset('images/logo2.png') }}" width="50%" alt="" />
                                     </div>
                                     <div class="text-center mb-4">
                                         <h5 class="">{!! env('APP_NAME') !!}</h5>

@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--favicon-->
-    <link rel="icon" href="{{ asset('images/logo.png') }}" type="image/png" />
+    <link rel="icon" href="{{ asset('images/logo2.png') }}" type="image/png" />
     <!--plugins-->
     <link href="{{ asset('assets/plugins/vectormap/jquery-jvectormap-2.0.2.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/plugins/simplebar/css/simplebar.css') }}" rel="stylesheet" />
@@ -61,7 +61,7 @@
                     <nav class="navbar navbar-expand gap-3">
                         <div class="topbar-logo-header d-none d-lg-flex">
                             <div class="">
-                                <img src="{{ asset('images/logo.png') }}" class="logo-icon" alt="logo icon"
+                                <img src="{{ asset('images/logo2.png') }}" class="logo-icon" alt="logo icon"
                                     style="width: 100px; margin-top:10px">
                             </div>
                             <div class="">
