@@ -83,7 +83,7 @@ class PengajuanController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         $alasan = $request->alasan;
         $opd_id = Auth::user()->opd_id;
         $tahun = Auth::user()->tahun;

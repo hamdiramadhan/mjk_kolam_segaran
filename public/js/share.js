@@ -1,3 +1,8 @@
+function dismissmodal()
+{
+    $('.modal').modal('hide');
+}
+
 function addKoma(nStr) {
     nStr += '';
     x = nStr.split('.');
@@ -46,13 +51,11 @@ function openModal(id) {
     $(id).modal('show');
 }
 
-function openModalIndex(id) {
-    // alert(id);
+function openModalIndex(id) { 
     $(id).modal('show');
 }
 
-function closeModal(id) {
-    // alert(id);
+function closeModal(id) { 
     $(id).modal('hide');
 }
 
@@ -62,7 +65,7 @@ function closeBgModal() {
 }
 
 
-function dp(str) { //fungsi buat mengganti petik ' menjadi `. untuk menghindari sql injection
+function dp(str) { 
     var res = str;
     var jmlN = str.search("'");
     if (jmlN > -1) {
@@ -72,8 +75,7 @@ function dp(str) { //fungsi buat mengganti petik ' menjadi `. untuk menghindari 
             str += res[i] + "`";
         }
         str += res[res.length - 1];
-        res = str;
-        // alert(res.length);
+        res = str; 
     }
     return res;
 }

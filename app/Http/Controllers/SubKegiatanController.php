@@ -535,28 +535,35 @@ class SubKegiatanController extends Controller
 
     public function edit_komponen($id)
     {
-        $data_rekening = MasterRekening::where('kode', 'like', '5.%')->get();
+        $data_satuan = Satuan::orderBy('satuan')->get();
+        $data_rekening = MasterRekening::where('kode_rek', 'like', '5.%')->get();
         $data = Detail::findOrFail($id);
-        return view('kegiatan.modal_ubah_komponen', compact('data','data_rekening'));
+        return view('sub_kegiatan.edit_komponen', compact('data','data_rekening','data_satuan'));
     }
 
     public function update_komponen(Request $request)
-    {
+    { 
+        // dd($request->all());
         if (!empty($request->id)) {
+            $koderek = MasterRekening::where('kode_rek',$request->kode_rekening)->first();
+            if(empty($request->ppn))
+            {
+                $ppn=0;
+            } else {
+                $ppn = $request->ppn;
+            }
             Detail::where('id', $request->id)->update([
+                'rekenings_id' => $koderek->id,
                 'kode_rekening' => $request->kode_rekening,
                 'subtitle' => $request->subtitle,
                 'subtitle2' => $request->subtitle2,
                 'detail' => $request->detail,
-                'satuan' => $request->satuan,
-                'kode_rekening' => $request->kode_rekening,
+                'satuan' => $request->satuan, 
                 'volume' => $request->volume,
-                'harga' => $request->harga,
-                'nilai' => 0,
+                'harga' => $request->harga, 
+                'spek' => $request->spek, 
                 'koefisien' => $request->volume . ' ' . $request->satuan,
-                'ppn' => $request->ppn,
-                'jenis_belanja' => substr(($request->kode_rekening), 0, 3),
-                'jenis_belanja_2' => substr(($request->kode_rekening), 0, 6),
+                'ppn' => $ppn ?? 0, 
             ]);
             session()->put('status', 'Data berhasil diubah');
         } else {

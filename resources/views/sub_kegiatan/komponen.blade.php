@@ -117,7 +117,7 @@
                                                     </td> 
                                                     <td> 
                                                         <div class="d-flex p-2">
-                                                            <button title="Ubah" onclick="update_detail_komponen('{{ csrf_token() }}', '{{ $r4->id }}', '#ModalBiruSm')"
+                                                            <button title="Ubah" onclick="update_detail_komponen('{{ csrf_token() }}', '{{ route('edit_komponen', $r4->id) }}', '#ModalBiruSm')"
                                                                 class="btn btn-sm btn-outline-primary">
                                                                 <i class="bx bx-edit me-0"></i>
                                                             </button> 
@@ -270,24 +270,14 @@
     </div>
 @endsection
 @push('scripts')
-    <script !src="">
-        /*
-          var loading = `<div class="text-center"> 
-                          <div class="pace-demo">
-                              <div class="theme_squares"><div class="pace-progress" data-progress-text="60%" data-progress="60"></div><div class="pace_activity"></div></div>
-                          </div> 
-                      </div>`;
-          */
-
+    <script !src="">  
         var loading = '-- Sedang Memuat Data --';
 
         var div_default = ` 
                 <div class="alert bg-info text-white alert-styled-left alert-dismissible">
                     <span class="font-weight-semibold"> -- Silahkan Mengisi Form Diatas Terlebih Dahulu Kemudian Klik Tombol Tampilkan --</span>
                 </div>
-            `;
-    </script>
-    <script type="text/javascript">
+            `; 
         //select option
         $('.select22').select2();
 
@@ -306,5 +296,21 @@
             });
         });
         // END SCRIPT TABEL 
+
+
+        function update_detail_komponen(token, url, modal) {
+            $(modal).modal("show");
+            $(modal + "Label").html("Ubah Data");
+            $(modal + "Isi").html(loading);
+            var act = url;
+            $.post(
+                act, {
+                    _token: token,
+                },
+                function(data) {
+                    $(modal + "Isi").html(data);
+                }
+            );
+        }
     </script>
 @endpush
