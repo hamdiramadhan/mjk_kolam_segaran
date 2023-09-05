@@ -13,12 +13,12 @@
                 </ol>
             </nav>
         </div>
-        @if ($count_pengajuan == 0)
-            <div class="ms-auto">
-                <a href="{{ route('pengajuan.create') }}" type="button" class="btn btn-primary px-5"><i
-                        class="bx bx-plus mr-1"></i>Tambah</a>
-            </div>
-        @endif
+        {{-- @if ($count_pengajuan == 0) --}}
+        <div class="ms-auto">
+            <a href="{{ route('pengajuan.create') }}" type="button" class="btn btn-primary px-5"><i
+                    class="bx bx-plus mr-1"></i>Tambah</a>
+        </div>
+        {{-- @endif --}}
     </div>
 
     <!--end breadcrumb-->
@@ -110,6 +110,9 @@
                                 </td>
                                 <td>
 
+                                    <form><a href="{{ route('pengajuan.detail', encrypt($p->id)) }}" type="button"
+                                            style="width:100%" class="btn btn-info px-5"><i
+                                                class="bx bx-detail mr-1"></i>Detail</a></form>
                                     @if (Auth::user()->role_id != 2 || Auth::user()->role_id != 7)
                                         @if ($p->status != 0)
                                             <form><button type="button" onclick="$('#modal_verif').modal('show')"

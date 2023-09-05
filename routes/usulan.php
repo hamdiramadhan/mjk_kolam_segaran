@@ -8,6 +8,7 @@ Route::get('pengajuan', [PengajuanController::class, 'index'])->name('pengajuan.
 Route::get('/pengajuan/create', [PengajuanController::class, 'create'])->name('pengajuan.create');
 Route::get('/pengajuan/edit/{id}', [PengajuanController::class, 'edit'])->name('pengajuan.edit');
 Route::post('/pengajuan/update/{id}', [PengajuanController::class, 'update'])->name('pengajuan.update');
+Route::get('/pengajuan/detail/{id}', [PengajuanController::class, 'detail'])->name('pengajuan.detail');
 Route::post('/pengajuan/destroy/{id}', [PengajuanController::class, 'destroy'])->name('pengajuan.destroy');
 Route::get('/pengajuan/proses', [PengajuanController::class, 'proses'])->name('pengajuan.proses');
 Route::get('/pengajuan/selesai', [PengajuanController::class, 'selesai'])->name('pengajuan.selesai');

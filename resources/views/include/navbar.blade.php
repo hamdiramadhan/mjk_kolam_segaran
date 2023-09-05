@@ -109,7 +109,7 @@
                             </a>
                         </li>
                         <li><a class="dropdown-item" href="{{ route('master_sub_opd') }}">Sub SKPD</a></li>
-
+                        <li><a class="dropdown-item" href="{{ route('sumber_dana.index') }}">Sumber Dana</a></li>
                         <li style="text-align: center">
                             <span style="text-align: center"><b><u>Pengguna</u></b></span>
                         </li>

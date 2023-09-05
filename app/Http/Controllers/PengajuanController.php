@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\MasterStatus;
+use App\Models\MasterSubKegiatan;
 use App\Models\Opd;
 use App\Models\Pengajuan;
 use App\Models\PengajuanAlasan;
+use App\Models\PengajuanDetail;
+use App\Models\PengajuanDetailSumberdana;
 use App\Models\PengajuanUsulan;
+use App\Models\SumberDana;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PDF;
@@ -232,6 +236,29 @@ class PengajuanController extends Controller
 
         session()->put('status', 'Pengajuan baru berhasil ditambahkan! ' );
         return redirect()->route('pengajuan.index');
+    }
+    
+    public function detail(Request $request,$id)
+    {
+        $id = decrypt($id);
+        $tahun = Auth::user()->tahun;
+        $opd_id = Auth::user()->opd_id;
+        
+        $opd = Opd::find($opd_id);
+         
+        $data_sub_kegiatan = MasterSubKegiatan::where('opd_id', $opd_id)
+            ->where('tahun', $tahun) 
+            ->orderBy('kode_sub_kegiatan')
+            ->get(); 
+        
+        $data_opd = Opd::orderBy('unit_id')->get();
+        $pengajuan = Pengajuan::find($id);
+        $sumber_dana = SumberDana::all();
+        $pengajuan_detail = PengajuanDetail::where('pengajuan_id',$id)->get();
+        $detail_sumberdana = PengajuanDetailSumberdana::all();
+        return view('pengajuan.detail',['nama_header'=>'Rincian Sub kegiatan'],
+            compact('data_sub_kegiatan','pengajuan','opd_id', 'opd', 'tahun','data_opd','sumber_dana','id','pengajuan_detail','detail_sumberdana')
+        );
     }
 
     /**

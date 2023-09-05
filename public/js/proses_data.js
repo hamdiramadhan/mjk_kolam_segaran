@@ -1,3 +1,7 @@
+var loading = `<div class="spinner-border" role="status">
+<span class="visually-hidden">Loading...</span>
+</div>`;
+
 function delete_user(token, id) {
     swal({
             title: "Yakin Untuk Menghapus Data User?",
@@ -445,5 +449,20 @@ function delete_master_bmd(token, id) {
                             });
                     });
             }
+        });
+}
+
+function create_detail_pengajuan(token, modal, id) {
+    $(modal).modal('show');
+    $(modal + 'Label').html('Tambah Detail Pengajuan');
+    $(modal + 'Isi').html(loading);
+    var public_path = $('#public_path').val(); /* di layouts */
+    var act = public_path + '/pengajuan_detail/create';
+    $.post(act, {
+            _token: token,
+            id: id
+        },
+        function(data) {
+            $(modal + 'Isi').html(data);
         });
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\OpdController;
 use App\Http\Controllers\SubOpdController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PengajuanController;
+use App\Http\Controllers\PengajuanDetailController;
 use App\Http\Controllers\SubKegiatanController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -97,5 +98,12 @@ Route::group(['middleware' => ['XSS']], function () {
         Route::get('/pengajuan/create', [PengajuanController::class, 'create'])->name('pengajuan.create');
         Route::post('/pengajuan/store', [PengajuanController::class, 'store'])->name('pengajuan.store');
         // END PENGAJUAN PERUBAHAN //
+
+        //PENGAJUAN DETAIL //
+        Route::post('/pengajuan_detail/create', [PengajuanDetailController::class, 'create'])->name('pengajuan_detail.create');
+        Route::post('/pengajuan/detail_store/{id}', [PengajuanDetailController::class, 'store'])->name('pengajuan_detail.store');
+        Route::get('generate-docx', [HomeController::class, 'generateDocx'])->name('pengajuan_detail.store');
+
+        // PENGAJUAN DETAIL
     });
 });

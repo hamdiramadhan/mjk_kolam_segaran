@@ -45,4 +45,40 @@ class HomeController extends Controller
         }
         return back();
     }
+    public function generateDocx()
+    {
+//         $phpWord = new \PhpOffice\PhpWord\PhpWord();
+
+
+//         $section = $phpWord->addSection();
+
+
+//         $description = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+// tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+// quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+// consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+// cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+// proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+//         $view = view('home.word',compact('description'))->render();
+
+//         // $section->addImage("https://supertuntas.egovsuperapp.id/sampang_logo.png");
+//         $section->addText($view);
+        
+
+//         $objWriter = \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007');
+//         try {
+//             $objWriter->save(storage_path('helloWorld.docx'));
+//         } catch (Exception $e) {
+//         }
+
+
+//         return response()->download(storage_path('helloWorld.docx'));
+
+        $headers = array(
+            'Content-type'=>'text/html',
+            'Content-Disposition'=>'attatchement;Filename=mydoc.doc',
+        );
+
+        return \Response::make(view('home.word'),200,$headers);
+    }
 }
