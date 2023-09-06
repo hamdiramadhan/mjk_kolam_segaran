@@ -200,6 +200,167 @@
             </div>
         </div>
     </div>
+
+
+
+
+    <!--breadcrumb-->
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+        <div class="breadcrumb-title pe-3">Data</div>
+        <div class="ps-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 p-0">
+                    <li class="breadcrumb-item"><a href="javascript:;"><i class="lni lni-bookmark-alt"></i></a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Pergeseran</li>
+                </ol>
+            </nav>
+        </div>
+
+    </div>
+    <!--end breadcrumb-->
+    <div class="card">
+        <div class="card-body overflow-hidden p-relative z-index-1">
+
+            <div class="col-lg-12">
+                <div class="panel panel-info">
+                    <div class="panel-body">
+
+                        <div style="width: 100%; overflow: auto">
+                            <table class="table table-sm table-bordered table-hover datatable-not-sortable-paging"
+                                tyle="border-collapse: collapse; border-spacing: 0; width: 100%; ">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2">No</th>
+                                        <th rowspan="2" style="width: 1%">
+                                            <input type="checkbox" name="" style="transform: scale(1.5)  !important"
+                                                onchange="
+                      chk_all(this.checked);
+                      chk_data_usulan();">
+                                        </th>
+                                        <th rowspan="2">Kode</th>
+                                        <th rowspan="2">Uraian</th>
+                                        <th colspan="5" style="text-align: center">Sebelum Perubahan</th>
+                                        <th colspan="5" style="text-align: center">Setelah Perubahan</th>
+                                        <th rowspan="2">Bertambah / Berkurang</th>
+                                        <th rowspan="2">Ket</th>
+                                        <th rowspan="2">Act</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Koefisien</th>
+                                        <th>Satuan</th>
+                                        <th>Harga</th>
+                                        <th>PPN</th>
+                                        <th>Jumlah</th>
+                                        <th>Koefisien</th>
+                                        <th>Satuan</th>
+                                        <th>Harga</th>
+                                        <th>PPN</th>
+                                        <th>Jumlah</th>
+                                    </tr>
+                                    <tr>
+                                        <th>1</th>
+                                        <th>2</th>
+                                        <th>3</th>
+                                        <th>4</th>
+                                        <th>5</th>
+                                        <th>6</th>
+                                        <th>7</th>
+                                        <th>8</th>
+                                        <th>9</th>
+                                        <th>10</th>
+                                        <th>11</th>
+                                        <th>12</th>
+                                        <th>13</th>
+                                        <th>14</th>
+                                        <th>15 = 14 - 9</th>
+                                        <th>16</th>
+                                        <th>17</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php
+                                        $no = 0;
+                                    @endphp
+                                    @foreach ($data as $r)
+                                        @php
+                                            $no++;
+                                            $warnadiv = '';
+                                            $jumlah_sebelum_pergeseran = $r->harga + $r->harga * $r->ppn;
+                                            $jumlah_setelah_pergeseran = $r->harga_pergeseran + $r->harga_pergeseran * $r->ppn_pergeseran;
+                                            $total = $jumlah_setelah_pergeseran - $jumlah_sebelum_pergeseran;
+                                            // if (empty(@$r->sub_kegiatan->nama_sub_kegiatan)) {
+                                            //     $warnadiv = 'danger';
+                                            // }
+                                        @endphp
+                                        <tr>
+                                            <td align="center">asd</td>
+                                            <td>
+                                                <input name="chk_data" type="checkbox" value="id"
+                                                    style="transform: scale(1.5)  !important"
+                                                    onchange="chk_data_usulan()">
+                                                <input type="hidden" value="id" name="list_detail[]">
+                                                <input type="hidden" value="id" name="ids[]">
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-primary">
+                                                    {{ $r->kode_rekening }}
+                                                </span>
+                                            </td>
+                                            <td><span class="cls_edit">{{ $r->detail }}</span>
+                                            </td>
+                                            <td><span class="cls_edit">{{ $r->koefisien }}</span>
+                                            </td>
+                                            <td>
+                                                <span class="cls_edit">{{ $r->satuan }}</span>
+                                            </td>
+                                            <td style="text-align: right">
+                                                {{ format_harga($r->harga) }}
+                                            </td>
+
+                                            <td style="text-align: right">
+                                                {{ $r->ppn }}
+                                            </td>
+                                            <td>
+                                                <span
+                                                    class="cls_edit div_mulai_setujui">{{ format_harga($jumlah_sebelum_pergeseran) }}</span>
+                                            </td>
+
+                                            <td><span class="cls_edit">{{ $r->koefisien_pergeseran }}</span>
+                                            </td>
+                                            <td>
+                                                <span class="cls_edit">{{ $r->satuan_pergeseran }}</span>
+                                            </td>
+                                            <td style="text-align: right">
+                                                {{ format_harga($r->harga_pergeseran) }}
+                                            </td>
+
+                                            <td style="text-align: right">
+                                                {{ $r->ppn_pergeseran }}
+                                            </td>
+                                            <td>
+                                                <span
+                                                    class="cls_edit div_mulai_setujui">{{ format_harga($jumlah_setelah_pergeseran) }}</span>
+                                            </td>
+                                            </td>
+                                            <td>
+                                                <span class="cls_edit div_mulai_setujui">{{ format_harga($total) }}</span>
+                                            </td>
+                                            <td>{{ @$r->keterangan ?? '-' }}</td>
+                                            <td> <button title="Pergeseran" data-toggle="tooltip"
+                                                    onclick="update_detail_komponen('{{ csrf_token() }}', '{{ route('update_detail_komponen', $r4->id) }}','{{ encrypt($pengajuan_detail->id) }}', '#ModalBiruSm')"
+                                                    class="btn btn-sm btn-outline-primary">
+                                                    <i class="bx bx-trash me-0"></i>
+                                                </button></td>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @push('scripts')
     <script !src="">
