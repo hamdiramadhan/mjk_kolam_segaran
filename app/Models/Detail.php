@@ -28,7 +28,7 @@ class Detail extends Model
 
     public static function get_sub2($master_sub_kegiatan_id, $subtitle)
     { 
-    	$details = Detail::select('master_sub_kegiatan_id', 'subtitle', 'subtitle2')
+    	$details = Detail::select('master_sub_kegiatan_id', 'subtitle', 'subtitle2','flag')
             ->where('master_sub_kegiatan_id', $master_sub_kegiatan_id)
             ->where('subtitle', $subtitle)
             ->distinct()

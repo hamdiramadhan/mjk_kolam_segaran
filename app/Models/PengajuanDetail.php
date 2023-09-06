@@ -13,4 +13,8 @@ class PengajuanDetail extends Model
     {
         return $this->belongsTo('App\Models\MasterSubKegiatan', 'master_sub_kegiatan_id', 'id');
     }
+    public function pengajuan()
+    {
+        return $this->belongsTo('App\Models\Pengajuan', 'pengajuan_id', 'id');
+    }
 }

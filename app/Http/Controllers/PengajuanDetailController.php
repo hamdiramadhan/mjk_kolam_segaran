@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Detail;
+use App\Models\MasterRekening;
 use App\Models\MasterSubKegiatan;
 use App\Models\Opd;
 use App\Models\PengajuanDetail;
+use App\Models\PengajuanDetailKomponen;
 use App\Models\PengajuanDetailSumberdana;
+use App\Models\Satuan;
 use App\Models\SumberDana;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -77,6 +81,85 @@ class PengajuanDetailController extends Controller
        
         session()->put('status', 'Data berhasil ditambahkan! ' );
         return redirect()->back();
+    }
+
+
+    public function komponen($id)
+    {
+        $id = decrypt($id);
+        // page sendiri 
+        $pengajuan_detail = PengajuanDetail::find($id);
+        $id_sub_kegiatan = $pengajuan_detail->sub_kegiatan->id;
+        $sub_keg = MasterSubKegiatan::find($id_sub_kegiatan);
+        $kode_sub_kegiatan = $sub_keg->kode_sub_kegiatan;
+        $unit_id = $sub_keg->opd->unit_id;
+        $data_rekening = MasterRekening::orderBy('kode_rek')->get();
+
+    	$details = Detail::select('master_sub_kegiatan_id', 'subtitle')
+                    ->where('master_sub_kegiatan_id', $id_sub_kegiatan)
+                    ->distinct()
+                    ->orderBy('subtitle')
+                    ->get(); 
+        return view('pengajuan.pengajuan_detail.komponen', ['nama_header'=>'Detail Komponen'], compact('id_sub_kegiatan', 'sub_keg', 'kode_sub_kegiatan', 'unit_id','details','data_rekening','pengajuan_detail') );  
+    } 
+
+    public function geser_komponen(Request $request,$id)
+    {
+        $pengajuan_detail_id = decrypt($request->pengajuan_detail_id);
+        $pengajuan_detail  = PengajuanDetail::find($pengajuan_detail_id);
+        $data_satuan = Satuan::orderBy('satuan')->get();
+        $data_rekening = MasterRekening::where('kode_rek', 'like', '5.%')->get();
+        $data = Detail::findOrFail($id);
+        return view('pengajuan.pengajuan_detail.edit_komponen', compact('data','data_rekening','data_satuan','pengajuan_detail'));
+    }
+
+    public function store_geser_komponen(Request $request)
+    {
+        // dd($request->all());
+        if (!empty($request->opd_id)) {
+            $koderek = MasterRekening::where('kode_rek',$request->kode_rekening)->first();
+            $pengajuan_detail = PengajuanDetail::find($request->pengajuan_detail_id);
+            if(empty($request->ppn))
+            {
+                $ppn=0;
+            } else {
+                $ppn = $request->ppn;
+            }
+            PengajuanDetailKomponen::create([
+                'pengajuan_id' => $pengajuan_detail->pengajuan_id,
+                'pengajuan_detail_id' => $request->pengajuan_detail_id,
+                'master_sub_kegiatan_id' => $pengajuan_detail->master_sub_kegiatan_id,
+                'opd_id' => $request->opd_id,
+                'rekenings_id' => $koderek->id,
+                'kode_rekening' => $request->kode_rekening,
+                'detail' => $request->detail,
+                'satuan' => $request->satuan, 
+                'volume' => $request->volume,
+                'harga' => $request->harga, 
+                'spek' => $request->spek, 
+                'koefisien' => $request->volume . ' ' . $request->satuan,
+                'ppn' => $ppn ?? 0, 
+                
+                'rekenings_id_pergeseran' => $koderek->id_pergeseran,
+                'kode_rekening_pergeseran' => $request->kode_rekening_pergeseran,
+                'detail_pergeseran' => $request->detail_pergeseran,
+                'satuan_pergeseran' => $request->satuan_pergeseran, 
+                'volume_pergeseran' => $request->volume_pergeseran,
+                'harga_pergeseran' => $request->harga_pergeseran, 
+                'spek_pergeseran' => $request->spek_pergeseran, 
+                'koefisien_pergeseran' => $request->volume_pergeseran . ' ' . $request->satuan_pergeseran,
+                'ppn_pergeseran' => $ppn ?? 0,
+                'created_by'=>Auth::user()->id
+            ]);
+            Detail::where('id', $request->id)->update([
+                'flag'=>1
+            ]);
+
+            session()->put('status', 'Data berhasil ditambah');
+        } else {
+            session()->put('statusT', 'Data Gagal ditambah');
+        }
+        return back();
     }
 
     /**

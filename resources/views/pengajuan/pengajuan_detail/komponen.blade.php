@@ -18,13 +18,46 @@
             <button onclick="closeTabs()" type="button" class="btn btn-sm btn-danger">
                 <b><i class="fa fa-arrow-left"></i></b> Kembali
             </button>
-            <button type="button" id="simpan" class="btn btn-sm waves-effect btn-primary btn-md"
+            {{-- <button type="button" id="simpan" class="btn btn-sm waves-effect btn-primary btn-md"
                 onclick="$('.modalAddKomponen').modal('show')">
                 <i class=" fas fa-plus"></i> Tambah
-            </button>
+            </button> --}}
         </div>
     </div>
     <!--end breadcrumb-->
+
+    @if (session()->has('status'))
+        <div class="alert alert-success border-0 bg-success alert-dismissible fade show py-2">
+            <div class="d-flex align-items-center">
+                <div class="font-35 text-white"><i class='bx bxs-check-circle'></i>
+                </div>
+                <div class="ms-3">
+                    <h6 class="mb-0 text-white">Berhasil</h6>
+                    <div class="text-white">
+                        <p>{{ session()->get('status') }}
+                            {{ session()->forget('status') }}</p>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+    @if (session()->has('statusT'))
+        <div class="alert alert-danger border-0 bg-danger alert-dismissible fade show py-2">
+            <div class="d-flex align-items-center">
+                <div class="font-35 text-white"><i class='bx bxs-message-square-x'></i>
+                </div>
+                <div class="ms-3">
+                    <h6 class="mb-0 text-white">Gagal</h6>
+                    <div class="text-white">
+                        <p>{{ session()->get('statusT') }}
+                            {{ session()->forget('statusT') }}</p>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
     <div class="card">
         <div class="card-body overflow-hidden p-relative z-index-1">
             <b>
@@ -35,6 +68,7 @@
                 {{ $sub_keg->kegiatan->program->nama_program }}</b><br>
             Kegiatan : <b>{{ $sub_keg->kegiatan->kode_kegiatan }} {{ $sub_keg->kegiatan->nama_kegiatan }}</b><br>
             Sub Kegiatan : <b>{{ $sub_keg->kode_sub_kegiatan }} {{ $sub_keg->nama_sub_kegiatan }}</b><br>
+            Jenis Pergeseran : <b>{{ $pengajuan_detail->pengajuan->usulan->usulan }}</b><br>
         </div>
     </div>
 
@@ -91,6 +125,7 @@
                                                     <td colspan="6">&nbsp;&nbsp;&nbsp;<b>{!! $r3->kode_rekening !!}
                                                             {!! $r3->rek->nama_rekening ?? '' !!}</b></td>
                                                     <td></td>
+
                                                 </tr>
                                             @endpush
                                             @foreach ($data_komponen as $r4)
@@ -119,16 +154,20 @@
                                                         </td>
                                                         <td>
                                                             <div class="d-flex p-2">
-                                                                <button title="Ubah"
-                                                                    onclick="update_detail_komponen('{{ csrf_token() }}', '{{ route('edit_komponen', $r4->id) }}', '#ModalBiruSm')"
-                                                                    class="btn btn-sm btn-outline-primary">
-                                                                    <i class="bx bx-edit me-0"></i>
-                                                                </button>
-                                                                <button type="button"
+                                                                @if ($r4->flag != 1)
+                                                                    <button title="Pergeseran" data-toggle="tooltip"
+                                                                        onclick="update_detail_komponen('{{ csrf_token() }}', '{{ route('update_detail_komponen', $r4->id) }}','{{ encrypt($pengajuan_detail->id) }}', '#ModalBiruSm')"
+                                                                        class="btn btn-sm btn-outline-primary">
+                                                                        <i
+                                                                            class="bx bx-message-check
+                                                                    me-0"></i>
+                                                                    </button>
+                                                                @endif
+                                                                {{-- <button type="button"
                                                                     onclick="delete_detail_komponen('{{ csrf_token() }}', '{{ $r4->id }}')"
                                                                     title="Hapus" class="btn btn-sm btn-outline-danger">
                                                                     <i class="bx bx-trash me-0"></i>
-                                                                </button>
+                                                                </button> --}}
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -156,118 +195,6 @@
                                 @stack('detail')
                             </tbody>
                         </table>
-                    </div>
-                </div>
-            </div>
-            <div class="modal fade modalAddKomponen">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header bg-primary">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h6 class="modal-title modalTambah">Tambah</h6>
-                        </div>
-                        <form method="POST" action="{{ route('add_komponen') }}" enctype="multipart/form-data">
-                            {!! csrf_field() !!}
-                            <input type="text" class="form-control" id="unit_id" name="unit_id"
-                                value="{{ $sub_keg->unit_id }}">
-                            <input type="hidden" class="form-control" id="kode_kegiatan" name="kode_kegiatan"
-                                value="{{ $sub_keg->kode_kegiatan }}">
-                            <input type="hidden" class="form-control" id="id_kegiatan" name="id_kegiatan"
-                                value="{{ $sub_keg->id }}">
-                            <input type="hidden" class="form-control" id="sipd_id_program" name="sipd_id_program"
-                                value="{{ $sub_keg->sipd_id_program }}">
-                            <input type="hidden" class="form-control" id="sipd_id_giat" name="sipd_id_giat"
-                                value="{{ $sub_keg->sipd_id_giat }}">
-                            <input type="hidden" class="form-control" id="sipd_id_sub_giat" name="sipd_id_sub_giat"
-                                value="{{ $sub_keg->sipd_id_sub_giat }}">
-                            <input type="hidden" class="form-control" id="sipd_id_skpd" name="sipd_id_skpd"
-                                value="{{ $sub_keg->sipd_id_skpd }}">
-                            <input type="hidden" class="form-control" id="sipd_id_sub_skpd" name="sipd_id_sub_skpd"
-                                value="{{ $sub_keg->sipd_id_sub_skpd }}">
-                            <input type="hidden" class="form-control" id="tahun" name="tahun"
-                                value="{{ date('Y') }}">
-                            <div class="modal-body">
-                                <p style="font-weight:bold"><i>Yang bertanda <span class="text-danger">*</span> wajib
-                                        diisi/dipilih.</i></p>
-                                <div class="col-md-2">Judul <span style="color:red">*</span></div>
-                                <div class="col-md-10">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="[#]....." id="subtitle"
-                                            name="subtitle" value="[#]" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">Sub Judul<span style="color:red">*</span></div>
-                                <div class="col-md-10">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="[-]....." id="subtitle2"
-                                            name="subtitle2" value="[-]" required>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-2">Kode Rekening<span style="color:red">*</span></div>
-                                <div class="col-md-10">
-                                    <div class="form-group">
-                                        <select class="select22" name="kode_rekening" id="kode_rekening"
-                                            style="width: 100%">
-                                            @foreach ($data_rekening as $dt)
-                                                <option value="{{ $dt->kode }}">{{ $dt->kode }} -
-                                                    {{ $dt->nama }}</option>
-                                            @endforeach
-                                        </select>
-                                        {{-- <input type="text" class="form-control" placeholder="Masukkan Kode Rekening" id="kode_rekening" name="kode_rekening" value="{{$data->kode_rekening}}" required>  --}}
-                                    </div>
-                                </div>
-                                <div class="col-md-2">Uraian<span style="color:red">*</span></div>
-                                <div class="col-md-10">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Masukkan Uraian"
-                                            id="detail" name="detail" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">Satuan<span style="color:red">*</span></div>
-                                <div class="col-md-10">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Masukkan Satuan"
-                                            id="satuan" name="satuan" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">Spek</div>
-                                <div class="col-md-10">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Masukkan Spek"
-                                            id="spek" name="spek">
-                                    </div>
-                                </div>
-                                <div class="col-md-2">Koefisien<span style="color:red">*</span></div>
-                                <div class="col-md-10">
-                                    <div class="form-group">
-                                        <input type="number" step="any" class="form-control"
-                                            placeholder="Masukkan Koefisien" id="volume" name="volume" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">Harga<span style="color:red">*</span></div>
-                                <div class="col-md-10">
-                                    <div class="form-group">
-                                        <input type="number" step="any" class="form-control"
-                                            placeholder="Masukkan Harga" id="harga" name="harga"
-                                            oninput="$('.txt_harga').html(addCommas(this.value));" required>
-                                        Rp. <span class="help-text txt_harga">0</span>
-                                    </div>
-                                </div>
-                                <div class="col-md-2">PPN</div>
-                                <div class="col-md-10">
-                                    <div class="form-group">
-                                        <input type="number" step="any" class="form-control"
-                                            placeholder="Masukkan PPN" id="ppn" name="ppn" value="0">
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-sm btn-success"><i class="icon-check"></i>
-                                        Simpan</button>
-                                    <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal"><i
-                                            class="icon-cancel-circle2"></i> Batal</button>
-                                </div>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -303,19 +230,23 @@
         // END SCRIPT TABEL 
 
 
-        function update_detail_komponen(token, url, modal) {
+        function update_detail_komponen(token, url, pengajuan_detail_id, modal) {
             $(modal).modal("show");
-            $(modal + "Label").html("Ubah Data");
+            $(modal + "Label").html("Geser Komponen");
             $(modal + "Isi").html(loading);
             var act = url;
             $.post(
                 act, {
                     _token: token,
+                    pengajuan_detail_id: pengajuan_detail_id
                 },
                 function(data) {
                     $(modal + "Isi").html(data);
                 }
             );
         }
+        $(document).ready(function() {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
     </script>
 @endpush

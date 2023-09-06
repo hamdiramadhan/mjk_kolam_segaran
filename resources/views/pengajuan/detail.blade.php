@@ -14,7 +14,6 @@
         </div>
     </div>
     <!--end breadcrumb-->
-
     <div class="card">
         <div class="card-body">
             <b>Status RKBMD</b> : <span class="badge badge-{{ $pengajuan->stat->color_div }}">
@@ -97,11 +96,10 @@
                                 </span>
                             </td>
                             <td>
-                                <button type="button" class="btn btn-sm btn-outline-primary" data-popup="tooltip"
-                                    title="Komponen"
-                                    onclick=" sub_kegiatan_rincian_detail('{{ csrf_token() }}','{{ $dk->sub_kegiatan->id }}')">
+                                <a href="{{ route('pengajuan_detail.komponen', encrypt($dk->id)) }}" type="button"
+                                    class="btn btn-sm btn-outline-primary" data-popup="tooltip" title="Komponen">
                                     <i class="fa fa-list me-0"></i>
-                                </button>
+                                </a>
                             </td>
                         </tr>
                     @endforeach

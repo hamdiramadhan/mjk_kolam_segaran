@@ -101,8 +101,11 @@ Route::group(['middleware' => ['XSS']], function () {
 
         //PENGAJUAN DETAIL //
         Route::post('/pengajuan_detail/create', [PengajuanDetailController::class, 'create'])->name('pengajuan_detail.create');
-        Route::post('/pengajuan/detail_store/{id}', [PengajuanDetailController::class, 'store'])->name('pengajuan_detail.store');
-        Route::get('generate-docx', [HomeController::class, 'generateDocx'])->name('pengajuan_detail.store');
+        Route::post('/pengajuan_detail_store/{id}', [PengajuanDetailController::class, 'store'])->name('pengajuan_detail.store');
+        Route::get('/pengajuan_detail/komponen/{id}', [PengajuanDetailController::class, 'komponen'])->name('pengajuan_detail.komponen');
+        Route::post('/pengajuan_detail_store/{id}', [PengajuanDetailController::class, 'store'])->name('pengajuan_detail.store');
+        Route::post('update_detail_komponen/{id}', [PengajuanDetailController::class, 'geser_komponen'])->name('update_detail_komponen');
+        Route::post('store_geser_komponen', [PengajuanDetailController::class, 'store_geser_komponen'])->name('store_geser_komponen');
 
         // PENGAJUAN DETAIL
     });
