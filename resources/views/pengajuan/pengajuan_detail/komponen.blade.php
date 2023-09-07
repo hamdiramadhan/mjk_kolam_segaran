@@ -15,9 +15,9 @@
         </div>
 
         <div class="ms-auto">
-            <button onclick="closeTabs()" type="button" class="btn btn-sm btn-danger">
+            <a href="{{ URL::previous() }}" onclick="closeTabs()" type="button" class="btn btn-sm btn-danger">
                 <b><i class="fa fa-arrow-left"></i></b> Kembali
-            </button>
+            </a>
             {{-- <button type="button" id="simpan" class="btn btn-sm waves-effect btn-primary btn-md"
                 onclick="$('.modalAddKomponen').modal('show')">
                 <i class=" fas fa-plus"></i> Tambah
