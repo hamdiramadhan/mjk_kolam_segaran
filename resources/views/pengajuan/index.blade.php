@@ -117,7 +117,7 @@
                                         @if ($p->status == 0)
                                             <form><button type="button" onclick="$('#modal_verif').modal('show')"
                                                     style="width:100%;color:white" class="btn bg-gradient-deepblue px-5"><i
-                                                        class="bx bx-check-circle mr-1"></i>Verif</button>
+                                                        class="bx bx-check-circle mr-1"></i>Verifs</button>
                                             </form>
                                         @endif
                                     @endif
