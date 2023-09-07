@@ -45,6 +45,17 @@ class HomeController extends Controller
         }
         return back();
     }
+    public function calendar_dashboard() 
+    {
+        $events = [
+            'id' => 1,
+            'title' => 'tes',
+            'start' => '2023-09-01 00:00', // assuming 'start_date' is a column in your events table
+            'end' => '2023-09-02 00:00',     // similarly, assuming 'end_date' is a column
+        ];
+
+        return response()->json($events);
+    }
     public function generateDocx()
     {
 //         $phpWord = new \PhpOffice\PhpWord\PhpWord();

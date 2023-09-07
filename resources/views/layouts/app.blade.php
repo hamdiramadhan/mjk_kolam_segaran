@@ -49,6 +49,7 @@
 
     <style type="text/css">
     </style>
+    @stack('css')
 
     <title>{!! env('APP_NAME') !!}</title>
 </head>

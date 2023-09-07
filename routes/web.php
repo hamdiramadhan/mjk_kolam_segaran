@@ -36,6 +36,7 @@ Route::group(['middleware' => ['XSS']], function () {
         Route::get('/', [HomeController::class, 'index'])->name('home');
         Route::get('/home', [HomeController::class, 'index'])->name('home');
         Route::post('change_tahun_app_login', [HomeController::class, "change_tahun_app_login"])->name('change_tahun_app_login');
+        Route::get('calendar_dashboard', [HomeController::class, 'calendar_dashboard'])->name('calendar_dashboard');
         // END DSAHBOARD// 
 
         // SUB KEGIATAN
@@ -106,7 +107,6 @@ Route::group(['middleware' => ['XSS']], function () {
         Route::post('/pengajuan_detail_store/{id}', [PengajuanDetailController::class, 'store'])->name('pengajuan_detail.store');
         Route::post('update_detail_komponen/{id}', [PengajuanDetailController::class, 'geser_komponen'])->name('update_detail_komponen');
         Route::post('store_geser_komponen', [PengajuanDetailController::class, 'store_geser_komponen'])->name('store_geser_komponen');
-
         // PENGAJUAN DETAIL
     });
 });
