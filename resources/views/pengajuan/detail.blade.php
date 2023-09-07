@@ -16,32 +16,47 @@
     <!--end breadcrumb-->
     <div class="card">
         <div class="card-body">
-            <b>Status RKBMD</b> : <span class="badge badge-{{ $pengajuan->stat->color_div }}">
-                <b>{{ @$pengajuan->stat->nama }}</b>
-            </span>
-            <br>
-            <b>Pengusul</b> : {{ @$pengajuan->skpd->unit_name }}
-            <br>
-            <b>SKPD</b> : {{ $pengajuan->unit_id }}
-            <br>
-            <b>Tanggal Surat</b> : {{ $pengajuan->tanggal_surat }}
-            <br>
-            <b>Nomor Surat</b> : {{ $pengajuan->nomor_surat }}
-            <br>
-            <b>Usulan</b> : {{ @$pengajuan->usulan->usulan }}
-            <br>
-            <b>Tahun RKBMD</b> : <b style="color: red">{{ @$pengajuan->tahun }}</b>
-            <br>
+            <div class="row">
+                <div class="col-md-10">
+                    <b>Status RKBMD</b> : <span class="badge badge-{{ $pengajuan->stat->color_div }}">
+                        <b>{{ @$pengajuan->stat->nama }}</b>
+                    </span>
+                    <br>
+                    <b>Pengusul</b> : {{ @$pengajuan->skpd->unit_name }}
+                    <br>
+                    <b>SKPD</b> : {{ $pengajuan->unit_id }}
+                    <br>
+                    <b>Tanggal Surat</b> : {{ $pengajuan->tanggal_surat }}
+                    <br>
+                    <b>Nomor Surat</b> : {{ $pengajuan->nomor_surat }}
+                    <br>
+                    <b>Usulan</b> : {{ @$pengajuan->usulan->usulan }}
+                    <br>
+                    <b>Tahun RKBMD</b> : <b style="color: red">{{ @$pengajuan->tahun }}</b>
+                    <br>
 
-            {{ $pengajuan->keterangan }}
+                    {{ $pengajuan->keterangan }}
+                </div>
+                <div class="col-md-2">
+                    <form target="_blank" action="{{ route('pengajuan.print_detail', encrypt($pengajuan->id)) }}"
+                        method="POST">
+                        @csrf
+                        <button type="submit" style="width:100%" class="btn btn-warning px-5"><i
+                                class="bx bx-printer mr-1"></i>Cetak</button>
+                    </form>
+                </div>
+            </div>
 
             <hr style="background-color: blue">
         </div>
-        <div class="card-body overflow-hidden p-relative z-index-1">
-            <a href="#" onclick="create_detail_pengajuan('{{ csrf_token() }}', '#ModalFull','{{ encrypt($id) }}')"
-                type="button" class="btn btn-primary px-5"><i class="bx bx-plus mr-1"></i>Tambah Sub
-                Kegiatan</a>
-        </div>
+        @if ($pengajuan->stat->kode == 0)
+            <div class="card-body overflow-hidden p-relative z-index-1">
+                <a href="#"
+                    onclick="create_detail_pengajuan('{{ csrf_token() }}', '#ModalFull','{{ encrypt($id) }}')"
+                    type="button" class="btn btn-primary px-5"><i class="bx bx-plus mr-1"></i>Tambah Sub
+                    Kegiatan</a>
+            </div>
+        @endif
 
 
         <div class="scrollable">

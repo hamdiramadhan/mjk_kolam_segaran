@@ -50,7 +50,7 @@
     <div class="scrollable">
         <form action="{{ route('pengajuan_detail.store', encrypt($id)) }}" method="POST">
             @csrf
-            <table class="table text-md-nowrap datatable-basic-subkegiatan cls_tambah_subkegiatan">
+            <table class="table text-md-nowrap datatable-basic-subkegiatans">
                 <thead>
                     <tr>
                         <th style="width: 5%">No</th>
@@ -138,7 +138,7 @@
 <script type="text/javascript">
     // START SCRIPT TABEL 
     $(document).ready(function() {
-        var table = $('.datatable-basic-subkegiatan').DataTable({
+        var table = $('.datatable-basic-subkegiatans').DataTable({
             "ordering": false,
             "paginate": false,
             "autoWidth": true,

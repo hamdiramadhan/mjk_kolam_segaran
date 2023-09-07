@@ -17,4 +17,13 @@ class PengajuanDetail extends Model
     {
         return $this->belongsTo('App\Models\Pengajuan', 'pengajuan_id', 'id');
     }
+
+    public function komponens()
+    {
+        return $this->hasMany(PengajuanDetailKomponen::class, 'pengajuan_detail_id');
+    }
+    public function sumberdanas()
+    {
+        return $this->hasMany(PengajuanDetailSumberdana::class, 'pengajuan_detail_id');
+    }
 }

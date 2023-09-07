@@ -114,7 +114,7 @@
                                             style="width:100%" class="btn btn-info px-5"><i
                                                 class="bx bx-detail mr-1"></i>Detail</a></form>
                                     @if (Auth::user()->role_id != 2 || Auth::user()->role_id != 7)
-                                        @if ($p->status != 0)
+                                        @if ($p->status == 0)
                                             <form><button type="button" onclick="$('#modal_verif').modal('show')"
                                                     style="width:100%;color:white" class="btn bg-gradient-deepblue px-5"><i
                                                         class="bx bx-check-circle mr-1"></i>Verif</button>
@@ -149,6 +149,15 @@
                                         <button href="{{ route('jenis_usulan.edit', encrypt($p->id)) }}" type="submit"
                                             style="width:100%" class="btn btn-warning px-5"><i
                                                 class="bx bx-printer mr-1"></i>Cetak</button>
+                                    </form>
+
+
+                                    <form target="_blank" action="{{ route('pengajuan.print_detail', encrypt($p->id)) }}"
+                                        method="POST">
+                                        @csrf
+                                        <button href="{{ route('jenis_usulan.edit', encrypt($p->id)) }}" type="submit"
+                                            style="width:100%;font-size:8pt" class="btn btn-primary px-5"><i
+                                                class="bx bx-printer mr-1"></i>Pengajuan </button>
                                     </form>
 
                                     <div id="modal_verif" class="modal fade" tabindex="-1" role="dialog"

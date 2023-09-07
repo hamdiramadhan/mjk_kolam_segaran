@@ -39,3 +39,22 @@ function format_harga($harga)
     $data = number_format($harga,0,',','.');
     return $data;
 }
+
+function format_tanggal($tanggal)
+{
+    $timestamp = strtotime($tanggal);
+    $tanggalOutput = date('d F Y', $timestamp);
+    $englishMonths = array(
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+    );
+    
+    $indonesianMonths = array(
+        'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+        'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+    );
+    
+    // Replace English month names with Indonesian month names
+    $dateOutput = str_replace($englishMonths, $indonesianMonths, $tanggalOutput);
+    return $dateOutput;
+}
