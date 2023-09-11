@@ -18,10 +18,10 @@
             <a href="{{ URL::previous() }}" onclick="closeTabs()" type="button" class="btn btn-sm btn-danger">
                 <b><i class="fa fa-arrow-left"></i></b> Kembali
             </a>
-            {{-- <button type="button" id="simpan" class="btn btn-sm waves-effect btn-primary btn-md"
-                onclick="$('.modalAddKomponen').modal('show')">
-                <i class=" fas fa-plus"></i> Tambah
-            </button> --}}
+            <a target="_blank" href="{{ route('sub_kegiatan_rincian_komponen', encrypt($sub_keg->id)) }}" type="button"
+                id="simpan" class="btn btn-sm waves-effect btn-warning btn-md">
+                <i class=" bx bx-command"></i> Sesuaikan Rincian Murni
+            </a>
         </div>
     </div>
     <!--end breadcrumb-->
@@ -233,7 +233,8 @@
                                     <tr>
                                         <th rowspan="2">No</th>
                                         <th rowspan="2" style="width: 1%">
-                                            <input type="checkbox" name="" style="transform: scale(1.5)  !important"
+                                            <input type="checkbox" name=""
+                                                style="transform: scale(1.5)  !important"
                                                 onchange="
                       chk_all(this.checked);
                       chk_data_usulan();">
