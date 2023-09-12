@@ -69,6 +69,7 @@
             Kegiatan : <b>{{ $sub_keg->kegiatan->kode_kegiatan }} {{ $sub_keg->kegiatan->nama_kegiatan }}</b><br>
             Sub Kegiatan : <b>{{ $sub_keg->kode_sub_kegiatan }} {{ $sub_keg->nama_sub_kegiatan }}</b><br>
             Jenis Pergeseran : <b>{{ $pengajuan_detail->pengajuan->usulan->usulan }}</b><br>
+            Jenis Pergeseran : <b>{{ $pengajuan_detail->id }}</b><br>
         </div>
     </div>
 
@@ -83,24 +84,55 @@
                             <thead>
                                 <tr>
                                     <th style="text-align: center; " rowspan="2">Uraian</th>
-                                    <th style="text-align: center; width: 47%;" colspan="4">Rincian Perhitungan</th>
+                                    <th style="text-align: center; width: 47%;" colspan="4">Rincian Murni</th>
                                     <th style="text-align: center; width: 14%;" rowspan="2">Jumlah</th>
-                                    <th style="text-align: center; " rowspan="2">Act</th>
+
+                                    <th style="text-align: center; width: 47%;" colspan="8">Rincian Perubahan</th>
                                 </tr>
                                 <tr>
                                     <th style="text-align: center;">Satuan</th>
                                     <th style="text-align: center;">Koefisien</th>
                                     <th style="text-align: center;">Harga</th>
                                     <th style="text-align: center;">PPN</th>
+
+
+                                    <th style="text-align: center; ">Uraian</th>
+                                    <th style="text-align: center;">Satuan</th>
+                                    <th style="text-align: center;">Koefisien</th>
+                                    <th style="text-align: center;">Harga</th>
+                                    <th style="text-align: center;">PPN</th>
+                                    <th style="text-align: center; width: 14%;">Jumlah</th>
+
+                                    <th style="text-align: center; " rowspan="2">Act</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @php $total = 0; @endphp
                                 @foreach ($details as $r1)
+                                    @php
+                                        // dd($r1);
+                                        $detail_id = App\Models\Detail::where('subtitle', $r1->subtitle)
+                                            ->where('master_sub_kegiatan_id', $r1->master_sub_kegiatan_id)
+                                            ->first();
+                                        // $detail_id = App\Models\Detail::select('*')
+                                        //     ->where(function ($query) use ($r1) {
+                                        //         $query->where('subtitle', '=', $r1->subtitle)->orWhereNull('subtitle');
+                                        //     })
+                                        //     ->where('master_sub_kegiatan_id', '=', $r1->master_sub_kegiatan_id)
+                                        //     ->first();
+                                        $detail_rincian_pergeseran = App\Models\DetailRincian::where('pengajuan_id', $pengajuan_detail->pengajuan_id)
+                                            ->where('master_sub_kegiatan_id', $id_sub_kegiatan)
+                                            ->where('detail_id', $detail_id->id)
+                                            ->distinct()
+                                            ->orderBy('subtitle_pergeseran')
+                                            ->first();
+                                    @endphp
                                     @push('detail')
                                         <tr>
-                                            <td colspan="6"><b>{!! $r1->subtitle !!}</b></td>
-                                            <td></td>
+                                            <td colspan="6"><b>{{ $detail_id->id }} - {!! $r1->subtitle !!}</b></td>
+
+                                            <td colspan="6"><b> {!! @$detail_rincian_pergeseran->subtitle_pergeseran ?? '#' !!}</b>
+                                            </td>
                                         </tr>
                                     @endpush
                                     <?php
@@ -108,27 +140,50 @@
                                     ?>
                                     @foreach ($data_ket_bl_teks as $r2)
                                         <?php
+                                        $data_ket_bl_teks_pergeseran = App\Models\DetailRincian::get_sub2(@$id_sub_kegiatan, @$detail_rincian_pergeseran->subtitle_pergeseran, @$pengajuan_detail->pengajuan_id);
+                                        
                                         $data_rekening = App\Models\Detail::get_rekening($r1->master_sub_kegiatan_id, $r1->subtitle, $r2->subtitle2);
+                                        
                                         ?>
                                         @push('detail')
                                             <tr>
-                                                <td colspan="6">&nbsp;<b>{!! $r2->subtitle2 !!}</b></td>
-                                                <td></td>
+                                                <td colspan="6">&nbsp;<b>{!! $r2->subtitle2 !!} </b>
+                                                </td>
+
+                                                <td colspan="6">
+                                                    &nbsp;<b>{!! @$data_ket_bl_teks_pergeseran->subtitle2_pergeseran ?? '-' !!}</b></td>
                                             </tr>
                                         @endpush
                                         @foreach ($data_rekening as $r3)
                                             <?php
                                             $data_komponen = App\Models\Detail::get_komponen($r1->master_sub_kegiatan_id, $r1->subtitle, $r2->subtitle2, $r3->kode_rekening);
+                                            
+                                            // $data_komponen_pergeseran = App\Models\DetailRincian::get_komponen(@$detail_rincian_pergeseran->master_sub_kegiatan_id, @$detail_rincian_pergeseran->subtitle, @$data_ket_bl_teks_pergeseran->subtitle2, @$data_rekening_pergesran->kode_rekening, @$pengajuan_detail->pengajuan_id);
+                                            $id_detail_murni = App\Models\Detail::where('kode_rekening', $r3->kode_rekening)
+                                                ->where('subtitle', $r1->subtitle)
+                                                ->where('subtitle2', $r2->subtitle2)
+                                                ->where('rekenings_id', $r3->rekenings_id)
+                                                ->first();
+                                            
+                                            $data_rekening_pergeseran = App\Models\DetailRincian::get_rekening(@$id_sub_kegiatan, @$detail_rincian_pergeseran->subtitle_pergeseran, @$data_ket_bl_teks_pergeseran->subtitle2_pergeseran, $pengajuan_detail->pengajuan_id, $id_detail_murni->id);
                                             ?>
                                             @push('detail')
                                                 <tr>
-                                                    <td colspan="6">&nbsp;&nbsp;&nbsp;<b>{!! $r3->kode_rekening !!}
+                                                    <td colspan="6">&nbsp;&nbsp;&nbsp;<b>
+                                                            {!! $r3->kode_rekening !!}
                                                             {!! $r3->rek->nama_rekening ?? '' !!}</b></td>
-                                                    <td></td>
+
+
+                                                    <td colspan="7">
+                                                        &nbsp;&nbsp;&nbsp;<b>{!! @$data_rekening_pergeseran->kode_rekening_pergeseran !!}
+                                                            {!! @$data_rekening_pergeseran->nama_rekening_pergeseran ?? '-' !!}</b></td>
 
                                                 </tr>
                                             @endpush
                                             @foreach ($data_komponen as $r4)
+                                                @php
+                                                    $data_komponen_pergeseran = App\Models\DetailRincian::get_komponen($id_sub_kegiatan, @$detail_rincian_pergeseran->subtitle_pergeseran, @$data_ket_bl_teks_pergeseran->subtitle2_pergeseran, @$data_rekening_pergeseran->kode_rekening_pergeseran, $pengajuan_detail->pengajuan_id, $id_detail_murni->id);
+                                                @endphp
                                                 @push('detail')
                                                     <tr>
                                                         <td>&nbsp;&nbsp;&nbsp;
@@ -152,17 +207,46 @@
                                                             ?>
                                                             {!! number_format($harga_ppn * $r4->volume, 0, ',', '.') !!}
                                                         </td>
+                                                        {{-- Pergeseran --}}
+
+                                                        <td>&nbsp;&nbsp;&nbsp;
+                                                            {!! @$data_komponen_pergeseran->detail_pergeseran !!} -
+                                                            {{ @$data_komponen_pergeseran->spek_pergeseran }}
+                                                        </td>
+                                                        <td>
+                                                            {!! @$data_komponen_pergeseran->satuan_pergeseran !!}
+                                                        </td>
+                                                        <td>
+                                                            {!! @$data_komponen_pergeseran->koefisien_pergeseran !!}
+                                                        </td>
+                                                        <td align="right">
+                                                            {!! number_format(@$data_komponen_pergeseran->harga_pergeseran, 0, ',', '.') !!}
+                                                        </td>
+                                                        <td align="right">
+                                                            {!! number_format(@$data_komponen_pergeseran->ppn_pergeseran, 0, ',', '.') !!}
+                                                        </td>
+                                                        <td align="right">
+                                                            <?php
+                                                            @$harga_ppn_pergeseran = $data_komponen_pergeseran->harga_pergeseran + ($data_komponen_pergeseran->harga_pergeseran * $data_komponen_pergeseran->ppn_pergeseran) / 100;
+                                                            ?>
+                                                            {!! number_format($harga_ppn_pergeseran * $r4->volume_pergesran ?? '0', 0, ',', '.') !!}
+                                                        </td>
                                                         <td>
                                                             <div class="d-flex p-2">
-                                                                @if ($r4->flag != 1)
-                                                                    <button title="Pergeseran" data-toggle="tooltip"
-                                                                        onclick="update_detail_komponen('{{ csrf_token() }}', '{{ route('update_detail_komponen', $r4->id) }}','{{ encrypt($pengajuan_detail->id) }}', '#ModalBiruSm')"
-                                                                        class="btn btn-sm btn-outline-primary">
-                                                                        <i
-                                                                            class="bx bx-message-check
+                                                                {{-- <button title="Pergeseran" data-toggle="tooltip"
+                                                                    onclick="update_detail_komponen('{{ csrf_token() }}', '{{ route('update_detail_komponen', $r4->id) }}','{{ encrypt($pengajuan_detail->id) }}', '#ModalBiruSm')"
+                                                                    class="btn btn-sm btn-outline-primary">
+                                                                    <i
+                                                                        class="bx bx-message-check
                                                                     me-0"></i>
-                                                                    </button>
-                                                                @endif
+                                                                </button> --}}
+                                                                <button title="Pergeseran" data-toggle="tooltip"
+                                                                    onclick="update_detail_rincian('{{ csrf_token() }}', '{{ route('update_detail_rincian', $id_detail_murni->id) }}','{{ encrypt($pengajuan_detail->id) }}', '#ModalBiruSm')"
+                                                                    class="btn btn-sm btn-outline-primary">
+                                                                    <i
+                                                                        class="bx bx-message-check
+                                                                    me-0"></i>
+                                                                </button>
                                                                 {{-- <button type="button"
                                                                     onclick="delete_detail_komponen('{{ csrf_token() }}', '{{ $r4->id }}')"
                                                                     title="Hapus" class="btn btn-sm btn-outline-danger">
@@ -170,6 +254,8 @@
                                                                 </button> --}}
                                                             </div>
                                                         </td>
+
+
                                                     </tr>
                                                 @endpush
                                                 @php
@@ -204,7 +290,7 @@
 
 
 
-    <!--breadcrumb-->
+    {{-- <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
         <div class="breadcrumb-title pe-3">Data</div>
         <div class="ps-3">
@@ -362,53 +448,69 @@
             </div>
         </div>
     </div>
-@endsection
-@push('scripts')
-    <script !src="">
-        var loading = '-- Sedang Memuat Data --';
+@endsection --}}
+    @push('scripts')
+        <script !src="">
+            var loading = '-- Sedang Memuat Data --';
 
-        var div_default = ` 
+            var div_default = ` 
                 <div class="alert bg-info text-white alert-styled-left alert-dismissible">
                     <span class="font-weight-semibold"> -- Silahkan Mengisi Form Diatas Terlebih Dahulu Kemudian Klik Tombol Tampilkan --</span>
                 </div>
             `;
-        //select option
-        $('.select22').select2();
+            //select option
+            $('.select22').select2();
 
-        function closeTabs() {
-            window.close();
-        }
+            function closeTabs() {
+                window.close();
+            }
 
-        // START SCRIPT TABEL 
-        $(document).ready(function() {
-            var table = $('.datatable-basic-komponen').DataTable({
-                "ordering": false,
-                "paginate": false,
-                "autoWidth": true,
-                "columnDefs": [],
-                "order": false,
+            // START SCRIPT TABEL 
+            $(document).ready(function() {
+                var table = $('.datatable-basic-komponen').DataTable({
+                    "ordering": false,
+                    "paginate": false,
+                    "autoWidth": true,
+                    "columnDefs": [],
+                    "order": false,
+                });
             });
-        });
-        // END SCRIPT TABEL 
+            // END SCRIPT TABEL 
 
 
-        function update_detail_komponen(token, url, pengajuan_detail_id, modal) {
-            $(modal).modal("show");
-            $(modal + "Label").html("Geser Komponen");
-            $(modal + "Isi").html(loading);
-            var act = url;
-            $.post(
-                act, {
-                    _token: token,
-                    pengajuan_detail_id: pengajuan_detail_id
-                },
-                function(data) {
-                    $(modal + "Isi").html(data);
-                }
-            );
-        }
-        $(document).ready(function() {
-            $('[data-toggle="tooltip"]').tooltip();
-        });
-    </script>
-@endpush
+            // function update_detail_komponen(token, url, pengajuan_detail_id, modal) {
+            //     $(modal).modal("show");
+            //     $(modal + "Label").html("Geser Komponen");
+            //     $(modal + "Isi").html(loading);
+            //     var act = url;
+            //     $.post(
+            //         act, {
+            //             _token: token,
+            //             pengajuan_detail_id: pengajuan_detail_id
+            //         },
+            //         function(data) {
+            //             $(modal + "Isi").html(data);
+            //         }
+            //     );
+            // }
+
+            function update_detail_rincian(token, url, pengajuan_detail_id, modal) {
+                $(modal).modal("show");
+                $(modal + "Label").html("Geser Komponen");
+                $(modal + "Isi").html(loading);
+                var act = url;
+                $.post(
+                    act, {
+                        _token: token,
+                        pengajuan_detail_id: pengajuan_detail_id
+                    },
+                    function(data) {
+                        $(modal + "Isi").html(data);
+                    }
+                );
+            }
+            $(document).ready(function() {
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        </script>
+    @endpush

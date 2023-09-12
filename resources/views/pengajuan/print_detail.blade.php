@@ -152,11 +152,11 @@
                     @php
                         $no = 0;
                     @endphp
-                    @foreach ($subkeg->komponens as $r)
+                    @foreach ($subkeg->rincians as $r)
                         @php
                             $no++;
                             $warnadiv = '';
-                            $jumlah_sebelum_pergeseran = $r->harga + $r->harga * $r->ppn;
+                            $jumlah_sebelum_pergeseran = $r->detail->harga + $r->detail->harga * $r->detail->ppn;
                             $jumlah_setelah_pergeseran = $r->harga_pergeseran + $r->harga_pergeseran * $r->ppn_pergeseran;
                             $total = $jumlah_setelah_pergeseran - $jumlah_sebelum_pergeseran;
                             // if (empty(@$r->sub_kegiatan->nama_sub_kegiatan)) {
@@ -165,22 +165,22 @@
                         @endphp
                         <tr>
                             <span class="badge badge-primary">
-                                {{ $r->kode_rekening }}
+                                {{ $r->detail->kode_rekening }}
                             </span>
                             </td>
-                            <td><span class="cls_edit">{{ $r->detail }}</span>
+                            <td><span class="cls_edit">{{ $r->detail->detail }}</span>
                             </td>
-                            <td style="text-align: center"><span class="cls_edit">{{ $r->koefisien }}</span>
-                            </td>
-                            <td style="text-align: center">
-                                <span class="cls_edit">{{ $r->satuan }}</span>
+                            <td style="text-align: center"><span class="cls_edit">{{ $r->detail->koefisien }}</span>
                             </td>
                             <td style="text-align: center">
-                                {{ format_harga($r->harga) }}
+                                <span class="cls_edit">{{ $r->detail->satuan }}</span>
+                            </td>
+                            <td style="text-align: center">
+                                {{ format_harga($r->detail->harga) }}
                             </td>
 
                             <td style="text-align: center">
-                                {{ $r->ppn }}
+                                {{ $r->detail->ppn }}
                             </td>
                             <td>
                                 <span
