@@ -23,7 +23,6 @@ class PengajuanDetail extends Model
         return $this->hasMany(PengajuanDetailKomponen::class, 'pengajuan_detail_id');
     }
 
-
     public function rincians()
     {
         return $this->hasMany(DetailRincian::class, 'pengajuan_detail_id');

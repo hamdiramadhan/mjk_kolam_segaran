@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Detail;
+use App\Models\DetailRincian;
 use App\Models\MasterStatus;
 use App\Models\MasterSubKegiatan;
 use App\Models\Opd;
@@ -274,11 +276,12 @@ class PengajuanController extends Controller
         $usulan = PengajuanUsulan::all();
         $pengajuan_detail = PengajuanDetail::where('pengajuan_id',$id)->get(); 
         $detail_sumberdana = PengajuanDetailSumberdana::all();
+        $detail_rekening = DetailRincian::where('pengajuan_id',$id)->get();
     
         $judul = 'Usulan Pergeseran Anggaran Dalam APBD TA '.$tahun;
         $url = env('APP_URL'); 
 
-        $pdf = PDF::loadView('pengajuan.print_detail', compact('opd','url','usulan','pengajuan_alasan','data', 'pengajuan_detail','tahun', 'id','judul','detail_sumberdana'));
+        $pdf = PDF::loadView('pengajuan.print_detail', compact('opd','url','usulan','pengajuan_alasan','data', 'pengajuan_detail','tahun', 'id','judul','detail_sumberdana','detail_rekening'));
         // $customPaper = array(0,0,595.35,935.55);
         $customPaper = array(0, 0, 935.55, 595.35); // Swap width and height for landscape
 

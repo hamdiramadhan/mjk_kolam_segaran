@@ -180,11 +180,11 @@ class PengajuanDetailController extends Controller
         if (!empty($request->opd_id)) {
             $koderek = MasterRekening::where('kode_rek',$request->kode_rekening_pergeseran)->first();
             $pengajuan_detail = PengajuanDetail::find($request->pengajuan_detail_id);
-            if(empty($request->ppn))
+            if(empty($request->ppn_pergeseran))
             {
                 $ppn=0;
             } else {
-                $ppn = $request->ppn;
+                $ppn = $request->ppn_pergeseran;
             }
             DetailRincian::create([
                 'pengajuan_detail_id' => $pengajuan_detail->id,

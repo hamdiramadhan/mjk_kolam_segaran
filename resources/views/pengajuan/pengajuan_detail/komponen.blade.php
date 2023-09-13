@@ -220,7 +220,7 @@
                                                             <?php
                                                             @$harga_ppn_pergeseran = $data_komponen_pergeseran->harga_pergeseran + ($data_komponen_pergeseran->harga_pergeseran * $data_komponen_pergeseran->ppn_pergeseran) / 100;
                                                             ?>
-                                                            {!! number_format($harga_ppn_pergeseran * $r4->volume_pergeseran ?? '0', 0, ',', '.') !!}
+                                                            {!! number_format($harga_ppn_pergeseran ?? '0', 0, ',', '.') !!}
                                                         </td>
                                                         <td>
                                                             <div class="d-flex p-2">

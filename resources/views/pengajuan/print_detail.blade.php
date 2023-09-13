@@ -151,61 +151,99 @@
                 <tbody>
                     @php
                         $no = 0;
+                        $detail_rekening = App\Models\DetailRincian::where('pengajuan_id', $id)
+                            ->where('pengajuan_detail_id', $subkeg->id)
+                            ->get();
+                        $jumlah_harga_pergeseran = 0;
                     @endphp
-                    @foreach ($subkeg->rincians as $r)
+
+                    @foreach ($detail_rekening as $dr)
                         @php
-                            $no++;
-                            $warnadiv = '';
-                            $jumlah_sebelum_pergeseran = $r->detail->harga + $r->detail->harga * $r->detail->ppn;
-                            $jumlah_setelah_pergeseran = $r->harga_pergeseran + $r->harga_pergeseran * $r->ppn_pergeseran;
-                            $total = $jumlah_setelah_pergeseran - $jumlah_sebelum_pergeseran;
-                            // if (empty(@$r->sub_kegiatan->nama_sub_kegiatan)) {
-                            //     $warnadiv = 'danger';
-                            // }
+                            $jumlah_harga_rekening = 0;
+                            $jumlah_harga_pergeseran_rekening = 0;
+                            $jumlah_harga_rekening += $dr->detail->harga + ($dr->detail->harga * $dr->detail->ppn) / 100;
+                            $jumlah_harga_pergeseran_rekening += $dr->harga_pergeseran + ($dr->harga_pergeseran * $dr->ppn_pergharga_pergeseran) / 100;
+                            $total_harga_pergeseran = $jumlah_harga_pergeseran_rekening - $jumlah_harga_rekening;
                         @endphp
                         <tr>
-                            <span class="badge badge-primary">
-                                {{ $r->detail->kode_rekening }}
-                            </span>
-                            </td>
-                            <td><span class="cls_edit">{{ $r->detail->detail }}</span>
-                            </td>
-                            <td style="text-align: center"><span class="cls_edit">{{ $r->detail->koefisien }}</span>
-                            </td>
-                            <td style="text-align: center">
-                                <span class="cls_edit">{{ $r->detail->satuan }}</span>
-                            </td>
-                            <td style="text-align: center">
-                                {{ format_harga($r->detail->harga) }}
-                            </td>
+                            <td>{{ $dr->kode_rekening_pergeseran }}</td>
+                            <td>{{ $dr->nama_rekening_pergeseran }}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>{{ format_harga($jumlah_harga_rekening) }}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>{{ format_harga($jumlah_harga_pergeseran_rekening) }}</td>
+                            <td style="text-align: center">{{ format_harga($total_harga_pergeseran) }}</td>
 
-                            <td style="text-align: center">
-                                {{ $r->detail->ppn }}
-                            </td>
-                            <td>
-                                <span
-                                    class="cls_edit div_mulai_setujui">{{ format_harga($jumlah_sebelum_pergeseran) }}</span>
-                            </td>
+                        </tr>
+                        @php
+                            $detail_rincian = App\Models\DetailRincian::where('detail_id', $dr->detail_id)->get();
+                            $jumlah = 0;
+                        @endphp
+                        @foreach ($detail_rincian as $r)
+                            @php
+                                $no++;
+                                $warnadiv = '';
+                                $jumlah_sebelum_pergeseran = $r->detail->harga + ($r->detail->harga * $r->detail->ppn) / 100;
+                                $jumlah += $jumlah_sebelum_pergeseran;
+                                $jumlah_setelah_pergeseran = $r->harga_pergeseran + ($r->harga_pergeseran * $r->ppn_pergeseran) / 100;
+                                
+                                $total = $jumlah_setelah_pergeseran - $jumlah_sebelum_pergeseran;
+                                // if (empty(@$r->sub_kegiatan->nama_sub_kegiatan)) {
+                                //     $warnadiv = 'danger';
+                                // }
+                            @endphp
+                            <tr>
+                                <td>
 
-                            <td style="text-align: center"><span class="cls_edit">{{ $r->koefisien_pergeseran }}</span>
-                            </td>
-                            <td style="text-align: center">
-                                <span class="cls_edit">{{ $r->satuan_pergeseran }}</span>
-                            </td>
-                            <td style="text-align: center">
-                                {{ format_harga($r->harga_pergeseran) }}
-                            </td>
+                                </td>
+                                <td><span class="cls_edit">{{ $r->detail->detail }}</span>
+                                </td>
+                                <td style="text-align: center"><span
+                                        class="cls_edit">{{ $r->detail->koefisien }}</span>
+                                </td>
+                                <td style="text-align: center">
+                                    <span class="cls_edit">{{ $r->detail->satuan }}</span>
+                                </td>
+                                <td style="text-align: center">
+                                    {{ format_harga($r->detail->harga) }}
+                                </td>
 
-                            <td style="text-align: center">
-                                {{ $r->ppn_pergeseran }}
-                            </td>
-                            <td style="text-align: center">
-                                <span
-                                    class="cls_edit div_mulai_setujui">{{ format_harga($jumlah_setelah_pergeseran) }}</span>
-                            </td>
-                            <td style="text-align: center">
-                                <span class="cls_edit div_mulai_setujui">{{ format_harga($total) }}</span>
-                            </td>
+                                <td style="text-align: center">
+                                    {{ $r->detail->ppn }}
+                                </td>
+                                <td>
+                                    <span
+                                        class="cls_edit div_mulai_setujui">{{ format_harga($jumlah_sebelum_pergeseran) }}</span>
+                                </td>
+
+                                <td style="text-align: center"><span
+                                        class="cls_edit">{{ $r->koefisien_pergeseran }}</span>
+                                </td>
+                                <td style="text-align: center">
+                                    <span class="cls_edit">{{ $r->satuan_pergeseran }}</span>
+                                </td>
+                                <td style="text-align: center">
+                                    {{ format_harga($r->harga_pergeseran) }}
+                                </td>
+
+                                <td style="text-align: center">
+                                    {{ $r->ppn_pergeseran }}
+                                </td>
+                                <td style="text-align: center">
+                                    <span
+                                        class="cls_edit div_mulai_setujui">{{ format_harga($jumlah_setelah_pergeseran) }}</span>
+                                </td>
+                                <td style="text-align: center">
+                                    <span class="cls_edit div_mulai_setujui">{{ format_harga($total) }}</span>
+                                </td>
+                            </tr>
+                        @endforeach
                     @endforeach
                 </tbody>
             </table>
