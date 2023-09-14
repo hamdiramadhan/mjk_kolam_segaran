@@ -28,7 +28,7 @@
         </div>
     </div>
 
-    <div class="row mb-2">
+    <div class="row mb-2" style="display: none;">
         <div class="col-md-3">Rekening <span style="color:red">*</span></div>
         <div class="col-md-9">
             <div class="form-group">

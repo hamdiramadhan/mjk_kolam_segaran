@@ -129,10 +129,8 @@
                                     @endphp
                                     @push('detail')
                                         <tr>
-                                            <td colspan="6"><b>{{ $detail_id->id }} - {!! $r1->subtitle !!}</b></td>
+                                            <td colspan="13"><b>{!! $r1->subtitle ?? '#' !!}</b></td>
 
-                                            <td colspan="6"><b> {!! @$detail_rincian_pergeseran->subtitle_pergeseran ?? '#' !!}</b>
-                                            </td>
                                         </tr>
                                     @endpush
                                     <?php
@@ -147,11 +145,9 @@
                                         ?>
                                         @push('detail')
                                             <tr>
-                                                <td colspan="6">&nbsp;<b>{!! $r2->subtitle2 !!} </b>
+                                                <td colspan="13">&nbsp;<b>{!! $r2->subtitle2 ?? '-' !!} </b>
                                                 </td>
 
-                                                <td colspan="6">
-                                                    &nbsp;<b>{!! @$data_ket_bl_teks_pergeseran->subtitle2_pergeseran ?? '-' !!}</b></td>
                                             </tr>
                                         @endpush
                                         @foreach ($data_rekening as $r3)
@@ -169,14 +165,9 @@
                                             ?>
                                             @push('detail')
                                                 <tr>
-                                                    <td colspan="6">&nbsp;&nbsp;&nbsp;<b>
+                                                    <td colspan="13">&nbsp;&nbsp;&nbsp;<b>
                                                             {!! $r3->kode_rekening !!}
                                                             {!! $r3->rek->nama_rekening ?? '' !!}</b></td>
-
-
-                                                    <td colspan="7">
-                                                        &nbsp;&nbsp;&nbsp;<b>{!! @$data_rekening_pergeseran->kode_rekening_pergeseran !!}
-                                                            {!! @$data_rekening_pergeseran->nama_rekening_pergeseran ?? '-' !!}</b></td>
 
                                                 </tr>
                                             @endpush
@@ -229,7 +220,7 @@
                                                             <?php
                                                             @$harga_ppn_pergeseran = $data_komponen_pergeseran->harga_pergeseran + ($data_komponen_pergeseran->harga_pergeseran * $data_komponen_pergeseran->ppn_pergeseran) / 100;
                                                             ?>
-                                                            {!! number_format($harga_ppn_pergeseran * $r4->volume_pergesran ?? '0', 0, ',', '.') !!}
+                                                            {!! number_format($harga_ppn_pergeseran ?? '0', 0, ',', '.') !!}
                                                         </td>
                                                         <td>
                                                             <div class="d-flex p-2">
@@ -286,11 +277,11 @@
             </div>
         </div>
     </div>
+@endsection
 
 
 
-
-    {{-- <!--breadcrumb-->
+{{-- <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
         <div class="breadcrumb-title pe-3">Data</div>
         <div class="ps-3">
@@ -448,69 +439,69 @@
             </div>
         </div>
     </div>
-@endsection --}}
-    @push('scripts')
-        <script !src="">
-            var loading = '-- Sedang Memuat Data --';
+--}}
+@push('scripts')
+    <script !src="">
+        var loading = '-- Sedang Memuat Data --';
 
-            var div_default = ` 
+        var div_default = ` 
                 <div class="alert bg-info text-white alert-styled-left alert-dismissible">
                     <span class="font-weight-semibold"> -- Silahkan Mengisi Form Diatas Terlebih Dahulu Kemudian Klik Tombol Tampilkan --</span>
                 </div>
             `;
-            //select option
-            $('.select22').select2();
+        //select option
+        $('.select22').select2();
 
-            function closeTabs() {
-                window.close();
-            }
+        function closeTabs() {
+            window.close();
+        }
 
-            // START SCRIPT TABEL 
-            $(document).ready(function() {
-                var table = $('.datatable-basic-komponen').DataTable({
-                    "ordering": false,
-                    "paginate": false,
-                    "autoWidth": true,
-                    "columnDefs": [],
-                    "order": false,
-                });
+        // START SCRIPT TABEL 
+        $(document).ready(function() {
+            var table = $('.datatable-basic-komponen').DataTable({
+                "ordering": false,
+                "paginate": false,
+                "autoWidth": true,
+                "columnDefs": [],
+                "order": false,
             });
-            // END SCRIPT TABEL 
+        });
+        // END SCRIPT TABEL 
 
 
-            // function update_detail_komponen(token, url, pengajuan_detail_id, modal) {
-            //     $(modal).modal("show");
-            //     $(modal + "Label").html("Geser Komponen");
-            //     $(modal + "Isi").html(loading);
-            //     var act = url;
-            //     $.post(
-            //         act, {
-            //             _token: token,
-            //             pengajuan_detail_id: pengajuan_detail_id
-            //         },
-            //         function(data) {
-            //             $(modal + "Isi").html(data);
-            //         }
-            //     );
-            // }
+        // function update_detail_komponen(token, url, pengajuan_detail_id, modal) {
+        //     $(modal).modal("show");
+        //     $(modal + "Label").html("Geser Komponen");
+        //     $(modal + "Isi").html(loading);
+        //     var act = url;
+        //     $.post(
+        //         act, {
+        //             _token: token,
+        //             pengajuan_detail_id: pengajuan_detail_id
+        //         },
+        //         function(data) {
+        //             $(modal + "Isi").html(data);
+        //         }
+        //     );
+        // }
 
-            function update_detail_rincian(token, url, pengajuan_detail_id, modal) {
-                $(modal).modal("show");
-                $(modal + "Label").html("Geser Komponen");
-                $(modal + "Isi").html(loading);
-                var act = url;
-                $.post(
-                    act, {
-                        _token: token,
-                        pengajuan_detail_id: pengajuan_detail_id
-                    },
-                    function(data) {
-                        $(modal + "Isi").html(data);
-                    }
-                );
-            }
-            $(document).ready(function() {
-                $('[data-toggle="tooltip"]').tooltip();
-            });
-        </script>
-    @endpush
+        function update_detail_rincian(token, url, pengajuan_detail_id, modal) {
+            $(modal).modal("show");
+            $(modal + "Label").html("Geser Komponen");
+            $(modal + "Isi").html(loading);
+            var act = url;
+            $.post(
+                act, {
+                    _token: token,
+                    pengajuan_detail_id: pengajuan_detail_id
+                },
+                function(data) {
+                    $(modal + "Isi").html(data);
+                }
+            );
+        }
+        $(document).ready(function() {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+@endpush

@@ -26,7 +26,7 @@
                         @foreach($fases as $f)
                         <option value="{{ $f->id }}">
                             {{ $f->tahun }} {{ $f->nama }}
-                        </option>
+                        </option> 
                         @endforeach
                     </select>
                 </div>
