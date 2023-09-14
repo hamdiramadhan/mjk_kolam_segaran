@@ -94,6 +94,16 @@
                     <ul class="dropdown-menu">
 
                         <li style="text-align: center">
+                            <span style="text-align: center"><b><u>Pengaturan</u></b></span>
+                        </li>
+                        <li>
+                            <a class="dropdown-item {{ Request::is('fase*') ? 'active' : '' }}"
+                                href="{{ route('fase.index') }}">
+                                Fase 
+                            </a>
+                        </li>
+
+                        <li style="text-align: center">
                             <span style="text-align: center"><b><u>OPD</u></b></span>
                         </li>
                         <li>

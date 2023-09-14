@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Fase;
 use App\Models\MasterStatus;
 use App\Models\MasterSubKegiatan;
 use App\Models\Opd;
@@ -14,6 +15,7 @@ use App\Models\PengajuanUsulan;
 use App\Models\SumberDana;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use PDF;
 
 class PengajuanController extends Controller
@@ -74,10 +76,15 @@ class PengajuanController extends Controller
      */
     public function create()
     {
+        $fases = Fase::where('mulai', '<=', date('Y-m-d H:i:s'))
+            ->where('selesai', '>=', date('Y-m-d H:i:s')) 
+            ->orderBy('kode')
+            ->get(); 
+
         $opd = Opd::find(Auth::user()->opd_id);
         $usulan = PengajuanUsulan::all();
         $nama_header = 'Pengajuan Perubahan '.$opd->unit_name;
-        return view('pengajuan.create',['nama_header'=>$nama_header],compact('opd','usulan'));
+        return view('pengajuan.create',['nama_header'=>$nama_header],compact('opd','usulan','fases'));
     }
 
     /**

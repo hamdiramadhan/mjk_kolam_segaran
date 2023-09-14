@@ -21,6 +21,16 @@
             <form class="row g-3" method="POST" action="{{ route('pengajuan.store') }}">
                 @csrf
                 <div class="col-md-12">
+                    <label for="fase_id" class="form-label">Fase Perubahan</label>
+                    <select class="select22" name="fase_id" id="fase_id" style="width: 100%" required>
+                        @foreach($fases as $f)
+                        <option value="{{ $f->id }}">
+                            {{ $f->tahun }} {{ $f->nama }}
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-12">
                     <label for="nomor_surat" class="form-label">Nomor Surat</label>
                     <input type="text" class="form-control" name="nomor_surat" id="nomor_surat"
                         placeholder="Masukkan Nomor Surat">

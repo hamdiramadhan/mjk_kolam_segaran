@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FaseController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OpdController; 
 use App\Http\Controllers\SubOpdController;
@@ -93,8 +94,7 @@ Route::group(['middleware' => ['XSS']], function () {
         include 'usulan.php';
         //END USULAN //
 
-        // PENGAJUAN PERUBAHAN //
-
+        // PENGAJUAN PERUBAHAN // 
         Route::get('pengajuan', [PengajuanController::class, 'index'])->name('pengajuan.index');  
         Route::get('/pengajuan/create', [PengajuanController::class, 'create'])->name('pengajuan.create');
         Route::post('/pengajuan/store', [PengajuanController::class, 'store'])->name('pengajuan.store');
@@ -112,5 +112,9 @@ Route::group(['middleware' => ['XSS']], function () {
         Route::post('update_rincian', [PengajuanDetailController::class, 'update_rincian'])->name('update_rincian');
         Route::post('pengajuan/detail_print/{id}', [PengajuanController::class, 'print_detail'])->name('pengajuan.print_detail');
         // PENGAJUAN DETAIL
+
+        // START PENGATURAN FASE
+            Route::resource('fase', FaseController::class); 
+        // END PENGATURAN FASE  
     });
 });
