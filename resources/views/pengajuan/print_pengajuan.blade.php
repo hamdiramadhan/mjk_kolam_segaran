@@ -115,8 +115,8 @@
     <br>
     <table style="width: 100%" border="0">
         <tr>
-            <td width="105" style="text-align: right;">
-                <img src="{{ public_path('logo_mjk.png') }}" alt="" width="100">
+            <td width="85" style="text-align: right;">
+                <img src="{{ public_path('logo_mjk.png') }}" alt="" width="80">
             </td>
             <td align="center" style="text-align: center;">
                 <span style="font-size: 13pt">PEMERINTAH KABUPATEN MOJOKERTO</span>
@@ -133,8 +133,8 @@
             </td>
         </tr>
     </table>
-    <hr style="height: 6px;background: black;">
-    <hr>
+    <hr style="height: 2px;background: black;">
+    <hr style="margin-top: -5px">
 
     <div style="padding-left: 40px;padding-right: 10px;">
         <table style="width: 100%" border="0">

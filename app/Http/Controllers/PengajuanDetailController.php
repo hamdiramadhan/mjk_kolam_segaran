@@ -38,12 +38,18 @@ class PengajuanDetailController extends Controller
         $tahun = Auth::user()->tahun;
         $opd_id = Auth::user()->opd_id;
         
-        $opd = Opd::find($opd_id);
+        $opd = Opd::find($opd_id); 
          
-        $data_sub_kegiatan = MasterSubKegiatan::where('opd_id', $opd_id)
-            ->where('tahun', $tahun) 
-            ->orderBy('kode_sub_kegiatan')
-            ->get(); 
+        $data_sub_kegiatan = MasterSubKegiatan::where('tahun', $tahun);
+        if(!empty($id_dinas) && $id_dinas != 'null' ) { 
+            $data_sub_kegiatan = $data_sub_kegiatan->where('opd_id', $id_dinas);
+        }   
+        $data_sub_kegiatan = $data_sub_kegiatan->get();
+
+        if(empty(sizeof($data_sub_kegiatan))){ 
+            $data_sub_kegiatan = MasterSubKegiatan::where('tahun', $tahun)->where('opd_id', 0)->get();
+        } 
+
         $sumber_dana = SumberDana::all();
         
         $data_opd = Opd::orderBy('unit_id')->get();

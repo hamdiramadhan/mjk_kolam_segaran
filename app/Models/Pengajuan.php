@@ -23,4 +23,9 @@ class Pengajuan extends Model
     {
         return $this->belongsTo('App\Models\MasterStatus', 'status', 'kode');
     }
+    
+    public function details()
+    {
+        return $this->hasMany(PengajuanDetail::class, 'pengajuan_id');
+    }
 }

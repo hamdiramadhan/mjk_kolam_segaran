@@ -65,9 +65,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="createModalLabel">IMPORT Data Program-Kegiatan-Sub Kegiatan Tahun
-                        <b>{{ Auth::user()->tahun ?? date('Y') }}
-                            {{ @Auth::user()->skpd->unit_name ?? 'Data Global' }}</b>
+                    <h5 class="modal-title" id="createModalLabel">IMPORT Data Program-Kegiatan-Sub Kegiatan Tahun <b>{{ Auth::user()->tahun ?? date('Y') }} {{ @Auth::user()->skpd->unit_name ?? 'Data Global' }} </b>
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -75,7 +73,7 @@
                 </div>
                 <div class="modal-body">
                     <p>
-                        IMPORT Data Program-Kegiatan-Sub Kegiatan Tahun <b><span class="txt_tahun_asb"></span></b>.
+                        IMPORT Data Program-Kegiatan-Sub Kegiatan Tahun <b><span class="txt_tahun_asb">{{ Auth::user()->tahun ?? date('Y') }}</span></b>.
                         <br>Format yang dapat diupload adalah sesuai dengan <b>contoh Format</b>.
                     <ol>
                         <li>
@@ -86,6 +84,12 @@
                             Format 2 <a target="_blank" href="{{ asset('format_upload_program_kegiatan_2.xlsx') }}">Klik
                                 disini untuk contoh Format 2 </a>
                         </li>
+                        @if(@Auth::user()->skpd->id ?? 0 == 0)
+                        <li>
+                            Format 3 <a target="_blank" href="{{ asset('format_upload_program_kegiatan_3.xlsx') }}">Klik
+                                disini untuk contoh Format 3 </a> khusus untuk upload ALL SKPD
+                        </li>
+                        @endif
                     </ol>
                     </p>
                     <br><br>
@@ -98,6 +102,9 @@
                                 <select class="form-control" name="format">
                                     <option value="1">Format 1</option>
                                     <option value="2">Format 2</option>
+                                    @if(@Auth::user()->skpd->id ?? 0 == 0)
+                                    <option value="3">Format 3</option>
+                                    @endif
                                 </select>
                             </div>
                         </div>
@@ -114,7 +121,7 @@
                                 <select class="form-control" name="konsep">
                                     <option value="1">Menambah Data, tanpa menghapus data <span
                                             class="txt_tahun_asb"></span> yang sudah ada</option>
-                                    <option value="2">Hapus data <span class="txt_tahun_asb"></span>, lalu simpan
+                                    <option value="2">Hapus data <span class="txt_tahun_asb">{{ Auth::user()->tahun ?? date('Y') }} {{ @Auth::user()->skpd->unit_name ?? 'Data Global' }}</span>, lalu simpan
                                         dari
                                         hasil import</option>
                                 </select>
