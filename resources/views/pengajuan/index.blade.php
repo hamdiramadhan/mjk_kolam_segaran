@@ -112,7 +112,7 @@
 
                                     <form><a href="{{ route('pengajuan.detail', encrypt($p->id)) }}" type="button"
                                             style="width:100%" class="btn btn-info px-5"><i
-                                                class="bx bx-detail mr-1"></i>Detail</a></form>
+                                                class="bx bx-detail mr-1"></i>Detail {{ sizeof($p->details) }}</a></form>
                                     @if (Auth::user()->role_id != 2 || Auth::user()->role_id != 7)
                                         @if ($p->stat->kode == 1 || $p->stat->kode == 2 || $p->stat->kode == 3)
                                             <form><button type="button" onclick="$('#modal_verif').modal('show')"
@@ -132,33 +132,9 @@
 
                                             <button type="submit" style="width:100%" class="btn btn-danger px-5"><i
                                                     class="bx bx-trash mr-1"></i>Hapus</button>
-                                        </form>
-                                        <form method="POST" onsubmit="return confirm('Anda yakin mengirim data ini ??')"
-                                            action="{{ route('pengajuan.send', encrypt($p->id)) }}">
-                                            @csrf
-
-                                            <button type="submit" style="width:100%" class="btn btn-primary px-5"><i
-                                                    class="bx bx-send mr-1"></i>Kirim</button>
-                                        </form>
+                                        </form> 
                                     @endif
-
-
-                                    <form target="_blank" action="{{ route('pengajuan.print', encrypt($p->id)) }}"
-                                        method="POST">
-                                        @csrf
-                                        <button href="{{ route('jenis_usulan.edit', encrypt($p->id)) }}" type="submit"
-                                            style="width:100%" class="btn btn-warning px-5"><i
-                                                class="bx bx-printer mr-1"></i>Cetak</button>
-                                    </form>
-
-
-                                    <form target="_blank" action="{{ route('pengajuan.print_detail', encrypt($p->id)) }}"
-                                        method="POST">
-                                        @csrf
-                                        <button href="{{ route('jenis_usulan.edit', encrypt($p->id)) }}" type="submit"
-                                            style="width:100%;font-size:8pt" class="btn btn-primary px-5"><i
-                                                class="bx bx-printer mr-1"></i>Pengajuan </button>
-                                    </form>
+ 
 
                                     <div id="modal_verif" class="modal fade" tabindex="-1" role="dialog"
                                         aria-labelledby="myModalLabel" aria-hidden="true" width="100%">

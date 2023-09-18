@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Imports\ImportKegiatan;
 use App\Imports\ImportKegiatan2;
+use App\Imports\ImportKegiatan3;
 use App\Models\Detail;
 use App\Models\MasterSubKegiatan;
 use App\Models\MasterKegiatan;
@@ -159,8 +160,10 @@ class SubKegiatanController extends Controller
             if($format == 1)
             {
                 Excel::import(new ImportKegiatan($tahun, $jenis_upload, $konsep, $opd_id), public_path($path));   
-            } else {
+            } else if($format == 2) {
                 Excel::import(new ImportKegiatan2($tahun, $jenis_upload, $konsep, $opd_id), public_path($path));   
+            } else if($format == 3) {
+                Excel::import(new ImportKegiatan3($tahun, $jenis_upload, $konsep, $opd_id), public_path($path));  
             }
             
             

@@ -72,6 +72,7 @@
                                 {{-- <h4 class="logo-text" style="font-size: 15px">{!! env('APP_NAME') !!}</h4> --}}
                             </div>
                         </div>
+                        <div class="mobile-toggle-menu d-block d-lg-none" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"><i class="bx bx-menu"></i></div>
 
                         <div class="top-menu ms-auto">
                             &nbsp;

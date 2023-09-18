@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FaseController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OpdController; 
 use App\Http\Controllers\SubOpdController;
@@ -90,11 +91,28 @@ Route::group(['middleware' => ['XSS']], function () {
         //END MASTER //
 
         //USULAN //
-        include 'usulan.php';
+        // PENGAJUAN PERUBAHAN //
+        Route::get('pengajuan', [PengajuanController::class, 'index'])->name('pengajuan.index');  
+        Route::get('/pengajuan/create', [PengajuanController::class, 'create'])->name('pengajuan.create');
+        Route::get('/pengajuan/edit/{id}', [PengajuanController::class, 'edit'])->name('pengajuan.edit');
+        Route::post('/pengajuan/update/{id}', [PengajuanController::class, 'update'])->name('pengajuan.update');
+        Route::get('/pengajuan/detail/{id}', [PengajuanController::class, 'detail'])->name('pengajuan.detail');
+        Route::post('/pengajuan/destroy/{id}', [PengajuanController::class, 'destroy'])->name('pengajuan.destroy');
+        Route::get('/pengajuan/proses', [PengajuanController::class, 'proses'])->name('pengajuan.proses');
+        Route::get('/pengajuan/selesai', [PengajuanController::class, 'selesai'])->name('pengajuan.selesai');
+        Route::post('/pengajuan/store', [PengajuanController::class, 'store'])->name('pengajuan.store');
+        Route::post('/pengajuan/print/{id}', [PengajuanController::class, 'print_pengajuan'])->name('pengajuan.print');
+        Route::post('/pengajuan/send/{id}', [PengajuanController::class, 'send'])->name('pengajuan.send');
+        Route::post('/pengajuan/verif/{id}', [PengajuanController::class, 'verif'])->name('pengajuan.verif');
+        // END PENGAJUAN PERUBAHAN //
+
+        // PENGAJUAN PERUBAHAN VERIFIKATOR //
+        Route::get('/pengajuan/masuk', [PengajuanController::class, 'proses'])->name('pengajuan.masuk');
+        Route::get('/pengajuan/selesai_verif', [PengajuanController::class, 'selesai'])->name('pengajuan.selesai_verif');
+        // END PENGAJUAN PERUBAHAN VERIFIKATOR //
         //END USULAN //
 
-        // PENGAJUAN PERUBAHAN //
-
+        // PENGAJUAN PERUBAHAN // 
         Route::get('pengajuan', [PengajuanController::class, 'index'])->name('pengajuan.index');  
         Route::get('/pengajuan/create', [PengajuanController::class, 'create'])->name('pengajuan.create');
         Route::post('/pengajuan/store', [PengajuanController::class, 'store'])->name('pengajuan.store');
@@ -112,5 +130,9 @@ Route::group(['middleware' => ['XSS']], function () {
         Route::post('update_rincian', [PengajuanDetailController::class, 'update_rincian'])->name('update_rincian');
         Route::post('pengajuan/detail_print/{id}', [PengajuanController::class, 'print_detail'])->name('pengajuan.print_detail');
         // PENGAJUAN DETAIL
+
+        // START PENGATURAN FASE
+            Route::resource('fase', FaseController::class); 
+        // END PENGATURAN FASE  
     });
 });

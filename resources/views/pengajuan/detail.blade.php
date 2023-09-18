@@ -12,6 +12,32 @@
                 </ol>
             </nav>
         </div>
+        <div class="ms-auto">
+            @if ($pengajuan->status == 0)
+                <form id="frm_kirim" method="POST" onsubmit="return confirm('Anda yakin mengirim data ini ??')"
+                    action="{{ route('pengajuan.send', encrypt($pengajuan->id)) }}">
+                    @csrf
+                </form>
+                <form id="frm_cetak" target="_blank" action="{{ route('pengajuan.print', encrypt($pengajuan->id)) }}"
+                    method="POST">
+                    @csrf
+                </form>
+                <form id="frm_pengajuan" target="_blank"
+                    action="{{ route('pengajuan.print_detail', encrypt($pengajuan->id)) }}" method="POST">
+                    @csrf
+                </form>
+
+                <button type="button" class="btn btn-primary px-5" onclick="$('#frm_kirim').submit();">
+                    <i class="bx bx-send mr-1"></i> Kirim
+                </button>
+                <button type="button" class="btn btn-warning px-5" onclick="$('#frm_cetak').submit();">
+                    <i class="bx bx-printer mr-1"></i> Cetak
+                </button>
+                <button type="button" class="btn btn-info px-5" onclick="$('#frm_pengajuan').submit();">
+                    <i class="bx bx-printer mr-1"></i> Pengajuan
+                </button>
+            @endif
+        </div>
     </div>
     <!--end breadcrumb-->
     <div class="card">

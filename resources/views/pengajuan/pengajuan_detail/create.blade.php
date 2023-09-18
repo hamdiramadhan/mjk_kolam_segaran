@@ -78,12 +78,12 @@
                         <tr>
                             <td>{{ $n }}</td>
                             <td style="background-color: #ccf6c8 !important">
-                                Prog : {{ $dk->kegiatan->program->kode_program }}
-                                {{ $dk->kegiatan->program->nama_program }}
+                                Prog : {{ @$dk->kegiatan->program->kode_program }}
+                                {{ @$dk->kegiatan->program->nama_program }}
                             </td>
                             <td style="background-color: #ccf6c8 !important">
-                                &nbsp;&nbsp;&nbsp;&nbsp;Keg : {{ $dk->kegiatan->kode_kegiatan }}
-                                {{ $dk->kegiatan->nama_kegiatan }}
+                                &nbsp;&nbsp;&nbsp;&nbsp;Keg : {{ @$dk->kegiatan->kode_kegiatan }}
+                                {{ @$dk->kegiatan->nama_kegiatan }}
                             </td>
                             <td style="word-break: break-word !important;"><input class="form-check-input"
                                     style="transform: scale(1.5)  !important" type="checkbox"
