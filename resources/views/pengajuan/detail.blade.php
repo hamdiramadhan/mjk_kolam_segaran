@@ -37,14 +37,17 @@
 
                     {{ $pengajuan->keterangan }}
                 </div>
-                <div class="col-md-2">
-                    <form target="_blank" action="{{ route('pengajuan.print_detail', encrypt($pengajuan->id)) }}"
-                        method="POST">
-                        @csrf
-                        <button type="submit" style="width:100%" class="btn btn-warning px-5"><i
-                                class="bx bx-printer mr-1"></i>Cetak</button>
-                    </form>
-                </div>
+
+                @if (sizeof($pengajuan_detail) > 0)
+                    <div class="col-md-2">
+                        <form target="_blank" action="{{ route('pengajuan.print_detail', encrypt($pengajuan->id)) }}"
+                            method="POST">
+                            @csrf
+                            <button type="submit" style="width:100%" class="btn btn-warning px-5"><i
+                                    class="bx bx-printer mr-1"></i>Cetak </button>
+                        </form>
+                    </div>
+                @endif
             </div>
 
             <hr style="background-color: blue">
