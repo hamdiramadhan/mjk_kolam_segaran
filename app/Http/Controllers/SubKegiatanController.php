@@ -306,6 +306,7 @@ class SubKegiatanController extends Controller
             INSERT INTO opds (unit_id, unit_name, unit_id_sidirga)
             select distinct kode_sub_opd, nama_sub_opd, kode_opd
             from dataawal_progkeg
+            where kode_sub_opd not in (select unit_id from opds)
             order by kode_sub_opd
         ");
         DB::statement("

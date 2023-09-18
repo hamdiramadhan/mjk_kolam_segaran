@@ -69,7 +69,7 @@
         @if ($pengajuan->stat->kode == 0)
             <div class="card-body overflow-hidden p-relative z-index-1">
                 <a href="#"
-                    onclick="create_detail_pengajuan('{{ csrf_token() }}', '#ModalFull','{{ encrypt($id) }}')"
+                    onclick="pengajuan_detail_create('{{ csrf_token() }}', '#ModalFull','{{ encrypt($id) }}')"
                     type="button" class="btn btn-primary px-5"><i class="bx bx-plus mr-1"></i>Tambah Sub
                     Kegiatan</a>
             </div>

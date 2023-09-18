@@ -351,7 +351,7 @@
     <script src="{{ asset('assets/plugins/chartjs/js/chart.js') }}"></script>
 
     <script src="{{ asset('js/share.js') }}"></script>
-    <script src="{{ asset('js/proses_data.js') }}"></script>
+    <script src="{{ asset('js/proses_datav1.js') }}"></script>
 
     <script src="{{ asset('assets/js/index.js') }}"></script>
     <script src="{{ asset('assets/js/app.js') }}"></script>

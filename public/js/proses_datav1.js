@@ -452,12 +452,12 @@ function delete_master_bmd(token, id) {
         });
 }
 
-function create_detail_pengajuan(token, modal, id) {
+function pengajuan_detail_create(token, modal, id) {
     $(modal).modal('show');
     $(modal + 'Label').html('Tambah Detail Pengajuan');
     $(modal + 'Isi').html(loading);
     var public_path = $('#public_path').val(); /* di layouts */
-    var act = public_path + '/pengajuan_detail/create';
+    var act = public_path + '/pengajuan_detail_create';
     $.post(act, {
             _token: token,
             id: id
