@@ -13,23 +13,24 @@
             </nav>
         </div>
         <div class="ms-auto">
-            @if ($pengajuan->status == 0)
-                <form id="frm_kirim" method="POST" onsubmit="return confirm('Anda yakin mengirim data ini ??')"
-                    action="{{ route('pengajuan.send', encrypt($pengajuan->id)) }}">
-                    @csrf
-                </form>
-                <form id="frm_cetak" target="_blank" action="{{ route('pengajuan.print', encrypt($pengajuan->id)) }}"
-                    method="POST">
-                    @csrf
-                </form>
-                <form id="frm_pengajuan" target="_blank"
-                    action="{{ route('pengajuan.print_detail', encrypt($pengajuan->id)) }}" method="POST">
-                    @csrf
-                </form>
-
+            <form id="frm_kirim" method="POST" onsubmit="return confirm('Anda yakin mengirim data ini ??')"
+                action="{{ route('pengajuan.send', encrypt($pengajuan->id)) }}">
+                @csrf
+            </form>
+            <form id="frm_cetak" target="_blank" action="{{ route('pengajuan.print', encrypt($pengajuan->id)) }}"
+                method="POST">
+                @csrf
+            </form>
+            <form id="frm_pengajuan" target="_blank"
+                action="{{ route('pengajuan.print_detail', encrypt($pengajuan->id)) }}" method="POST">
+                @csrf
+            </form>
+            @if ($pengajuan->status == 0) 
                 <button type="button" class="btn btn-primary px-5" onclick="$('#frm_kirim').submit();">
                     <i class="bx bx-send mr-1"></i> Kirim
                 </button>
+            @endif
+            @if (sizeof($pengajuan_detail) > 0)
                 <button type="button" class="btn btn-warning px-5" onclick="$('#frm_cetak').submit();">
                     <i class="bx bx-printer mr-1"></i> Cetak
                 </button>
@@ -62,18 +63,7 @@
                     <br>
 
                     {{ $pengajuan->keterangan }}
-                </div>
-
-                @if (sizeof($pengajuan_detail) > 0)
-                    <div class="col-md-2">
-                        <form target="_blank" action="{{ route('pengajuan.print_detail', encrypt($pengajuan->id)) }}"
-                            method="POST">
-                            @csrf
-                            <button type="submit" style="width:100%" class="btn btn-warning px-5"><i
-                                    class="bx bx-printer mr-1"></i>Cetak </button>
-                        </form>
-                    </div>
-                @endif
+                </div> 
             </div>
 
             <hr style="background-color: blue">
@@ -82,8 +72,7 @@
             <div class="card-body overflow-hidden p-relative z-index-1">
                 <a href="#"
                     onclick="pengajuan_detail_create('{{ csrf_token() }}', '#ModalFull','{{ encrypt($id) }}')"
-                    type="button" class="btn btn-primary px-5"><i class="bx bx-plus mr-1"></i>Tambah Sub
-                    Kegiatan</a>
+                    type="button" class="btn btn-primary px-5"><i class="bx bx-plus mr-1"></i>Tambah Sub Kegiatan</a>
             </div>
         @endif
 
