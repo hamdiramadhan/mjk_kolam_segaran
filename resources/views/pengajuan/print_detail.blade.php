@@ -77,15 +77,15 @@
         <div style="width: 100%; text-align: left;">
             <table style="width: 100%;">
                 <tr>
-                    <td style="width: 200px">Nomor </td>
-                    <td style="width: 20px">&nbsp; : &nbsp;</td>
+                    <td style="width: 100px">Nomor </td>
+                    <td style="width: 10px"> : </td>
                     <td>
                         {{ $data->nomor_surat }}
                     </td>
                 </tr>
                 <tr>
                     <td>Tanggal</td>
-                    <td>&nbsp; : &nbsp;</td>
+                    <td> : </td>
                     <td>
                         {{ format_tanggal($data->tanggal_surat) }}
                     </td>

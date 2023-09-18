@@ -18,11 +18,12 @@
                     action="{{ route('pengajuan.send', encrypt($pengajuan->id)) }}">
                     @csrf
                 </form>
-                <form id="frm_cetak" target="_blank" action="{{ route('pengajuan.print', encrypt($pengajuan->id)) }}" method="POST">
+                <form id="frm_cetak" target="_blank" action="{{ route('pengajuan.print', encrypt($pengajuan->id)) }}"
+                    method="POST">
                     @csrf
                 </form>
-                <form id="frm_pengajuan" target="_blank" action="{{ route('pengajuan.print_detail', encrypt($pengajuan->id)) }}"
-                    method="POST">
+                <form id="frm_pengajuan" target="_blank"
+                    action="{{ route('pengajuan.print_detail', encrypt($pengajuan->id)) }}" method="POST">
                     @csrf
                 </form>
 
@@ -33,8 +34,8 @@
                     <i class="bx bx-printer mr-1"></i> Cetak
                 </button>
                 <button type="button" class="btn btn-info px-5" onclick="$('#frm_pengajuan').submit();">
-                    <i class="bx bx-printer mr-1"></i> Pengajuan 
-                </button> 
+                    <i class="bx bx-printer mr-1"></i> Pengajuan
+                </button>
             @endif
         </div>
     </div>
@@ -62,6 +63,17 @@
 
                     {{ $pengajuan->keterangan }}
                 </div>
+
+                @if (sizeof($pengajuan_detail) > 0)
+                    <div class="col-md-2">
+                        <form target="_blank" action="{{ route('pengajuan.print_detail', encrypt($pengajuan->id)) }}"
+                            method="POST">
+                            @csrf
+                            <button type="submit" style="width:100%" class="btn btn-warning px-5"><i
+                                    class="bx bx-printer mr-1"></i>Cetak </button>
+                        </form>
+                    </div>
+                @endif
             </div>
 
             <hr style="background-color: blue">
