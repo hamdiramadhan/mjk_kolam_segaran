@@ -119,7 +119,7 @@ Route::group(['middleware' => ['XSS']], function () {
         // END PENGAJUAN PERUBAHAN //
 
         //PENGAJUAN DETAIL //
-        Route::post('/pengajuan_detail/create', [PengajuanDetailController::class, 'create'])->name('pengajuan_detail.create');
+        Route::post('/pengajuan_detail_create', [PengajuanDetailController::class, 'create'])->name('pengajuan_detail_create');
         Route::post('/pengajuan_detail_store/{id}', [PengajuanDetailController::class, 'store'])->name('pengajuan_detail.store');
         Route::get('/pengajuan_detail/komponen/{id}', [PengajuanDetailController::class, 'komponen'])->name('pengajuan_detail.komponen');
         Route::post('/pengajuan_detail_store/{id}', [PengajuanDetailController::class, 'store'])->name('pengajuan_detail.store');

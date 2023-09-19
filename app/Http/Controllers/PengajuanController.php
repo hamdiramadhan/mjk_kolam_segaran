@@ -270,7 +270,6 @@ class PengajuanController extends Controller
         
         $opd = Opd::find($opd_id); 
 
-        
         $data_opd = Opd::orderBy('unit_id')->get();
         $pengajuan = Pengajuan::find($id);
         $sumber_dana = SumberDana::all();
