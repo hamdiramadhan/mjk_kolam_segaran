@@ -151,13 +151,13 @@
                 <tbody>
                     @php
                         $no = 0;
-                        $detail_rekening = App\Models\DetailRincian::where('pengajuan_id', $id)
-                            ->where('pengajuan_detail_id', $subkeg->id)
-                            ->get();
+                        // $detail_rekening = App\Models\DetailRincian::where('pengajuan_id', $id)
+                        //     ->where('pengajuan_detail_id', $subkeg->id)
+                        //     ->get();
                         $jumlah_harga_pergeseran = 0;
                     @endphp
 
-                    @foreach ($detail_rekening as $dr)
+                    @foreach ($subkeg->rincians as $dr)
                         @php
                             $jumlah_harga_rekening = 0;
                             $jumlah_harga_pergeseran_rekening = 0;

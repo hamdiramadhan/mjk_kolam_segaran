@@ -290,7 +290,7 @@ class PengajuanController extends Controller
         $opd =Opd::findOrFail($opd_id);
         $pengajuan_alasan = PengajuanAlasan::where('pengajuan_id',$id)->get();
         $usulan = PengajuanUsulan::all();
-        $pengajuan_detail = PengajuanDetail::where('pengajuan_id',$id)->get(); 
+        $pengajuan_detail = PengajuanDetail::with(['rincians'])->where('pengajuan_id',$id)->get(); 
         $detail_sumberdana = PengajuanDetailSumberdana::all();
         $detail_rekening = DetailRincian::where('pengajuan_id',$id)->get();
         
