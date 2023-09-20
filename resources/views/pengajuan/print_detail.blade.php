@@ -151,9 +151,7 @@
                 <tbody>
                     @php
                         $no = 0;
-                        // $detail_rekening = App\Models\DetailRincian::where('pengajuan_id', $id)
-                        //     ->where('pengajuan_detail_id', $subkeg->id)
-                        //     ->get();
+                        
                         $jumlah_harga_pergeseran = 0;
                     @endphp
 
@@ -182,7 +180,9 @@
 
                         </tr>
                         @php
-                            $detail_rincian = App\Models\DetailRincian::where('detail_id', $dr->detail_id)->get();
+                            $detail_rincian = App\Models\DetailRincian::where('detail_id', $dr->detail_id)
+                                ->where('pengajuan_id', $id)
+                                ->get();
                             $jumlah = 0;
                         @endphp
                         @foreach ($detail_rincian as $r)

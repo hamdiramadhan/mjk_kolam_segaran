@@ -55,7 +55,7 @@ class DetailRincian extends Model
 
     public static function get_rekening($master_sub_kegiatan_id, $subtitle, $subtitle2,$pengajuan_id,$detail_id)
     { 
-    	$res = DetailRincian::select('detail_rincians.master_sub_kegiatan_id', 'detail_rincians.subtitle_pergeseran','detail_rincians.nama_rekening_pergeseran', 'detail_rincians.subtitle2_pergeseran', 'detail_rincians.kode_rekening_pergeseran','detail_rincians.rekenings_id')
+    	$res = DetailRincian::select('detail_rincians.master_sub_kegiatan_id', 'detail_rincians.subtitle_pergeseran','detail_rincians.nama_rekening_pergeseran', 'detail_rincians.subtitle2_pergeseran', 'detail_rincians.kode_rekening_pergeseran','detail_rincians.rekenings_id','detail_rincians.flag')
         ->join('detail', 'detail.id', '=', 'detail_rincians.detail_id')
         ->where('detail_rincians.master_sub_kegiatan_id', $master_sub_kegiatan_id)
         ->where('detail_rincians.subtitle_pergeseran', $subtitle)

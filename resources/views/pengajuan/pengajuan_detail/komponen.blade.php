@@ -152,6 +152,7 @@
                                         @endpush
                                         @foreach ($data_rekening as $r3)
                                             <?php
+                                            $length = 0;
                                             $data_komponen = App\Models\Detail::get_komponen($r1->master_sub_kegiatan_id, $r1->subtitle, $r2->subtitle2, $r3->kode_rekening);
                                             
                                             // $data_komponen_pergeseran = App\Models\DetailRincian::get_komponen(@$detail_rincian_pergeseran->master_sub_kegiatan_id, @$detail_rincian_pergeseran->subtitle, @$data_ket_bl_teks_pergeseran->subtitle2, @$data_rekening_pergesran->kode_rekening, @$pengajuan_detail->pengajuan_id);
@@ -165,9 +166,43 @@
                                             ?>
                                             @push('detail')
                                                 <tr>
-                                                    <td colspan="13">&nbsp;&nbsp;&nbsp;<b>
-                                                            {!! $r3->kode_rekening !!}
-                                                            {!! $r3->rek->nama_rekening ?? '' !!}</b></td>
+                                                    @if ($pengajuan_detail->pengajuan->usulan->id != 4)
+                                                        <td colspan="6">&nbsp;&nbsp;&nbsp;<b>
+                                                                {!! $r3->kode_rekening !!}
+                                                                {!! $r3->rek->nama_rekening ?? '' !!}</b></td>
+
+                                                        <td colspan="6">&nbsp;&nbsp;&nbsp;<b>
+                                                                {!! $data_rekening_pergeseran->rek->kode_rekening !!}
+                                                                {!! $data_rekening_pergeseran->rek->nama_rekening ?? '' !!}</b>
+                                                        </td>
+                                                        <td style="text-align: center">
+                                                            @if ($pengajuan_detail->pengajuan->usulan->id == 1)
+                                                                @php $length = 6; @endphp
+                                                            @elseif($pengajuan_detail->pengajuan->usulan->id == 2)
+                                                                @php $length = 9; @endphp
+                                                            @elseif($pengajuan_detail->pengajuan->usulan->id == 3)
+                                                                @php $length = 12; @endphp
+                                                            @endif
+                                                            @php
+                                                                $kode_rekening = substr($r3->kode_rekening, 0, $length);
+                                                            @endphp
+                                                            @if (@$data_rekening_pergeseran->flag == 0)
+                                                                <button title="Pergeseran Rekening" data-toggle="tooltip"
+                                                                    onclick="update_kode_rekening('{{ csrf_token() }}', '{{ route('update_kode_rekening', $id_detail_murni->id) }}','{{ encrypt($pengajuan_detail->id) }}','{{ $kode_rekening }}','#ModalKuningSm')"
+                                                                    class="btn btn-sm btn-outline-warning">
+                                                                    <i
+                                                                        class="bx bx-message-check
+                                                                    me-0"></i>
+                                                                </button>
+                                                            @endif
+                                                        </td>
+                                                    @else
+                                                        <td colspan="12">&nbsp;&nbsp;&nbsp;<b>
+                                                                {{ $detail_id->id }}
+                                                                {!! $r3->kode_rekening !!}
+                                                                {!! $r3->rek->nama_rekening ?? '' !!}</b></td>
+                                                        </td>
+                                                    @endif
 
                                                 </tr>
                                             @endpush
@@ -231,13 +266,15 @@
                                                                         class="bx bx-message-check
                                                                     me-0"></i>
                                                                 </button> --}}
-                                                                <button title="Pergeseran" data-toggle="tooltip"
-                                                                    onclick="update_detail_rincian('{{ csrf_token() }}', '{{ route('update_detail_rincian', $id_detail_murni->id) }}','{{ encrypt($pengajuan_detail->id) }}', '#ModalBiruSm')"
-                                                                    class="btn btn-sm btn-outline-primary">
-                                                                    <i
-                                                                        class="bx bx-message-check
+                                                                @if (@$data_komponen_pergeseran->flag == 0)
+                                                                    <button title="Pergeseran Rincian" data-toggle="tooltip"
+                                                                        onclick="update_detail_rincian('{{ csrf_token() }}', '{{ route('update_detail_rincian', $id_detail_murni->id) }}','{{ encrypt($pengajuan_detail->id) }}', '#ModalBiruSm')"
+                                                                        class="btn btn-sm btn-outline-primary">
+                                                                        <i
+                                                                            class="bx bx-message-check
                                                                     me-0"></i>
-                                                                </button>
+                                                                    </button>
+                                                                @endif
                                                                 {{-- <button type="button"
                                                                     onclick="delete_detail_komponen('{{ csrf_token() }}', '{{ $r4->id }}')"
                                                                     title="Hapus" class="btn btn-sm btn-outline-danger">
@@ -494,6 +531,23 @@
                 act, {
                     _token: token,
                     pengajuan_detail_id: pengajuan_detail_id
+                },
+                function(data) {
+                    $(modal + "Isi").html(data);
+                }
+            );
+        }
+
+        function update_kode_rekening(token, url, pengajuan_detail_id, kode_rekening, modal) {
+            $(modal).modal("show");
+            $(modal + "Label").html("Geser Komponen Rekening");
+            $(modal + "Isi").html(loading);
+            var act = url;
+            $.post(
+                act, {
+                    _token: token,
+                    pengajuan_detail_id: pengajuan_detail_id,
+                    kode_rekening: kode_rekening
                 },
                 function(data) {
                     $(modal + "Isi").html(data);

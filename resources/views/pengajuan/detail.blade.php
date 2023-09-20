@@ -21,11 +21,11 @@
                 method="POST">
                 @csrf
             </form>
-            <form id="frm_pengajuan" target="_blank"
-                action="{{ route('pengajuan.print_detail', encrypt($pengajuan->id)) }}" method="POST">
+            <form id="frm_pengajuan" target="_blank" action="{{ route('pengajuan.print_detail', encrypt($pengajuan->id)) }}"
+                method="POST">
                 @csrf
             </form>
-            @if ($pengajuan->status == 0) 
+            @if ($pengajuan->status == 0)
                 <button type="button" class="btn btn-primary px-5" onclick="$('#frm_kirim').submit();">
                     <i class="bx bx-send mr-1"></i> Kirim
                 </button>
@@ -63,7 +63,7 @@
                     <br>
 
                     {{ $pengajuan->keterangan }}
-                </div> 
+                </div>
             </div>
 
             <hr style="background-color: blue">
@@ -129,16 +129,28 @@
                                 </span>
                             </td>
                             <td>
+
                                 <a href="{{ route('pengajuan_detail.komponen', encrypt($dk->id)) }}" type="button"
                                     class="btn btn-sm btn-outline-primary" data-popup="tooltip" title="Komponen">
                                     <i class="fa fa-list me-0"></i>
                                 </a>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                                <br><br>
+
+                                <form method="POST"
+                                    onsubmit="return confirm('Anda yakin Membatalkan Pengajuan data ini ??')"
+                                    action="{{ route('pengajuan_detail.destroy', encrypt($r->id)) }}">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class="bx bx-trash me-0"></i>
+                                    </button>
+                                </form>
         </div>
+        </td>
+        </tr>
+        @endforeach
+        </tbody>
+        </table>
+    </div>
     </div>
 
 

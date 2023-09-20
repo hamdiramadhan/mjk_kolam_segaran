@@ -38,22 +38,20 @@ class PengajuanDetailController extends Controller
         $tahun = Auth::user()->tahun;
         $opd_id = Auth::user()->opd_id;
         
-        $opd = Opd::find($opd_id); 
-         
+
         $data_sub_kegiatan = MasterSubKegiatan::where('tahun', $tahun);
-        if(!empty($id_dinas) && $id_dinas != 'null' ) { 
-            $data_sub_kegiatan = $data_sub_kegiatan->where('opd_id', $id_dinas);
+        if(!empty($opd_id) && $opd_id != 'null' ) { 
+            $data_sub_kegiatan = $data_sub_kegiatan->where('opd_id', $opd_id);
         }   
         $data_sub_kegiatan = $data_sub_kegiatan->get();
 
         if(empty(sizeof($data_sub_kegiatan))){ 
             $data_sub_kegiatan = MasterSubKegiatan::where('tahun', $tahun)->where('opd_id', 0)->get();
         } 
-
         $sumber_dana = SumberDana::all();
         
         $data_opd = Opd::orderBy('unit_id')->get();
-        return view('pengajuan.pengajuan_detail.create',['nama_header'=>'Tambah Pengajuan'],compact('data_sub_kegiatan','opd_id', 'opd', 'tahun','data_opd','sumber_dana','id'));
+        return view('pengajuan.pengajuan_detail.create',['nama_header'=>'Tambah Pengajuan'],compact('data_sub_kegiatan','opd_id', 'tahun','data_opd','sumber_dana','id'));
     }
 
     /**
@@ -180,6 +178,21 @@ class PengajuanDetailController extends Controller
         return view('pengajuan.pengajuan_detail.edit_rincian', compact('data','data_rekening','data_satuan','pengajuan_detail','id'));
     }
 
+    public function update_kode_rekening(Request $request,$id)
+    {
+        $kode_rekening = $request->kode_rekening;
+        $pengajuan_detail_id = decrypt($request->pengajuan_detail_id);
+        $pengajuan_detail  = PengajuanDetail::find($pengajuan_detail_id);
+        $data_satuan = Satuan::orderBy('satuan')->get();
+   
+        // $data_rekening = MasterRekening::where('kode_rek', 'like', '5.%')->get();
+        $data_rekening = MasterRekening::where('kode_rek', 'like', $kode_rekening.'%')->get();
+
+        $data = Detail::findOrFail($id);
+        return view('pengajuan.pengajuan_detail.edit_rekening', compact('data','data_rekening','data_satuan','pengajuan_detail','id'));
+    }
+    
+
     public function update_rincian(Request $request)
     {
         // dd($request->all());
@@ -225,6 +238,51 @@ class PengajuanDetailController extends Controller
         return back();
     }
 
+    public function update_detail_rekening(Request $request)
+    {
+        $detail = Detail::find($request->detail_id);
+        if (!empty($request->opd_id)) {
+            $koderek = MasterRekening::where('kode_rek',$request->kode_rekening_pergeseran)->first();
+            $pengajuan_detail = PengajuanDetail::find($request->pengajuan_detail_id);
+            if(empty($request->ppn_pergeseran))
+            {
+                $ppn=0;
+            } else {
+                $ppn = $request->ppn_pergeseran;
+            }
+            DetailRincian::create([
+                'pengajuan_detail_id' => $pengajuan_detail->id,
+                'pengajuan_id' => $pengajuan_detail->pengajuan_id,
+                'detail_id' => $request->detail_id,
+                'master_sub_kegiatan_id' => $detail->master_sub_kegiatan_id,
+                'opd_id' => $detail->opd_id,
+                'unit_id' => $pengajuan_detail->pengajuan->unit_id,
+                'kode_sub_kegiatan' => $pengajuan_detail->sub_kegiatan->kode_sub_kegiatan,
+                'rekenings_id' => $koderek->id,
+                'kode_rekening_pergeseran' => $request->kode_rekening_pergeseran,
+                'nama_rekening_pergeseran' => $koderek->nama_rek,
+                'kode_detail_pergeseran' => $request->kode_rekening_pergeseran,
+                'detail_pergeseran' => $request->detail_pergeseran,
+                'satuan_pergeseran' => $detail->satuan, 
+                'volume_pergeseran' => $detail->volume,
+                'harga_pergeseran' => $detail->harga, 
+                'spek_pergeseran' => $detail->spek, 
+                'koefisien_pergeseran' => $detail->koefisien,
+                'ppn_pergeseran' => $ppn ?? 0,
+                'tahun_pergeseran' => Auth::user()->tahun,
+                'created_by'=>Auth::user()->id
+            ]);
+            $detail_rincian =  DetailRincian::orderBy('id','desc')->first();
+            DetailRincian::where('id', $detail_rincian->id)->update([
+                'flag'=>1
+            ]);
+
+            session()->put('status', 'Data berhasil ditambah');
+        } else {
+            session()->put('statusT', 'Data Gagal ditambah');
+        }
+        return back();
+    }
     /**
      * Display the specified resource.
      *
@@ -267,6 +325,10 @@ class PengajuanDetailController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $id = decrypt($id);
+        $data = PengajuanDetail::find($id);
+        session()->put('status', 'Data Pengajuan  Berhasil dibatalkan!');
+        $data->delete();
+        return redirect()->back();
     }
 }

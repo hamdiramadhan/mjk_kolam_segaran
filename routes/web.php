@@ -126,9 +126,13 @@ Route::group(['middleware' => ['XSS']], function () {
         Route::post('update_detail_komponen/{id}', [PengajuanDetailController::class, 'geser_komponen'])->name('update_detail_komponen');
         Route::post('update_detail_rincian/{id}', [PengajuanDetailController::class, 'update_detail_rincian'])->name('update_detail_rincian');
         Route::post('store_geser_komponen', [PengajuanDetailController::class, 'store_geser_komponen'])->name('store_geser_komponen');
+        Route::post('pengajuan_detail/destroy/{id}', [PengajuanDetailController::class,"destroy"])->name('pengajuan_detail.destroy');
 
         Route::post('update_rincian', [PengajuanDetailController::class, 'update_rincian'])->name('update_rincian');
+        Route::post('update_kode_rekening/{id}', [PengajuanDetailController::class, 'update_kode_rekening'])->name('update_kode_rekening');
+        Route::post('update_detail_rekening', [PengajuanDetailController::class, 'update_detail_rekening'])->name('update_detail_rekening');
         Route::post('pengajuan/detail_print/{id}', [PengajuanController::class, 'print_detail'])->name('pengajuan.print_detail');
+        
         // PENGAJUAN DETAIL
 
         // START PENGATURAN FASE

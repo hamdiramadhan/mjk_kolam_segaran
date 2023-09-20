@@ -72,7 +72,8 @@
                                 {{-- <h4 class="logo-text" style="font-size: 15px">{!! env('APP_NAME') !!}</h4> --}}
                             </div>
                         </div>
-                        <div class="mobile-toggle-menu d-block d-lg-none" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"><i class="bx bx-menu"></i></div>
+                        <div class="mobile-toggle-menu d-block d-lg-none" data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvasNavbar"><i class="bx bx-menu"></i></div>
 
                         <div class="top-menu ms-auto">
                             &nbsp;
@@ -330,6 +331,27 @@
 
                 <div class="modal-body" style="max-height: 800px">
                     <div id="ModalFullIsi">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="ModalKuningSm" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true" width="100%">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-warning">
+                    <h6 class="modal-title" id="ModalKuningSmLabel" style="color:white">
+                        Judul
+                    </h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div id="ModalKuningSmIsi">
 
                     </div>
                 </div>
