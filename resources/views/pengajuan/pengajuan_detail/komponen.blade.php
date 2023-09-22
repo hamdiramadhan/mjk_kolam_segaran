@@ -59,17 +59,36 @@
         </div>
     @endif
     <div class="card">
-        <div class="card-body overflow-hidden p-relative z-index-1">
-            <b>
-                {{ @Auth::user()->skpd->unit_name ?? 'Data Global' }} TAHUN {{ Auth::user()->tahun }}
-            </b>
-            <br>
-            Program : <b>{{ $sub_keg->kegiatan->program->kode_program }}
-                {{ $sub_keg->kegiatan->program->nama_program }}</b><br>
-            Kegiatan : <b>{{ $sub_keg->kegiatan->kode_kegiatan }} {{ $sub_keg->kegiatan->nama_kegiatan }}</b><br>
-            Sub Kegiatan : <b>{{ $sub_keg->kode_sub_kegiatan }} {{ $sub_keg->nama_sub_kegiatan }}</b><br>
-            Jenis Pergeseran : <b>{{ $pengajuan_detail->pengajuan->usulan->usulan }}</b><br>
-            Jenis Pergeseran : <b>{{ $pengajuan_detail->id }}</b><br>
+        <div class="card-body overflow-hidden p-relative z-index-1"> 
+            <div class="row">
+                <div class="col-sm-5">
+                    <b>Status </b> : <span class="badge badge-{{ $pengajuan->stat->color_div }}">
+                        <b>{{ @$pengajuan->stat->nama }}</b>
+                    </span>
+                    <br>
+                    <b>Pengusul</b> : {{ @$pengajuan->skpd->unit_name }}
+                    <br>
+                    <b>SKPD</b> : {{ $pengajuan->unit_id }}
+                    <br>
+                    <b>Fase</b> : {{ @$pengajuan->fase->nama }}
+                    <br>
+                    <b>Tanggal Surat</b> : {{ $pengajuan->tanggal_surat }}
+                    <br>
+                    <b>Nomor Surat</b> : {{ $pengajuan->nomor_surat }}
+                    <br>
+                    <b>Usulan</b> : {{ @$pengajuan->usulan->usulan }}
+                    <br>
+                    <b>Tahun </b> : <b style="color: red">{{ @$pengajuan->tahun }}</b>
+                </div>
+                <div class="col-sm-7">
+                    Program : <b>{{ $sub_keg->kegiatan->program->kode_program }}
+                        {{ $sub_keg->kegiatan->program->nama_program }}</b><br>
+                    Kegiatan : <b>{{ $sub_keg->kegiatan->kode_kegiatan }} {{ $sub_keg->kegiatan->nama_kegiatan }}</b><br>
+                    Sub Kegiatan : <b>{{ $sub_keg->kode_sub_kegiatan }} {{ $sub_keg->nama_sub_kegiatan }}</b><br>
+                    Jenis Pergeseran : <b>{{ $pengajuan_detail->pengajuan->usulan->usulan }}</b><br>
+                    Jenis Pergeseran : <b>{{ $pengajuan_detail->id }}</b><br>
+                </div>
+            </div> 
         </div>
     </div>
 
@@ -169,11 +188,11 @@
                                                     @if ($pengajuan_detail->pengajuan->usulan->id != 4)
                                                         <td colspan="6">&nbsp;&nbsp;&nbsp;<b>
                                                                 {!! $r3->kode_rekening !!}
-                                                                {!! $r3->rek->nama_rekening ?? '' !!}</b></td>
+                                                                {!! @$r3->rekening->nama_rek ?? '' !!}</b></td>
 
                                                         <td colspan="6">&nbsp;&nbsp;&nbsp;<b>
-                                                                {!! $data_rekening_pergeseran->rek->kode_rekening !!}
-                                                                {!! $data_rekening_pergeseran->rek->nama_rekening ?? '' !!}</b>
+                                                                {!! @$data_rekening_pergeseran->rekening->kode_rek !!}
+                                                                {!! @$data_rekening_pergeseran->rekening->nama_rek ?? '' !!}</b>
                                                         </td>
                                                         <td style="text-align: center">
                                                             @if ($pengajuan_detail->pengajuan->usulan->id == 1)
@@ -200,7 +219,7 @@
                                                         <td colspan="12">&nbsp;&nbsp;&nbsp;<b>
                                                                 {{ $detail_id->id }}
                                                                 {!! $r3->kode_rekening !!}
-                                                                {!! $r3->rek->nama_rekening ?? '' !!}</b></td>
+                                                                {!! @$r3->rekening->nama_rek ?? '' !!}</b></td>
                                                         </td>
                                                     @endif
 
@@ -213,7 +232,7 @@
                                                 @push('detail')
                                                     <tr>
                                                         <td>&nbsp;&nbsp;&nbsp;
-                                                            {!! $r4->detail !!} - {{ $r4->spek }}
+                                                            {!! $r4->detail !!} {{ $r4->spek }}
                                                         </td>
                                                         <td>
                                                             {!! $r4->satuan !!}
@@ -236,8 +255,7 @@
                                                         {{-- Pergeseran --}}
 
                                                         <td>&nbsp;&nbsp;&nbsp;
-                                                            {!! @$data_komponen_pergeseran->detail_pergeseran !!} -
-                                                            {{ @$data_komponen_pergeseran->spek_pergeseran }}
+                                                            {!! @$data_komponen_pergeseran->detail_pergeseran !!} {{ @$data_komponen_pergeseran->spek_pergeseran }}
                                                         </td>
                                                         <td>
                                                             {!! @$data_komponen_pergeseran->satuan_pergeseran !!}

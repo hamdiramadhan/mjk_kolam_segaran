@@ -125,17 +125,7 @@
 @endsection
 @push('scripts')
     <script type="text/javascript" src="https://cdn.datatables.net/rowgroup/1.1.2/js/dataTables.rowGroup.min.js"></script>
-    <script>
-        var table = $('#file-datatable').DataTable({
-            responsive: true,
-            language: {
-                searchPlaceholder: 'Search...',
-                scrollX: "100%",
-                sSearch: '',
-            }
-        });
-        table.buttons().container()
-            .appendTo('#file-datatable_wrapper .col-md-6:eq(0)');
+    <script> 
         $(document).ready(function() {
             var table = $('.datatable-basic-group-1').DataTable({
                 "ordering": false,
@@ -154,18 +144,7 @@
             });
         });
     </script>
-    <script>
-        var table = $('#file-datatable').DataTable({
-            responsive: true,
-            language: {
-                searchPlaceholder: 'Search...',
-                scrollX: "100%",
-                sSearch: '',
-            }
-        });
-        table.buttons().container()
-            .appendTo('#file-datatable_wrapper .col-md-6:eq(0)');
-
+    <script> 
         function chk_all(isChecked) {
             if (isChecked) {
                 $('input[name="chk_data"]').each(function() {

@@ -88,16 +88,28 @@
                                             ?>
                                             @push('detail')
                                                 <tr>
-                                                    <td colspan="6">&nbsp;&nbsp;&nbsp;<b>{!! $r3->kode_rekening !!}
-                                                            {!! $r3->rek->nama_rekening ?? '' !!}</b></td>
-                                                    <td></td>
+                                                    <td colspan="6">&nbsp;&nbsp;&nbsp;
+                                                        <b>
+                                                            {!! $r3->kode_rekening !!} {!! $r3->rekening->nama_rek ?? '' !!}
+                                                        </b>
+                                                    </td>
+                                                    <td>
+                                                        <button title="Ubah" class="btn btn-sm btn-outline-success" onclick="$('.modalAddKomponen').modal('show');
+                                                        $('#tmb_subtitle').val('{!! $r1->subtitle !!}');
+                                                        $('#tmb_subtitle2').val('{!! $r2->subtitle2 !!}');
+                                                        $('#tmb_kode_rekening').val('{!! $r3->kode_rekening !!}');
+                                                        $('#tmb_kode_rekening').trigger('change');
+                                                        ">
+                                                            <i class="bx bx-plus me-0"></i>
+                                                        </button>
+                                                    </td>
                                                 </tr>
                                             @endpush
                                             @foreach ($data_komponen as $r4)
                                                 @push('detail')
                                                     <tr>
                                                         <td>&nbsp;&nbsp;&nbsp;
-                                                            {!! $r4->detail !!} - {{ $r4->spek }}
+                                                            {!! $r4->detail !!} {{ $r4->spek }}
                                                         </td>
                                                         <td>
                                                             {!! $r4->satuan !!}
@@ -159,47 +171,34 @@
                     </div>
                 </div>
             </div>
-            <div class="modal fade modalAddKomponen">
+            <div class="modal fade modalAddKomponen" id="modalAddKomponen">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header bg-primary">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h6 class="modal-title modalTambah">Tambah</h6>
-                        </div>
+                            <h6 class="modal-title" style="color:white">
+                                Tambah
+                            </h6>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div> 
                         <form method="POST" action="{{ route('add_komponen') }}" enctype="multipart/form-data">
                             {!! csrf_field() !!}
-                            <input type="text" class="form-control" id="unit_id" name="unit_id"
-                                value="{{ $sub_keg->unit_id }}">
-                            <input type="hidden" class="form-control" id="kode_kegiatan" name="kode_kegiatan"
-                                value="{{ $sub_keg->kode_kegiatan }}">
-                            <input type="hidden" class="form-control" id="id_kegiatan" name="id_kegiatan"
-                                value="{{ $sub_keg->id }}">
-                            <input type="hidden" class="form-control" id="sipd_id_program" name="sipd_id_program"
-                                value="{{ $sub_keg->sipd_id_program }}">
-                            <input type="hidden" class="form-control" id="sipd_id_giat" name="sipd_id_giat"
-                                value="{{ $sub_keg->sipd_id_giat }}">
-                            <input type="hidden" class="form-control" id="sipd_id_sub_giat" name="sipd_id_sub_giat"
-                                value="{{ $sub_keg->sipd_id_sub_giat }}">
-                            <input type="hidden" class="form-control" id="sipd_id_skpd" name="sipd_id_skpd"
-                                value="{{ $sub_keg->sipd_id_skpd }}">
-                            <input type="hidden" class="form-control" id="sipd_id_sub_skpd" name="sipd_id_sub_skpd"
-                                value="{{ $sub_keg->sipd_id_sub_skpd }}">
-                            <input type="hidden" class="form-control" id="tahun" name="tahun"
-                                value="{{ date('Y') }}">
-                            <div class="modal-body">
+                            <input type="hidden" class="form-control" id="opd_id" name="opd_id" value="{{ $sub_keg->opd_id }}"> 
+                            <input type="hidden" class="form-control" id="id_kegiatan" name="id_kegiatan" value="{{ $sub_keg->id }}"> 
+                            <input type="hidden" class="form-control" id="tahun" name="tahun" value="{{ date('Y') }}">
+                            <div class="modal-body row">
                                 <p style="font-weight:bold"><i>Yang bertanda <span class="text-danger">*</span> wajib
                                         diisi/dipilih.</i></p>
-                                <div class="col-md-2">Judul <span style="color:red">*</span></div>
+                                <div class="col-md-2">Kelompok Belanja <span style="color:red">*</span></div>
                                 <div class="col-md-10">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="[#]....." id="subtitle"
+                                        <input type="text" class="form-control" placeholder="[#]....." id="tmb_subtitle"
                                             name="subtitle" value="[#]" required>
                                     </div>
                                 </div>
-                                <div class="col-md-2">Sub Judul<span style="color:red">*</span></div>
+                                <div class="col-md-2">Keterangan<span style="color:red">*</span></div>
                                 <div class="col-md-10">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="[-]....." id="subtitle2"
+                                        <input type="text" class="form-control" placeholder="[-]....." id="tmb_subtitle2"
                                             name="subtitle2" value="[-]" required>
                                     </div>
                                 </div>
@@ -207,14 +206,13 @@
                                 <div class="col-md-2">Kode Rekening<span style="color:red">*</span></div>
                                 <div class="col-md-10">
                                     <div class="form-group">
-                                        <select class="select22" name="kode_rekening" id="kode_rekening"
+                                        <select class="select2onmodal" name="kode_rekening" id="tmb_kode_rekening"
                                             style="width: 100%">
-                                            @foreach ($data_rekening as $dt)
-                                                <option value="{{ $dt->kode }}">{{ $dt->kode }} -
-                                                    {{ $dt->nama }}</option>
+                                            @foreach ($data_rekenings as $dt)
+                                                <option value="{{ $dt->kode_rek }}" {{ strlen($dt->kode_rek) <= 12 ? 'disabled' : '' }}>
+                                                    {{ $dt->kode_rek }} - {{ $dt->nama_rek }} </option>
                                             @endforeach
-                                        </select>
-                                        {{-- <input type="text" class="form-control" placeholder="Masukkan Kode Rekening" id="kode_rekening" name="kode_rekening" value="{{$data->kode_rekening}}" required>  --}}
+                                        </select> 
                                     </div>
                                 </div>
                                 <div class="col-md-2">Uraian<span style="color:red">*</span></div>
@@ -226,9 +224,12 @@
                                 </div>
                                 <div class="col-md-2">Satuan<span style="color:red">*</span></div>
                                 <div class="col-md-10">
-                                    <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="Masukkan Satuan"
-                                            id="satuan" name="satuan" required>
+                                    <div class="form-group"> 
+                                        <select class="select2onmodal" name="satuan" id="satuan" style="width:100%" required>
+                                            @foreach ($data_satuan as $dt)
+                                                <option value="{{ $dt->satuan }}">{{ $dt->satuan }}</option>
+                                            @endforeach
+                                        </select> 
                                     </div>
                                 </div>
                                 <div class="col-md-2">Spek</div>
@@ -264,7 +265,7 @@
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-sm btn-success"><i class="icon-check"></i>
                                         Simpan</button>
-                                    <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal"><i
+                                    <button type="button" class="btn btn-sm btn-danger" onclick="$('.modal').modal('hide')"><i
                                             class="icon-cancel-circle2"></i> Batal</button>
                                 </div>
                         </form>
@@ -284,7 +285,6 @@
                 </div>
             `;
         //select option
-        $('.select22').select2();
 
         function closeTabs() {
             window.close();
@@ -292,6 +292,10 @@
 
         // START SCRIPT TABEL 
         $(document).ready(function() {
+            $('.select22').select2();
+            $('.select2onmodal').select2({
+                dropdownParent: $('#modalAddKomponen')
+            });
             var table = $('.datatable-basic-komponen').DataTable({
                 "ordering": false,
                 "paginate": false,

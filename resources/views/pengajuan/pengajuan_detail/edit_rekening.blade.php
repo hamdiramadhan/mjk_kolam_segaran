@@ -10,7 +10,7 @@
     <input type="hidden" class="form-control" id="opd_id" name="opd_id"
         value="{{ $pengajuan_detail->sub_kegiatan->opd_id }}">
     <div class="row mb-2" style="display: none">
-        <div class="col-md-3">Judul <span style="color:red">*</span></div>
+        <div class="col-md-3">Kelompok Belanja <span style="color:red">*</span></div>
         <div class="col-md-9">
             <div class="form-group">
                 <input type="text" class="form-control" placeholder="[#]....." id="subtitle" name="subtitle"
@@ -19,7 +19,7 @@
         </div>
     </div>
     <div class="row mb-2" style="display: none">
-        <div class="col-md-3">Sub Judul <span style="color:red">*</span></div>
+        <div class="col-md-3">Keterangan <span style="color:red">*</span></div>
         <div class="col-md-9">
             <div class="form-group">
                 <input type="text" class="form-control" placeholder="[-]....." id="subtitle2" name="subtitle2"

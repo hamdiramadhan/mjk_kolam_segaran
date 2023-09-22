@@ -60,7 +60,7 @@
                     ?>
                     @push('detail')
                         <tr>
-                            <td colspan="6">&nbsp;&nbsp;&nbsp;<b>{!! $r3->kode_rekening !!} {!! $r3->rek->nama_rekening ?? '' !!}</b></td>
+                            <td colspan="6">&nbsp;&nbsp;&nbsp;<b>{!! $r3->kode_rekening !!} {!! $r3->rekening->nama_rek ?? '' !!}</b></td>
                         </tr>
                     @endpush
                     @foreach ($data_komponen as $r4)

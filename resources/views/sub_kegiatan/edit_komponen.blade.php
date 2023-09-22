@@ -5,7 +5,7 @@
     <p style="font-weight:bold"><i>Yang bertanda <span class="text-danger">*</span> wajib diisi/dipilih.</i></p>
     <input type="hidden" class="form-control" id="id" name="id" value="{{ $data->id }}">
     <div class="row mb-2">
-        <div class="col-md-3">Judul <span style="color:red">*</span></div>
+        <div class="col-md-3">Kelompok Belanja <span style="color:red">*</span></div>
         <div class="col-md-9">
             <div class="form-group">
                 <input type="text" class="form-control" placeholder="[#]....." id="subtitle" name="subtitle" value="{{ $data->subtitle ?? '[#]' }}" required>
@@ -13,7 +13,7 @@
         </div>
     </div>
     <div class="row mb-2">
-        <div class="col-md-3">Sub Judul <span style="color:red">*</span></div>
+        <div class="col-md-3">Keterangan <span style="color:red">*</span></div>
         <div class="col-md-9">
             <div class="form-group">
                 <input type="text" class="form-control" placeholder="[-]....." id="subtitle2" name="subtitle2" value="{{ $data->subtitle2 ?? '[-]' }}" required>

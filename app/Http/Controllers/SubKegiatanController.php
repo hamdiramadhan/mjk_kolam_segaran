@@ -428,6 +428,14 @@ class SubKegiatanController extends Controller
             SELECT opd_id, unit_id, master_sub_kegiatan_id, kode_sub_kegiatan, id, kode_rekening, nama_rekening,kode_rekening, nama_rekening, 1, harga, '1 Data Awal', sync_kode, tahun 
             FROM rekenings
             ";
+            $q="UPDATE  detail
+            SET subtitle='[#]'
+            where subtitle is null;
+            UPDATE  detail
+            SET subtitle2='[-]'
+            where subtitle2 is null;
+            ";
+            
         }
 
     }
@@ -463,7 +471,7 @@ class SubKegiatanController extends Controller
             ]);
             return back()->with('status', 'Data berhasil dipindah');
         } else {
-            return back()->with('statusGagal', 'Data Gagal dipindah, Pastikan sudah mencentang pada kolom sub kegiatan !!');
+            return back()->with('statusT', 'Data Gagal dipindah, Pastikan sudah mencentang pada kolom sub kegiatan !!');
         }
     } 
 
@@ -485,55 +493,55 @@ class SubKegiatanController extends Controller
 
     }
     public function sub_kegiatan_rincian_komponen($id_sub_kegiatan)
-    {
-        // page sendiri 
+    { 
         $id_sub_kegiatan = decrypt($id_sub_kegiatan);
         $sub_keg = MasterSubKegiatan::find($id_sub_kegiatan);
         $kode_sub_kegiatan = $sub_keg->kode_sub_kegiatan;
         $unit_id = $sub_keg->opd->unit_id;
-        $data_rekening = MasterRekening::orderBy('kode_rek')->get();
-
+        $data_rekenings = MasterRekening::orderBy('kode_rek')
+            ->whereRaw("length(kode_rek) >= 12")
+            ->get();  
+        $data_satuan = Satuan::orderBy('satuan')->get();
     	$details = Detail::select('master_sub_kegiatan_id', 'subtitle')
                     ->where('master_sub_kegiatan_id', $id_sub_kegiatan)
                     ->distinct()
                     ->orderBy('subtitle')
                     ->get(); 
-        return view('sub_kegiatan.komponen', ['nama_header'=>'Detail Komponen'], compact('id_sub_kegiatan', 'sub_keg', 'kode_sub_kegiatan', 'unit_id','details','data_rekening') );  
+        return view('sub_kegiatan.komponen', ['nama_header'=>'Detail Komponen'], compact('id_sub_kegiatan', 'sub_keg', 'kode_sub_kegiatan', 'unit_id','details','data_rekenings','data_satuan') );  
     } 
    
     public function add_komponen(Request $request)
-    {
-        if (!empty($request->unit_id)) {
-            Detail::create([
-                'unit_id' => $request->unit_id,
-                'kode_kegiatan' => $request->kode_kegiatan,
-                'id_kegiatan' => $request->id_kegiatan,
-                'sipd_id_program' => $request->sipd_id_program,
-                'sipd_id_giat' => $request->sipd_id_giat,
-                'sipd_id_sub_giat' => $request->sipd_id_sub_giat,
-                'sipd_id_skpd' => $request->sipd_id_skpd,
-                'sipd_id_sub_skpd' => $request->sipd_id_sub_skpd,
-                'tahun' => $request->tahun,
-                'kode_rekening' => $request->kode_rekening,
-                'subtitle' => $request->subtitle,
-                'subtitle2' => $request->subtitle2,
-                'detail' => $request->detail,
-                'spek' => $request->spek,
-                'satuan' => $request->satuan,
-                'volume' => $request->volume,
-                'harga' => $request->harga,
-                'nilai' => 0,
-                'koefisien' => $request->volume . ' ' . $request->satuan,
-                'ppn' => $request->ppn,
-                'jenis_belanja' => substr(($request->kode_rekening), 0, 3),
-                'jenis_belanja_2' => substr(($request->kode_rekening), 0, 6),
-                'id_jadwal' => Auth::user()->id_jadwal,
-            ]);
+    { 
+        if (!empty($request->opd_id)) {
+            $opd = Opd::find($request->opd_id);
+            $subgiat = MasterSubKegiatan::find($request->id_kegiatan);
+            $rekenings = MasterRekening::where('kode_rek',$request->kode_rekening)->first();
+            $new = new Detail();
+            $new->opd_id = $request->opd_id;
+            $new->unit_id = $opd->unit_id;
+            $new->master_sub_kegiatan_id = $subgiat->id;
+            $new->kode_sub_kegiatan = $subgiat->kode_sub_kegiatan;
+            $new->rekenings_id = $rekenings->id;
+            $new->kode_rekening = $request->kode_rekening;
+            $new->nama_rekening = $rekenings->nama_rek;
+            $new->kode_detail = $request->kode_rekening;
+            $new->detail = $request->detail;
+            $new->merk = $request->merk;
+            $new->spek = $request->spek;
+            $new->satuan = $request->satuan;
+            $new->volume = $request->volume;
+            $new->koefisien = $request->volume . ' ' . $request->satuan;
+            $new->harga = $request->harga; 
+            $new->ppn = $request->ppn;
+            $new->tahun = $request->tahun;
+            $new->subtitle = $request->subtitle;
+            $new->subtitle2 = $request->subtitle2;  
+            $new->save(); 
 
             session()->put('status', 'Data berhasil ditambah');
         } else {
-            session()->put('statusGagal', 'Data Gagal ditambah');
-        }
+            session()->put('statusT', 'Data Gagal ditambah'); 
+        } 
         return back();
     }
 
@@ -546,9 +554,8 @@ class SubKegiatanController extends Controller
     }
 
     public function update_komponen(Request $request)
-    { 
-        // dd($request->all());
-        if (!empty($request->id)) {
+    {  
+        if (!empty($request->id)) { 
             $koderek = MasterRekening::where('kode_rek',$request->kode_rekening)->first();
             if(empty($request->ppn))
             {
@@ -556,6 +563,7 @@ class SubKegiatanController extends Controller
             } else {
                 $ppn = $request->ppn;
             }
+
             Detail::where('id', $request->id)->update([
                 'rekenings_id' => $koderek->id,
                 'kode_rekening' => $request->kode_rekening,
@@ -571,7 +579,7 @@ class SubKegiatanController extends Controller
             ]);
             session()->put('status', 'Data berhasil diubah');
         } else {
-            session()->put('statusGagal', 'Data Gagal diubah');
+            session()->put('statusT', 'Data Gagal diubah');
         }
         return back();
     }

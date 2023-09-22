@@ -15,7 +15,7 @@ class PengajuanDetail extends Model
     }
     public function pengajuan()
     {
-        return $this->belongsTo('App\Models\Pengajuan', 'pengajuan_id', 'id');
+        return $this->belongsTo(Pengajuan::class, 'pengajuan_id', 'id');
     }
 
     public function komponens()

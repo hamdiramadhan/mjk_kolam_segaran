@@ -94,6 +94,7 @@ class PengajuanDetailController extends Controller
         $id = decrypt($id);
         // page sendiri 
         $pengajuan_detail = PengajuanDetail::find($id);
+        $pengajuan = $pengajuan_detail->pengajuan;
         $id_sub_kegiatan = $pengajuan_detail->sub_kegiatan->id;
         $sub_keg = MasterSubKegiatan::find($id_sub_kegiatan);
         $kode_sub_kegiatan = $sub_keg->kode_sub_kegiatan;
@@ -106,7 +107,7 @@ class PengajuanDetailController extends Controller
                     ->orderBy('subtitle')
                     ->get();
         $data = PengajuanDetailKomponen::where('pengajuan_detail_id',$id)->get();
-        return view('pengajuan.pengajuan_detail.komponen', ['nama_header'=>'Detail Komponen'], compact('id_sub_kegiatan', 'sub_keg', 'kode_sub_kegiatan', 'unit_id','details','data_rekening','pengajuan_detail','data'));  
+        return view('pengajuan.pengajuan_detail.komponen', ['nama_header'=>'Detail Komponen'], compact('id_sub_kegiatan', 'sub_keg', 'kode_sub_kegiatan', 'unit_id','details','data_rekening','pengajuan_detail','pengajuan','data'));  
     } 
 
     public function geser_komponen(Request $request,$id)
@@ -326,7 +327,7 @@ class PengajuanDetailController extends Controller
     public function destroy($id)
     {
         $id = decrypt($id);
-        $data = PengajuanDetail::find($id);
+        $data = PengajuanDetail::findOrFail($id);
         session()->put('status', 'Data Pengajuan  Berhasil dibatalkan!');
         $data->delete();
         return redirect()->back();
