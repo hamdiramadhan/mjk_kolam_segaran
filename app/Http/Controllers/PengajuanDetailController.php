@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Detail;
 use App\Models\DetailRincian;
+use App\Models\Fase;
 use App\Models\MasterRekening;
 use App\Models\MasterSubKegiatan;
 use App\Models\Opd;
@@ -91,10 +92,13 @@ class PengajuanDetailController extends Controller
 
     public function komponen($id)
     {
-        $id = decrypt($id);
-        // page sendiri 
+        $id = decrypt($id); 
         $pengajuan_detail = PengajuanDetail::find($id);
         $pengajuan = $pengajuan_detail->pengajuan;
+        $fases = Fase::where('tahun', $pengajuan->fase->tahun)
+        ->whereRaw("kode::integer <= {$pengajuan->fase->kode}")    
+        ->orderByRaw("kode::integer")    
+        ->get(); 
         $id_sub_kegiatan = $pengajuan_detail->sub_kegiatan->id;
         $sub_keg = MasterSubKegiatan::find($id_sub_kegiatan);
         $kode_sub_kegiatan = $sub_keg->kode_sub_kegiatan;
