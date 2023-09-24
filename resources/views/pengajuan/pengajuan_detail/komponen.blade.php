@@ -168,6 +168,7 @@
                                                 <tr>
                                                     @if ($pengajuan_detail->pengajuan->usulan->id != 4)
                                                         <td colspan="6">&nbsp;&nbsp;&nbsp;<b>
+                                                                {{ $id_detail_murni }}
                                                                 {!! $r3->kode_rekening !!}
                                                                 {!! $r3->rek->nama_rekening ?? '' !!}</b></td>
 
