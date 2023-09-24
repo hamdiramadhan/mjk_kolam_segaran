@@ -45,7 +45,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-10">
-                    <b>Status RKBMD</b> : <span class="badge badge-{{ $pengajuan->stat->color_div }}">
+                    <b>Status </b> : <span class="badge badge-{{ $pengajuan->stat->color_div }}">
                         <b>{{ @$pengajuan->stat->nama }}</b>
                     </span>
                     <br>
@@ -53,13 +53,15 @@
                     <br>
                     <b>SKPD</b> : {{ $pengajuan->unit_id }}
                     <br>
+                    <b>Fase</b> : {{ @$pengajuan->fase->nama }}
+                    <br>
                     <b>Tanggal Surat</b> : {{ $pengajuan->tanggal_surat }}
                     <br>
                     <b>Nomor Surat</b> : {{ $pengajuan->nomor_surat }}
                     <br>
                     <b>Usulan</b> : {{ @$pengajuan->usulan->usulan }}
                     <br>
-                    <b>Tahun RKBMD</b> : <b style="color: red">{{ @$pengajuan->tahun }}</b>
+                    <b>Tahun </b> : <b style="color: red">{{ @$pengajuan->tahun }}</b>
                     <br>
 
                     {{ $pengajuan->keterangan }}
@@ -75,9 +77,11 @@
                     type="button" class="btn btn-primary px-5"><i class="bx bx-plus mr-1"></i>Tambah Sub Kegiatan</a>
             </div>
         @endif
+    </div>
+    <div class="card">
 
 
-        <div class="scrollable">
+        <div class="card-body overflow-hidden p-relative z-index-1 scrollable">
             <table class="table text-md-nowrap datatable-basic-subkegiatan ">
                 <thead>
                     <tr>
@@ -100,24 +104,29 @@
                     $total_pagu = 0;
                     ?>
                     @foreach ($pengajuan_detail as $dk)
-                        <?php $n++;
-                        $pagu = $dk->sub_kegiatan->get_total_komponen($dk->master_sub_kegiatan_id);
+                        <?php 
+                        $n++;
+                        try { 
+                            $pagu = @$dk->sub_kegiatan->get_total_komponen($dk->master_sub_kegiatan_id);
+                        } catch (\Throwable $th) {
+                            $pagu = 0;
+                        }
                         $total_pagu += $pagu; ?>
                         <tr>
                             <td>{{ $n }}</td>
                             <td style="background-color: #ccf6c8 !important">
-                                Prog : {{ $dk->sub_kegiatan->kegiatan->program->kode_program }}
-                                {{ $dk->sub_kegiatan->kegiatan->program->nama_program }}
+                                Prog : {{ @$dk->sub_kegiatan->kegiatan->program->kode_program }}
+                                {{ @$dk->sub_kegiatan->kegiatan->program->nama_program }}
                             </td>
                             <td style="background-color: #ccf6c8 !important">
-                                &nbsp;&nbsp;&nbsp;&nbsp;Keg : {{ $dk->sub_kegiatan->kegiatan->kode_kegiatan }}
-                                {{ $dk->sub_kegiatan->kegiatan->nama_kegiatan }}
+                                &nbsp;&nbsp;&nbsp;&nbsp;Keg : {{ @$dk->sub_kegiatan->kegiatan->kode_kegiatan }}
+                                {{ @$dk->sub_kegiatan->kegiatan->nama_kegiatan }}
                             </td>
                             <td style="word-break: break-word !important;"><input class="form-check-input" type="checkbox"
-                                    value="{{ $dk->sub_kegiatan->id }}" name="sub_kegiatan[]" id="checks"
-                                    onclick="Checkeds()" style="display:none"> {{ $dk->sub_kegiatan->kode_sub_kegiatan }}
+                                    value="{{ @$dk->sub_kegiatan->id }}" name="sub_kegiatan[]" id="checks"
+                                    onclick="Checkeds()" style="display:none"> {{ @$dk->sub_kegiatan->kode_sub_kegiatan }}
                             </td>
-                            <td> {{ $dk->sub_kegiatan->nama_sub_kegiatan }}</td>
+                            <td> {{ @$dk->sub_kegiatan->nama_sub_kegiatan }}</td>
                             <td>
                                 @foreach ($detail_sumberdana->where('pengajuan_detail_id', $dk->id) as $r)
                                     <li>{{ $r->sumber_dana->nama }}</li>
@@ -136,31 +145,29 @@
                                 </a>
                                 <br><br>
 
-                                <form method="POST"
-                                    onsubmit="return confirm('Anda yakin Membatalkan Pengajuan data ini ??')"
-                                    action="{{ route('pengajuan_detail.destroy', encrypt($r->id)) }}">
+                                <form method="POST" onsubmit="return confirm('Anda yakin Membatalkan Pengajuan data ini ??')"
+                                    action="{{ route('pengajuan_detail.destroy', encrypt($dk->id)) }}">
                                     @csrf
                                     <button type="submit" class="btn btn-sm btn-outline-danger">
-                                        <i class="bx bx-trash me-0"></i>
+                                        <i class="bx bx-trash me-0"></i> 
                                     </button>
                                 </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
-        </td>
-        </tr>
-        @endforeach
-        </tbody>
-        </table>
-    </div>
     </div>
 
 
 
-    <div id="ModalBiruSm" class="modal fade modalAddSubKegiatan" tabindex="-1" role="dialog"
+    <div id="" class="modal fade modalAddSubKegiatan" tabindex="-1" role="dialog"
         aria-labelledby="myModalLabel" aria-hidden="true" width="100%">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-primary">
-                    <h6 class="modal-title" id="ModalBiruSmLabel" style="color:white">
+                    <h6 class="modal-title" id="Label" style="color:white">
                         Judul
                     </h6>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

@@ -59,7 +59,7 @@
         </div>
     @endif
     <div class="card">
-        <div class="card-body overflow-hidden p-relative z-index-1">
+        <div class="card-body overflow-hidden p-relative z-index-1"> 
             <div class="row">
                 <div class="col-sm-5">
                     <b>Status </b> : <span class="badge badge-{{ $pengajuan->stat->color_div }}">
@@ -88,45 +88,57 @@
                     Jenis Pergeseran : <b>{{ $pengajuan_detail->pengajuan->usulan->usulan }}</b><br>
                     Jenis Pergeseran : <b>{{ $pengajuan_detail->id }}</b><br>
                 </div>
-            </div>
+            </div> 
         </div>
     </div>
+
+
     <div class="card">
         <div class="card-body overflow-hidden p-relative z-index-1">
+
             <div class="col-lg-12">
                 <div class="panel panel-info">
                     <div class="panel-body">
-                        <table class="table table-bordered table-hover" border="1">
+                        <table class="table table-bordered table-hover">
                             <thead>
                                 <tr>
-                                    <th style="text-align: center;" colspan="6">Rincian Murni</th>
-                                    {{-- <th style="text-align: center; width: 47%;" colspan="6">Rincian Perubahan</th> --}}
-                                    <th style="text-align: center; " rowspan="2">Act</th>
+                                    <th style="text-align: center; " rowspan="2">Uraian</th>
+                                    <th style="text-align: center; width: 47%;" colspan="4">Rincian Murni</th>
+                                    <th style="text-align: center; width: 14%;" rowspan="2">Jumlah</th>
+
+                                    <th style="text-align: center; width: 47%;" colspan="8">Rincian Perubahan</th>
                                 </tr>
                                 <tr>
-                                    <th style="text-align: center;">Uraian</th>
                                     <th style="text-align: center;">Satuan</th>
                                     <th style="text-align: center;">Koefisien</th>
                                     <th style="text-align: center;">Harga</th>
                                     <th style="text-align: center;">PPN</th>
-                                    <th style="text-align: center;">Jumlah</th>
 
 
-                                    {{-- <th style="text-align: center; ">Uraian</th>
+                                    <th style="text-align: center; ">Uraian</th>
                                     <th style="text-align: center;">Satuan</th>
                                     <th style="text-align: center;">Koefisien</th>
                                     <th style="text-align: center;">Harga</th>
-                                    <th style="text-align: center;">PPN</th> 
-                                    <th style="text-align: center;">Jumlah</th> --}}
+                                    <th style="text-align: center;">PPN</th>
+                                    <th style="text-align: center; width: 14%;">Jumlah</th>
+
+                                    <th style="text-align: center; " rowspan="2">Act</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @php $total = 0; @endphp
                                 @foreach ($details as $r1)
                                     @php
+                                        // dd($r1);
                                         $detail_id = App\Models\Detail::where('subtitle', $r1->subtitle)
                                             ->where('master_sub_kegiatan_id', $r1->master_sub_kegiatan_id)
                                             ->first();
+                                        // $detail_id = App\Models\Detail::select('*')
+                                        //     ->where(function ($query) use ($r1) {
+                                        //         $query->where('subtitle', '=', $r1->subtitle)->orWhereNull('subtitle');
+                                        //     })
+                                        //     ->where('master_sub_kegiatan_id', '=', $r1->master_sub_kegiatan_id)
+                                        //     ->first();
                                         $detail_rincian_pergeseran = App\Models\DetailRincian::where('pengajuan_id', $pengajuan_detail->pengajuan_id)
                                             ->where('master_sub_kegiatan_id', $id_sub_kegiatan)
                                             ->where('detail_id', $detail_id->id)
@@ -136,7 +148,8 @@
                                     @endphp
                                     @push('detail')
                                         <tr>
-                                            <td colspan="7"><b>{!! $r1->subtitle ?? '#' !!}</b></td>
+                                            <td colspan="13"><b>{!! $r1->subtitle ?? '#' !!}</b></td>
+
                                         </tr>
                                     @endpush
                                     <?php
@@ -151,8 +164,9 @@
                                         ?>
                                         @push('detail')
                                             <tr>
-                                                <td colspan="7">&nbsp;<b>{!! $r2->subtitle2 ?? '-' !!} </b>
+                                                <td colspan="13">&nbsp;<b>{!! $r2->subtitle2 ?? '-' !!} </b>
                                                 </td>
+
                                             </tr>
                                         @endpush
                                         @foreach ($data_rekening as $r3)
@@ -172,11 +186,13 @@
                                             @push('detail')
                                                 <tr>
                                                     @if ($pengajuan_detail->pengajuan->usulan->id != 4)
-                                                        <td colspan="6">&nbsp;&nbsp;&nbsp;
-                                                            <b>
+                                                        <td colspan="6">&nbsp;&nbsp;&nbsp;<b>
                                                                 {!! $r3->kode_rekening !!}
-                                                                {!! @$r3->rekening->nama_rek ?? '' !!}
-                                                            </b>
+                                                                {!! @$r3->rekening->nama_rek ?? '' !!}</b></td>
+
+                                                        <td colspan="6">&nbsp;&nbsp;&nbsp;<b>
+                                                                {!! @$data_rekening_pergeseran->rekening->kode_rek !!}
+                                                                {!! @$data_rekening_pergeseran->rekening->nama_rek ?? '' !!}</b>
                                                         </td>
                                                         <td style="text-align: center">
                                                             @if ($pengajuan_detail->pengajuan->usulan->id == 1)
@@ -189,18 +205,18 @@
                                                             @php
                                                                 $kode_rekening = substr($r3->kode_rekening, 0, $length);
                                                             @endphp
-                                                            {{-- @if (@$data_rekening_pergeseran->flag == 0) --}}
-                                                            <button title="Pergeseran Rekening" data-toggle="tooltip"
-                                                                onclick="update_kode_rekening('{{ csrf_token() }}', '{{ route('update_kode_rekening', $id_detail_murni->id) }}','{{ encrypt($pengajuan_detail->id) }}','{{ $kode_rekening }}','#ModalKuningSm')"
-                                                                class="btn btn-sm btn-outline-warning">
-                                                                <i
-                                                                    class="bx bx-message-check
+                                                            @if (@$data_rekening_pergeseran->flag == 0)
+                                                                <button title="Pergeseran Rekening" data-toggle="tooltip"
+                                                                    onclick="update_kode_rekening('{{ csrf_token() }}', '{{ route('update_kode_rekening', $id_detail_murni->id) }}','{{ encrypt($pengajuan_detail->id) }}','{{ $kode_rekening }}','#ModalKuningSm')"
+                                                                    class="btn btn-sm btn-outline-warning">
+                                                                    <i
+                                                                        class="bx bx-message-check
                                                                     me-0"></i>
-                                                            </button>
-                                                            {{-- @endif --}}
+                                                                </button>
+                                                            @endif
                                                         </td>
                                                     @else
-                                                        <td colspan="7">&nbsp;&nbsp;&nbsp;<b>
+                                                        <td colspan="12">&nbsp;&nbsp;&nbsp;<b>
                                                                 {{ $detail_id->id }}
                                                                 {!! $r3->kode_rekening !!}
                                                                 {!! @$r3->rekening->nama_rek ?? '' !!}</b></td>
@@ -236,6 +252,55 @@
                                                             ?>
                                                             {!! number_format($harga_ppn * $r4->volume, 0, ',', '.') !!}
                                                         </td>
+                                                        {{-- Pergeseran --}}
+
+                                                        <td>&nbsp;&nbsp;&nbsp;
+                                                            {!! @$data_komponen_pergeseran->detail_pergeseran !!} {{ @$data_komponen_pergeseran->spek_pergeseran }}
+                                                        </td>
+                                                        <td>
+                                                            {!! @$data_komponen_pergeseran->satuan_pergeseran !!}
+                                                        </td>
+                                                        <td>
+                                                            {!! @$data_komponen_pergeseran->koefisien_pergeseran !!}
+                                                        </td>
+                                                        <td align="right">
+                                                            {!! number_format(@$data_komponen_pergeseran->harga_pergeseran, 0, ',', '.') !!}
+                                                        </td>
+                                                        <td align="right">
+                                                            {!! number_format(@$data_komponen_pergeseran->ppn_pergeseran, 0, ',', '.') !!}
+                                                        </td>
+                                                        <td align="right">
+                                                            <?php
+                                                            @$harga_ppn_pergeseran = $data_komponen_pergeseran->harga_pergeseran + ($data_komponen_pergeseran->harga_pergeseran * $data_komponen_pergeseran->ppn_pergeseran) / 100;
+                                                            ?>
+                                                            {!! number_format($harga_ppn_pergeseran ?? '0', 0, ',', '.') !!}
+                                                        </td>
+                                                        <td>
+                                                            <div class="d-flex p-2">
+                                                                {{-- <button title="Pergeseran" data-toggle="tooltip"
+                                                                    onclick="update_detail_komponen('{{ csrf_token() }}', '{{ route('update_detail_komponen', $r4->id) }}','{{ encrypt($pengajuan_detail->id) }}', '#ModalBiruSm')"
+                                                                    class="btn btn-sm btn-outline-primary">
+                                                                    <i
+                                                                        class="bx bx-message-check
+                                                                    me-0"></i>
+                                                                </button> --}}
+                                                                @if (@$data_komponen_pergeseran->flag == 0)
+                                                                    <button title="Pergeseran Rincian" data-toggle="tooltip"
+                                                                        onclick="update_detail_rincian('{{ csrf_token() }}', '{{ route('update_detail_rincian', $id_detail_murni->id) }}','{{ encrypt($pengajuan_detail->id) }}', '#ModalBiruSm')"
+                                                                        class="btn btn-sm btn-outline-primary">
+                                                                        <i
+                                                                            class="bx bx-message-check
+                                                                    me-0"></i>
+                                                                    </button>
+                                                                @endif
+                                                                {{-- <button type="button"
+                                                                    onclick="delete_detail_komponen('{{ csrf_token() }}', '{{ $r4->id }}')"
+                                                                    title="Hapus" class="btn btn-sm btn-outline-danger">
+                                                                    <i class="bx bx-trash me-0"></i>
+                                                                </button> --}}
+                                                            </div>
+                                                        </td>
+
 
                                                     </tr>
                                                 @endpush

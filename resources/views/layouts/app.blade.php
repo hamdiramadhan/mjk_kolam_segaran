@@ -448,6 +448,58 @@
             width: '100%',
             dropdownParent: $('#modal_setting_app')
         });
+        function addCommas(nStr) {
+            nStr += "";
+            x = nStr.split(".");
+            x1 = x[0];
+            x2 = x.length > 1 ? "," + x[1] : "";
+            var rgx = /(\d+)(\d{3})/;
+            while (rgx.test(x1)) {
+                x1 = x1.replace(rgx, "$1" + "." + "$2");
+            }
+            return x1 + x2;
+        }
+
+function delete_detail_komponen(token, id) {
+    swal({
+            title: "Yakin Untuk Menghapus Data ini?",
+            text: "",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#FF5722",
+            confirmButtonText: "Ya, Hapus!",
+            cancelButtonText: "Tidak!",
+            closeOnConfirm: false,
+            closeOnCancel: true,
+            showLoaderOnConfirm: true,
+        },
+        function(isConfirm) {
+            if (isConfirm) {
+                var act = "/destroy_komponen/" + id;
+
+                $.post(
+                    act, {
+                        _token: token,
+                    },
+                    function(data) {
+                        swal({
+                                title: "Data Terhapus!",
+                                text: "",
+                                confirmButtonColor: "#4CAF50",
+                                type: "success",
+                            },
+                            function(isConfirm) {
+                                if (isConfirm) {
+                                    location.reload();
+                                }
+                            }
+                        );
+                    }
+                );
+            }
+        }
+    );
+}
     </script>
     @stack('scripts')
 </body>

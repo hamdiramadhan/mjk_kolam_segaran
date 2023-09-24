@@ -129,12 +129,12 @@
         </div>
     </div>
 
-    <div id="ModalBiruSm" class="modal fade modalAddSubKegiatan" tabindex="-1" role="dialog"
+    <div id="" class="modal fade modalAddSubKegiatan" tabindex="-1" role="dialog"
         aria-labelledby="myModalLabel" aria-hidden="true" width="100%">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-primary">
-                    <h6 class="modal-title" id="ModalBiruSmLabel" style="color:white">
+                    <h6 class="modal-title" id="Label" style="color:white">
                         Judul
                     </h6>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

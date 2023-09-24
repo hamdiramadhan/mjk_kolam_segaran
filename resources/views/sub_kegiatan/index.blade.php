@@ -64,13 +64,12 @@
         aria-labelledby="createModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="createModalLabel">IMPORT Data Program-Kegiatan-Sub Kegiatan Tahun <b>{{ Auth::user()->tahun ?? date('Y') }} {{ @Auth::user()->skpd->unit_name ?? 'Data Global' }} </b>
-                    </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+                <div class="modal-header bg-primary">
+                    <h6 class="modal-title" style="color:white">
+                        IMPORT Data Program-Kegiatan-Sub Kegiatan Tahun <b>{{ Auth::user()->tahun ?? date('Y') }} {{ @Auth::user()->skpd->unit_name ?? 'Data Global' }} </b>
+                    </h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>  
                 <div class="modal-body">
                     <p>
                         IMPORT Data Program-Kegiatan-Sub Kegiatan Tahun <b><span class="txt_tahun_asb">{{ Auth::user()->tahun ?? date('Y') }}</span></b>.

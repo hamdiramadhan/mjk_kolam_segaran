@@ -29,13 +29,13 @@ class PengajuanController extends Controller
      */
     public function index()
     {
-        $opd = Opd::find(Auth::user()->opd_id);
-        $pengajuan = Pengajuan::where('status',0)->where('opd_id',$opd->id)->where('tahun',Auth::user()->tahun)->get();
+        $opd = Opd::findOrFail(Auth::user()->opd_id);
+        $pengajuan = Pengajuan::with('fase')->where('status',0)->where('opd_id',$opd->id)->where('tahun',Auth::user()->tahun)->get();
         if(Auth::user()->role_id == 1 || Auth::user()->role_id == 3){
-            $pengajuan = Pengajuan::where('status',0)->get();
+            $pengajuan = Pengajuan::with('fase')->where('status',0)->get();
         } 
         $pengajuan_alasan = PengajuanAlasan::All();
-        $count_pengajuan = Pengajuan::whereIn('status',[0,1,2])->where('opd_id',$opd->id)->where('tahun',Auth::user()->tahun)->count();
+        $count_pengajuan = Pengajuan::with('fase')->whereIn('status',[0,1,2])->where('opd_id',$opd->id)->where('tahun',Auth::user()->tahun)->count();
         $status = MasterStatus::whereNotIn('kode',[0,1])->get();
         $nama_header = 'Pengajuan Perubahan '.$opd->unit_name .' '. Auth::user()->tahun;
         return view('pengajuan.index',['nama_header'=>$nama_header],compact('pengajuan','pengajuan_alasan','count_pengajuan','status'));
@@ -273,7 +273,7 @@ class PengajuanController extends Controller
         $data_opd = Opd::orderBy('unit_id')->get();
         $pengajuan = Pengajuan::find($id);
         $sumber_dana = SumberDana::all();
-        $pengajuan_detail = PengajuanDetail::where('pengajuan_id',$id)->get();
+        $pengajuan_detail = PengajuanDetail::with('sub_kegiatan')->where('pengajuan_id',$id)->get();
         $detail_sumberdana = PengajuanDetailSumberdana::all();
         return view('pengajuan.detail',['nama_header'=>'Rincian Sub kegiatan'],
             compact('pengajuan','opd_id', 'opd', 'tahun','data_opd','sumber_dana','id','pengajuan_detail','detail_sumberdana')

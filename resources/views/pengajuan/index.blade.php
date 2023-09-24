@@ -84,6 +84,8 @@
                                 <td>
                                     <b>SKPD</b> : {{ $p->unit_id }} {{ @$p->skpd->unit_name }}
                                     <br>
+                                    <b>Fase</b> : {{ @$p->fase->nama }}
+                                    <br>
                                     <b>Jabatan TTD</b> : {{ $p->skpd->jabatan }}
                                     <br>
                                     <b>NIP TTD</b> : {{ $p->skpd->nip }}
@@ -141,7 +143,7 @@
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header bg-gradient-deepblue">
-                                                    <h6 class="modal-title" id="ModalBiruSmLabel" style="color:white">
+                                                    <h6 class="modal-title" id="" style="color:white">
                                                         Verifikasi Pergeseran
                                                     </h6>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"

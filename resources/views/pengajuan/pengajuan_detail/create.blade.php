@@ -85,12 +85,14 @@
                                 &nbsp;&nbsp;&nbsp;&nbsp;Keg : {{ @$dk->kegiatan->kode_kegiatan }}
                                 {{ @$dk->kegiatan->nama_kegiatan }}
                             </td>
-                            <td style="word-break: break-word !important;"><input class="form-check-input"
-                                    style="transform: scale(1.5)  !important" type="checkbox"
-                                    value="{{ $dk->id }}" name="sub_kegiatan[]" id="checks"
-                                    onclick="Checkeds()">
+                            <td style="word-break: break-word !important;">
+                                <input class="form-check-input" style="transform: scale(1.5)  !important"
+                                    type="checkbox" value="{{ $dk->id }}" name="sub_kegiatan[]"
+                                    id="checks_{{ $dk->id }}" onclick="Checkeds()">
 
-                                {{ $dk->kode_sub_kegiatan }}
+                                <label for="checks_{{ $dk->id }}">
+                                    {{ $dk->kode_sub_kegiatan }}
+                                </label>
                             </td>
                             <td>
                                 <select id="sumber_dana_{{ $dk->id }}" name="sumber_dana_{{ $dk->id }}[]"
@@ -108,11 +110,11 @@
                                 </span>
                             </td>
                             <td>
-                                <button type="button" class="btn btn-sm btn-outline-primary" data-popup="tooltip"
+                                {{-- <button type="button" class="btn btn-sm btn-outline-primary" data-popup="tooltip"
                                     title="Komponen"
                                     onclick=" sub_kegiatan_rincian_detail('{{ csrf_token() }}','{{ $dk->id }}')">
                                     <i class="fa fa-list me-0"></i>
-                                </button>
+                                </button> --}}
                             </td>
                         </tr>
                     @endforeach
