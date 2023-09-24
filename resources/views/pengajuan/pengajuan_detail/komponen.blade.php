@@ -127,9 +127,11 @@
                                         $detail_id = App\Models\Detail::where('subtitle', $r1->subtitle)
                                             ->where('master_sub_kegiatan_id', $r1->master_sub_kegiatan_id)
                                             ->first();
-                                        $detail_rincian_pergeseran = App\Models\DetailRincian::where('pengajuan_id', $pengajuan_detail->pengajuan_id)
-                                            ->where('master_sub_kegiatan_id', $id_sub_kegiatan)
-                                            ->where('detail_id', $detail_id->id)
+                                        $detail_rincian_pergeseran = App\Models\DetailRincian::where('pengajuan_id', $pengajuan_detail->pengajuan_id)->where('master_sub_kegiatan_id', $id_sub_kegiatan);
+                                        if ($pengajuan_detail->pengajuan->usulan->id == 4) {
+                                            $detail_rincian_pergeseran = $detail_rincian_pergeseran->where('detail_id', $detail_id->id);
+                                        }
+                                        $detail_rincian_pergeseran = $detail_rincian_pergeseran
                                             ->distinct()
                                             ->orderBy('subtitle_pergeseran')
                                             ->first();
@@ -167,7 +169,7 @@
                                                 ->where('rekenings_id', $r3->rekenings_id)
                                                 ->first();
                                             
-                                            $data_rekening_pergeseran = App\Models\DetailRincian::get_rekening(@$id_sub_kegiatan, @$detail_rincian_pergeseran->subtitle_pergeseran, @$data_ket_bl_teks_pergeseran->subtitle2_pergeseran, $pengajuan_detail->pengajuan_id, $id_detail_murni->id);
+                                            $data_rekening_pergeseran = App\Models\DetailRincian::get_rekening($id_sub_kegiatan, $detail_rincian_pergeseran->subtitle_pergeseran, $data_ket_bl_teks_pergeseran->subtitle2_pergeseran, $pengajuan_detail->pengajuan_id, $id_detail_murni->id, $r3->kode_rekening);
                                             ?>
                                             @push('detail')
                                                 <tr>
@@ -189,15 +191,16 @@
                                                             @php
                                                                 $kode_rekening = substr($r3->kode_rekening, 0, $length);
                                                             @endphp
-                                                            {{-- @if (@$data_rekening_pergeseran->flag == 0) --}}
-                                                            <button title="Pergeseran Rekening" data-toggle="tooltip"
-                                                                onclick="update_kode_rekening('{{ csrf_token() }}', '{{ route('update_kode_rekening', $id_detail_murni->id) }}','{{ encrypt($pengajuan_detail->id) }}','{{ $kode_rekening }}','#ModalKuningSm')"
-                                                                class="btn btn-sm btn-outline-warning">
-                                                                <i
-                                                                    class="bx bx-message-check
+                                                            @if (@$data_rekening_pergeseran->flag == 0)
+                                                                <button title="Pergeseran Rekening" data-toggle="tooltip"
+                                                                    onclick="update_kode_rekening('{{ csrf_token() }}', '{{ route('update_kode_rekening', $id_detail_murni->id) }}','{{ encrypt($pengajuan_detail->id) }}','{{ $kode_rekening }}','#ModalKuningSm')"
+                                                                    class="btn btn-sm btn-outline-warning">
+                                                                    <i
+                                                                        class="bx bx-message-check
                                                                     me-0"></i>
-                                                            </button>
-                                                            {{-- @endif --}}
+                                                                </button>
+                                                            @endif
+
                                                         </td>
                                                     @else
                                                         <td colspan="7">&nbsp;&nbsp;&nbsp;<b>

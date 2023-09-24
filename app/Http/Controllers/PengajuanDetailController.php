@@ -255,25 +255,27 @@ class PengajuanDetailController extends Controller
             } else {
                 $ppn = $request->ppn_pergeseran;
             }
+        $list_detail = Detail::where('rekenings_id',$koderek->id)->get();
+        foreach($list_detail as $r){
             DetailRincian::create([
                 'pengajuan_detail_id' => $pengajuan_detail->id,
                 'pengajuan_id' => $pengajuan_detail->pengajuan_id,
-                'detail_id' => $request->detail_id,
+                'detail_id' => $r->id,
                 'master_sub_kegiatan_id' => $detail->master_sub_kegiatan_id,
-                'opd_id' => $detail->opd_id,
-                'unit_id' => $pengajuan_detail->pengajuan->unit_id,
+                'opd_id' => $r->opd_id,
+                'unit_id' => $r->unit_id,
                 'kode_sub_kegiatan' => $pengajuan_detail->sub_kegiatan->kode_sub_kegiatan,
-                'rekenings_id' => $koderek->id,
-                'kode_rekening_pergeseran' => $request->kode_rekening_pergeseran,
+                'rekenings_id' => $r->rekenings_id,
+                'kode_rekening_pergeseran' => $r->kode_rekening,
                 'nama_rekening_pergeseran' => $koderek->nama_rek,
-                'kode_detail_pergeseran' => $request->kode_rekening_pergeseran,
-                'detail_pergeseran' => $request->detail_pergeseran,
-                'satuan_pergeseran' => $detail->satuan, 
-                'volume_pergeseran' => $detail->volume,
-                'harga_pergeseran' => $detail->harga, 
-                'spek_pergeseran' => $detail->spek, 
-                'koefisien_pergeseran' => $detail->koefisien,
-                'ppn_pergeseran' => $ppn ?? 0,
+                'kode_detail_pergeseran' => $r->kode_detail,
+                'detail_pergeseran' => $r->detail,
+                'satuan_pergeseran' => $r->satuan, 
+                'volume_pergeseran' => $r->volume,
+                'harga_pergeseran' => $r->harga, 
+                'spek_pergeseran' => $r->spek, 
+                'koefisien_pergeseran' => $r->koefisien,
+                'ppn_pergeseran' => $r->ppn ?? 0,
                 'tahun_pergeseran' => Auth::user()->tahun,
                 'created_by'=>Auth::user()->id
             ]);
@@ -281,6 +283,7 @@ class PengajuanDetailController extends Controller
             DetailRincian::where('id', $detail_rincian->id)->update([
                 'flag'=>1
             ]);
+        }
 
             session()->put('status', 'Data berhasil ditambah');
         } else {

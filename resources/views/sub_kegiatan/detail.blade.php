@@ -15,9 +15,9 @@
     .table-group {
         background-color: #ccf6c8
     }
-</style> 
-<a href="{{ route('sub_kegiatan_rincian_komponen', encrypt($id_sub_kegiatan)) }}" target="_blank" class="btn btn-success btn-sm "
-    data-popup="tooltip" title="Aksi Komponen" style="margin-bottom:20px">
+</style>
+<a href="{{ route('sub_kegiatan_rincian_komponen', encrypt($id_sub_kegiatan)) }}" target="_blank"
+    class="btn btn-success btn-sm " data-popup="tooltip" title="Aksi Komponen" style="margin-bottom:20px">
     <i class="fas fa-plus"></i> Aksi Komponen
 </a>
 <table class="table table-bordered table-hover">
@@ -36,7 +36,7 @@
     </thead>
     <tbody>
         @php $total = 0; @endphp
-        @foreach ($details as $r1) 
+        @foreach ($details as $r1)
             @push('detail')
                 <tr>
                     <td colspan="6"><b>{!! $r1->subtitle !!}</b></td>
@@ -47,7 +47,7 @@
             ?>
             @foreach ($data_ket_bl_teks as $r2)
                 <?php
-                $data_rekening = App\Models\Detail::get_rekening($r1->master_sub_kegiatan_id, $r1->subtitle, $r2->subtitle2); 
+                $data_rekening = App\Models\Detail::get_rekening($r1->master_sub_kegiatan_id, $r1->subtitle, $r2->subtitle2);
                 ?>
                 @push('detail')
                     <tr>
@@ -55,7 +55,7 @@
                     </tr>
                 @endpush
                 @foreach ($data_rekening as $r3)
-                    <?php 
+                    <?php
                     $data_komponen = App\Models\Detail::get_komponen($r1->master_sub_kegiatan_id, $r1->subtitle, $r2->subtitle2, $r3->kode_rekening);
                     ?>
                     @push('detail')
@@ -64,33 +64,33 @@
                         </tr>
                     @endpush
                     @foreach ($data_komponen as $r4)
-                    @push('detail')
-                        <tr>
-                            <td>&nbsp;&nbsp;&nbsp;
-                                {!! $r4->detail !!} - {{ $r4->spek }}
-                            </td>
-                            <td>
-                                {!! $r4->satuan !!}
-                            </td>
-                            <td>
-                                {!! $r4->koefisien !!}
-                            </td> 
-                            <td align="right">
-                                {!! number_format($r4->harga, 0, ',', '.') !!}
-                            </td>
-                            <td align="right">
-                                {!! number_format($r4->ppn, 0, ',', '.') !!}
-                            </td>
-                            <td align="right">
-                                <?php
-                                $harga_ppn = $r4->harga + ($r4->harga * $r4->ppn) / 100;
-                                ?>
-                                {!! number_format($harga_ppn * $r4->volume, 0, ',', '.') !!}
-                            </td>
-                        </tr>
+                        @push('detail')
+                            <tr>
+                                <td>&nbsp;&nbsp;&nbsp;
+                                    {!! $r4->detail !!} - {{ $r4->spek }}
+                                </td>
+                                <td>
+                                    {!! $r4->satuan !!}
+                                </td>
+                                <td>
+                                    {!! $r4->koefisien !!}
+                                </td>
+                                <td align="right">
+                                    {!! number_format($r4->harga, 0, ',', '.') !!}
+                                </td>
+                                <td align="right">
+                                    {!! number_format($r4->ppn, 0, ',', '.') !!}
+                                </td>
+                                <td align="right">
+                                    <?php
+                                    $harga_ppn = $r4->harga + ($r4->harga * $r4->ppn) / 100;
+                                    ?>
+                                    {!! number_format($harga_ppn * $r4->volume, 0, ',', '.') !!}
+                                </td>
+                            </tr>
                         @endpush
                         @php
-                            $total+=$harga_ppn;
+                            $total += $harga_ppn;
                         @endphp
                     @endforeach
                 @endforeach
@@ -98,14 +98,14 @@
         @endforeach
 
         @push('subtotal')
-        <tr>
-            <td colspan="5" style="text-align: right"><b>Total</b></td>
-            <td align="right">
-                <b>
-                {!! number_format($total, 0, ',', '.') !!}
-                </b>
-            </td>
-        </tr>
+            <tr>
+                <td colspan="5" style="text-align: right"><b>Total</b></td>
+                <td align="right">
+                    <b>
+                        {!! number_format($total, 0, ',', '.') !!}
+                    </b>
+                </td>
+            </tr>
         @endpush
         @stack('subtotal')
         @stack('detail')

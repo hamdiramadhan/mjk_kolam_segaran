@@ -53,16 +53,22 @@ class DetailRincian extends Model
         return $details;
     }
 
-    public static function get_rekening($master_sub_kegiatan_id, $subtitle, $subtitle2,$pengajuan_id,$detail_id)
+    public static function get_rekening($master_sub_kegiatan_id, $subtitle, $subtitle2,$pengajuan_id,$detail_id,$kode_detail_rekening)
     { 
+        $koderek = MasterRekening::where('kode_rek',$kode_detail_rekening)->first();
+        $pengajuan = Pengajuan::find($pengajuan_id);
     	$res = DetailRincian::select('detail_rincians.master_sub_kegiatan_id', 'detail_rincians.subtitle_pergeseran','detail_rincians.nama_rekening_pergeseran', 'detail_rincians.subtitle2_pergeseran', 'detail_rincians.kode_rekening_pergeseran','detail_rincians.rekenings_id','detail_rincians.flag')
         ->join('detail', 'detail.id', '=', 'detail_rincians.detail_id')
         ->where('detail_rincians.master_sub_kegiatan_id', $master_sub_kegiatan_id)
         ->where('detail_rincians.subtitle_pergeseran', $subtitle)
         ->where('detail_rincians.subtitle2_pergeseran', $subtitle2)
-        ->where('pengajuan_id', $pengajuan_id)
-        ->where('detail_rincians.detail_id',$detail_id)
-        ->distinct()
+        ->where('pengajuan_id', $pengajuan_id);
+        if($pengajuan->usulan->id == 4){
+            $res = $res->where('detail_rincians.detail_id',$detail_id);
+        }else{
+            $res = $res->where('detail_rincians.rekening_detail_id',$koderek->id);
+        }
+        $res = $res->distinct()
         ->orderBy('kode_rekening_pergeseran')
         ->with(['rek'])
         ->first(); 

@@ -8,7 +8,8 @@
         <div class="col-md-3">Kelompok Belanja <span style="color:red">*</span></div>
         <div class="col-md-9">
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="[#]....." id="subtitle" name="subtitle" value="{{ $data->subtitle ?? '[#]' }}" required>
+                <input type="text" class="form-control" placeholder="[#]....." id="subtitle" name="subtitle"
+                    value="{{ $data->subtitle ?? '[#]' }}">
             </div>
         </div>
     </div>
@@ -16,7 +17,8 @@
         <div class="col-md-3">Keterangan <span style="color:red">*</span></div>
         <div class="col-md-9">
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="[-]....." id="subtitle2" name="subtitle2" value="{{ $data->subtitle2 ?? '[-]' }}" required>
+                <input type="text" class="form-control" placeholder="[-]....." id="subtitle2" name="subtitle2"
+                    value="{{ $data->subtitle2 ?? '[-]' }}">
             </div>
         </div>
     </div>
@@ -29,7 +31,7 @@
                         <option {{ $dt->kode_rek == $data->kode_rekening ? 'selected' : '' }}
                             value="{{ $dt->kode_rek }}">{{ $dt->kode_rek }} - {{ $dt->nama_rek }}</option>
                     @endforeach
-                </select> 
+                </select>
             </div>
         </div>
     </div>
@@ -55,8 +57,8 @@
         <div class="col-md-3">Volume <span style="color:red">*</span></div>
         <div class="col-md-9">
             <div class="form-group">
-                <input type="number" step="any" class="form-control" placeholder="Masukkan Jumlah"
-                    id="volume" name="volume" value="{{ $data->volume }}" required>
+                <input type="number" step="any" class="form-control" placeholder="Masukkan Jumlah" id="volume"
+                    name="volume" value="{{ $data->volume }}" required>
             </div>
         </div>
     </div>
@@ -66,10 +68,10 @@
             <div class="form-group">
                 <select class="select22_modal" name="satuan" id="satuan" style="width:100%" required>
                     @foreach ($data_satuan as $dt)
-                        <option {{ $dt->satuan == $data->satuan ? 'selected' : '' }}
-                            value="{{ $dt->satuan }}">{{ $dt->satuan }}</option>
+                        <option {{ $dt->satuan == $data->satuan ? 'selected' : '' }} value="{{ $dt->satuan }}">
+                            {{ $dt->satuan }}</option>
                     @endforeach
-                </select> 
+                </select>
             </div>
         </div>
     </div>
@@ -78,8 +80,8 @@
         <div class="col-md-9">
             <div class="form-group">
                 <input type="number" step="any" class="form-control" placeholder="Masukkan Harga" id="harga"
-                    name="harga" oninput="$('.txt_harga').html(addCommas(this.value));"
-                    value="{{ $data->harga }}" required>
+                    name="harga" oninput="$('.txt_harga').html(addCommas(this.value));" value="{{ $data->harga }}"
+                    required>
                 Rp. <span class="help-text txt_harga">0</span>
             </div>
         </div>

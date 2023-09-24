@@ -61,7 +61,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @php $total = 0; @endphp
+                                @php
+                                    $total = 0;
+                                $test = 0; @endphp
                                 @foreach ($details as $r1)
                                     @push('detail')
                                         <tr>
@@ -83,6 +85,8 @@
                                             </tr>
                                         @endpush
                                         @foreach ($data_rekening as $r3)
+                                            @php $test++;@endphp
+
                                             <?php
                                             $data_komponen = App\Models\Detail::get_komponen($r1->master_sub_kegiatan_id, $r1->subtitle, $r2->subtitle2, $r3->kode_rekening);
                                             ?>
@@ -90,11 +94,12 @@
                                                 <tr>
                                                     <td colspan="6">&nbsp;&nbsp;&nbsp;
                                                         <b>
-                                                            {!! $r3->kode_rekening !!} {!! $r3->rekening->nama_rek ?? '' !!}
+                                                            {!! $r3->kode_rekening !!} {!! $r3->nama_rek ?? '' !!}
                                                         </b>
                                                     </td>
                                                     <td>
-                                                        <button title="Ubah" class="btn btn-sm btn-outline-success" onclick="$('.modalAddKomponen').modal('show');
+                                                        <button title="Ubah" class="btn btn-sm btn-outline-success"
+                                                            onclick="$('.modalAddKomponen').modal('show');
                                                         $('#tmb_subtitle').val('{!! $r1->subtitle !!}');
                                                         $('#tmb_subtitle2').val('{!! $r2->subtitle2 !!}');
                                                         $('#tmb_kode_rekening').val('{!! $r3->kode_rekening !!}');
@@ -179,27 +184,30 @@
                                 Tambah
                             </h6>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div> 
+                        </div>
                         <form method="POST" action="{{ route('add_komponen') }}" enctype="multipart/form-data">
                             {!! csrf_field() !!}
-                            <input type="hidden" class="form-control" id="opd_id" name="opd_id" value="{{ $sub_keg->opd_id }}"> 
-                            <input type="hidden" class="form-control" id="id_kegiatan" name="id_kegiatan" value="{{ $sub_keg->id }}"> 
-                            <input type="hidden" class="form-control" id="tahun" name="tahun" value="{{ date('Y') }}">
+                            <input type="hidden" class="form-control" id="opd_id" name="opd_id"
+                                value="{{ $sub_keg->opd_id }}">
+                            <input type="hidden" class="form-control" id="id_kegiatan" name="id_kegiatan"
+                                value="{{ $sub_keg->id }}">
+                            <input type="hidden" class="form-control" id="tahun" name="tahun"
+                                value="{{ date('Y') }}">
                             <div class="modal-body row">
                                 <p style="font-weight:bold"><i>Yang bertanda <span class="text-danger">*</span> wajib
                                         diisi/dipilih.</i></p>
                                 <div class="col-md-2">Kelompok Belanja <span style="color:red">*</span></div>
                                 <div class="col-md-10">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="[#]....." id="tmb_subtitle"
-                                            name="subtitle" value="[#]" required>
+                                        <input type="text" class="form-control" placeholder="[#]....."
+                                            id="tmb_subtitle" name="subtitle" value="[#]" required>
                                     </div>
                                 </div>
                                 <div class="col-md-2">Keterangan<span style="color:red">*</span></div>
                                 <div class="col-md-10">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" placeholder="[-]....." id="tmb_subtitle2"
-                                            name="subtitle2" value="[-]" required>
+                                        <input type="text" class="form-control" placeholder="[-]....."
+                                            id="tmb_subtitle2" name="subtitle2" value="[-]" required>
                                     </div>
                                 </div>
 
@@ -209,10 +217,11 @@
                                         <select class="select2onmodal" name="kode_rekening" id="tmb_kode_rekening"
                                             style="width: 100%">
                                             @foreach ($data_rekenings as $dt)
-                                                <option value="{{ $dt->kode_rek }}" {{ strlen($dt->kode_rek) <= 12 ? 'disabled' : '' }}>
+                                                <option value="{{ $dt->kode_rek }}"
+                                                    {{ strlen($dt->kode_rek) <= 12 ? 'disabled' : '' }}>
                                                     {{ $dt->kode_rek }} - {{ $dt->nama_rek }} </option>
                                             @endforeach
-                                        </select> 
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-md-2">Uraian<span style="color:red">*</span></div>
@@ -224,12 +233,13 @@
                                 </div>
                                 <div class="col-md-2">Satuan<span style="color:red">*</span></div>
                                 <div class="col-md-10">
-                                    <div class="form-group"> 
-                                        <select class="select2onmodal" name="satuan" id="satuan" style="width:100%" required>
+                                    <div class="form-group">
+                                        <select class="select2onmodal" name="satuan" id="satuan" style="width:100%"
+                                            required>
                                             @foreach ($data_satuan as $dt)
                                                 <option value="{{ $dt->satuan }}">{{ $dt->satuan }}</option>
                                             @endforeach
-                                        </select> 
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-md-2">Spek</div>
@@ -265,8 +275,9 @@
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-sm btn-success"><i class="icon-check"></i>
                                         Simpan</button>
-                                    <button type="button" class="btn btn-sm btn-danger" onclick="$('.modal').modal('hide')"><i
-                                            class="icon-cancel-circle2"></i> Batal</button>
+                                    <button type="button" class="btn btn-sm btn-danger"
+                                        onclick="$('.modal').modal('hide')"><i class="icon-cancel-circle2"></i>
+                                        Batal</button>
                                 </div>
                         </form>
                     </div>

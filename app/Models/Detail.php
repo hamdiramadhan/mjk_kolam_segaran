@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Detail extends Model
 {
@@ -40,15 +41,16 @@ class Detail extends Model
 
     public static function get_rekening($master_sub_kegiatan_id, $subtitle, $subtitle2)
     { 
-    	$res = Detail::select('master_sub_kegiatan_id', 'subtitle', 'subtitle2', 'kode_rekening','rekenings_id')
-						->where('master_sub_kegiatan_id', $master_sub_kegiatan_id)
-						->where('subtitle', $subtitle)
-						->where('subtitle2', $subtitle2)
-						->distinct()
-						->orderBy('kode_rekening')
-                        ->with(['rek'])
-						->get(); 
-        return $res;
+    	$res = Detail::select('master_sub_kegiatan_id', 'subtitle', 'subtitle2', 'kode_rekening', 'rekenings_id')
+    ->where('master_sub_kegiatan_id', $master_sub_kegiatan_id)
+    ->where('subtitle', $subtitle)
+    ->where('subtitle2', $subtitle2)
+    ->orderBy('kode_rekening')
+    ->distinct('kode_rekening')
+    ->with(['rek'])
+    ->get();
+    return $res;
+
     }
 
     public static function get_komponen($master_sub_kegiatan_id, $subtitle, $subtitle2, $kode_rekening)
