@@ -94,17 +94,17 @@
                                                 <tr>
                                                     <td colspan="6">&nbsp;&nbsp;&nbsp;
                                                         <b>
-                                                            {!! $r3->kode_rekening !!} {!! $r3->nama_rek ?? '' !!}
+                                                            {!! $r3->kode_rekening !!} {!! @$r3->rekening->nama_rek ?? '' !!}
                                                         </b>
                                                     </td>
                                                     <td>
                                                         <button title="Ubah" class="btn btn-sm btn-outline-success"
                                                             onclick="$('.modalAddKomponen').modal('show');
-                                                        $('#tmb_subtitle').val('{!! $r1->subtitle !!}');
-                                                        $('#tmb_subtitle2').val('{!! $r2->subtitle2 !!}');
-                                                        $('#tmb_kode_rekening').val('{!! $r3->kode_rekening !!}');
-                                                        $('#tmb_kode_rekening').trigger('change');
-                                                        ">
+                                                                $('#tmb_subtitle').val('{!! $r1->subtitle !!}');
+                                                                $('#tmb_subtitle2').val('{!! $r2->subtitle2 !!}');
+                                                                $('#tmb_kode_rekening').val('{!! $r3->kode_rekening !!}');
+                                                                $('#tmb_kode_rekening').trigger('change');
+                                                                ">
                                                             <i class="bx bx-plus me-0"></i>
                                                         </button>
                                                     </td>

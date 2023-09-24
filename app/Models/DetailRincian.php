@@ -70,7 +70,7 @@ class DetailRincian extends Model
         }
         $res = $res->distinct()
         ->orderBy('kode_rekening_pergeseran')
-        ->with(['rek'])
+        ->with(['rekening'])
         ->first(); 
         return $res;
     }
@@ -84,6 +84,16 @@ class DetailRincian extends Model
                 ->where('pengajuan_id',$pengajuan_id)
                 ->where('detail_id',$detail_id)
 				->orderBy('kode_rekening_pergeseran')
+				->first();
+        return $res;
+    }
+
+    public static function get_komponen_fase($pengajuan_id,$detail_id,$fase_id)
+    { 
+    	$res = DetailRincian::where('pengajuan_id',$pengajuan_id)
+                ->where('detail_id',$detail_id)
+                ->where('fase_id',$fase_id)
+				->orderBy('id', 'desc')
 				->first();
         return $res;
     }

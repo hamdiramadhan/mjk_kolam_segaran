@@ -96,9 +96,9 @@ class PengajuanDetailController extends Controller
         $pengajuan_detail = PengajuanDetail::find($id);
         $pengajuan = $pengajuan_detail->pengajuan;
         $fases = Fase::where('tahun', $pengajuan->fase->tahun)
-        ->whereRaw("kode::integer <= {$pengajuan->fase->kode}")    
-        ->orderByRaw("kode::integer")    
-        ->get(); 
+                ->whereRaw("kode::integer <= {$pengajuan->fase->kode}")    
+                ->orderByRaw("kode::integer")    
+                ->get(); 
         $id_sub_kegiatan = $pengajuan_detail->sub_kegiatan->id;
         $sub_keg = MasterSubKegiatan::find($id_sub_kegiatan);
         $kode_sub_kegiatan = $sub_keg->kode_sub_kegiatan;
@@ -111,7 +111,7 @@ class PengajuanDetailController extends Controller
                     ->orderBy('subtitle')
                     ->get();
         $data = PengajuanDetailKomponen::where('pengajuan_detail_id',$id)->get();
-        return view('pengajuan.pengajuan_detail.komponen', ['nama_header'=>'Detail Komponen'], compact('id_sub_kegiatan', 'sub_keg', 'kode_sub_kegiatan', 'unit_id','details','data_rekening','pengajuan_detail','pengajuan','data'));  
+        return view('pengajuan.pengajuan_detail.komponen', ['nama_header'=>'Detail Komponen'], compact('id_sub_kegiatan', 'sub_keg', 'kode_sub_kegiatan', 'unit_id','details','data_rekening','pengajuan_detail','pengajuan','data','fases'));  
     } 
 
     public function geser_komponen(Request $request,$id)
@@ -191,7 +191,12 @@ class PengajuanDetailController extends Controller
         $data_satuan = Satuan::orderBy('satuan')->get();
    
         // $data_rekening = MasterRekening::where('kode_rek', 'like', '5.%')->get();
-        $data_rekening = MasterRekening::where('kode_rek', 'like', $kode_rekening.'%')->get();
+        $data_rekening = MasterRekening::where('kode_rek', 'like', $kode_rekening.'%')
+        ->whereRaw("length(kode_rek) >= 12")
+        ->orderBy('kode_rek')
+        ->select('kode_rek','nama_rek')
+        ->distinct()
+        ->get();
 
         $data = Detail::findOrFail($id);
         return view('pengajuan.pengajuan_detail.edit_rekening', compact('data','data_rekening','data_satuan','pengajuan_detail','id'));
@@ -204,6 +209,7 @@ class PengajuanDetailController extends Controller
         if (!empty($request->opd_id)) {
             $koderek = MasterRekening::where('kode_rek',$request->kode_rekening_pergeseran)->first();
             $pengajuan_detail = PengajuanDetail::find($request->pengajuan_detail_id);
+            $pengajuan = $pengajuan_detail->pengajuan; 
             if(empty($request->ppn_pergeseran))
             {
                 $ppn=0;
@@ -212,6 +218,7 @@ class PengajuanDetailController extends Controller
             }
             DetailRincian::create([
                 'pengajuan_detail_id' => $pengajuan_detail->id,
+                'fase_id' => $pengajuan->fase_id,
                 'pengajuan_id' => $pengajuan_detail->pengajuan_id,
                 'detail_id' => $request->detail_id,
                 'master_sub_kegiatan_id' => $pengajuan_detail->master_sub_kegiatan_id,

@@ -35,7 +35,7 @@
                 <select class="select22_modal" name="kode_rekening_pergeseran" id="kode_rekening_pergeseran"
                     style="width:100%">
                     @foreach ($data_rekening as $dt)
-                        <option {{ $dt->kode_rek == $data->kode_rekening ? 'selected' : '' }}
+                        <option {{ strlen($dt->kode_rek) == 12 ? 'disabled' : '' }} {{ $dt->kode_rek == $data->kode_rekening ? 'selected' : '' }}
                             value="{{ $dt->kode_rek }}">{{ $dt->kode_rek }} - {{ $dt->nama_rek }}</option>
                     @endforeach
                 </select>
