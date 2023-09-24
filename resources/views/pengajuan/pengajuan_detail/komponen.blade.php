@@ -143,11 +143,13 @@
                                     @endphp
                                     @push('detail')
                                         <tr>
-                                            <td colspan="6"><b>{!! $r1->subtitle ?? '#' !!}</b></td>
-
-                                            @foreach ($fases as $f)
-                                                <td colspan="6"><b>{!! $r1->subtitle ?? '#' !!}</b></td>
-                                            @endforeach
+                                            @php
+                                                $jmlcolspan = 6;
+                                                foreach ($fases as $f) {
+                                                    $jmlcolspan += 6;
+                                                }
+                                            @endphp
+                                            <td colspan="{{ $jmlcolspan }}"><b>{!! $r1->subtitle ?? '#' !!}</b></td> 
                                             <td></td>
                                             <td></td>
                                         </tr>
@@ -164,10 +166,13 @@
                                         ?>
                                         @push('detail')
                                             <tr>
-                                                <td colspan="6">&nbsp;<b>{!! $r2->subtitle2 ?? '-' !!} </b></td>
-                                                @foreach ($fases as $f)
-                                                    <td colspan="6"><b>{!! $r2->subtitle2 ?? '-' !!}</b></td>
-                                                @endforeach
+                                                @php
+                                                    $jmlcolspan = 6;
+                                                    foreach ($fases as $f) {
+                                                        $jmlcolspan += 6;
+                                                    }
+                                                @endphp
+                                                <td colspan="{{ $jmlcolspan }}">&nbsp;<b>{!! $r2->subtitle2 ?? '-' !!} </b></td> 
                                                 <td></td>
                                                 <td></td>
                                             </tr>
