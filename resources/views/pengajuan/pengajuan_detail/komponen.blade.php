@@ -327,6 +327,7 @@
                                                         </td>
 
                                                         <td style="text-align: center">
+                                                            @if($r4->tipe == 'murni')
                                                             <button title="Pergeseran Rincian" data-toggle="tooltip"
                                                                 onclick="update_detail_rincian('{{ csrf_token() }}', '{{ route('update_detail_rincian', $r4->id) }}','{{ encrypt($pengajuan_detail->id) }}', '#ModalBiruSm')"
                                                                 class="btn btn-sm btn-outline-primary">
@@ -334,6 +335,7 @@
                                                                     class="bx bx-message-check
                                                                 me-0"></i>
                                                             </button>
+                                                            @endif 
                                                         </td>
                                                     </tr>
                                                 @endpush
