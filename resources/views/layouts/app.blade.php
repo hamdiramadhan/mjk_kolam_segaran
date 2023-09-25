@@ -392,7 +392,7 @@
     <script type="text/javascript" src="https://cdn.datatables.net/rowgroup/1.1.2/js/dataTables.rowGroup.min.js"></script>
 
     <!-- Select2 JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script src="{{ asset('assets/plugins/select2/js/select2-custom.js') }}"></script>
 
     <script>
@@ -448,6 +448,7 @@
             width: '100%',
             dropdownParent: $('#modal_setting_app')
         });
+
         function addCommas(nStr) {
             nStr += "";
             x = nStr.split(".");
@@ -460,46 +461,46 @@
             return x1 + x2;
         }
 
-function delete_detail_komponen(token, id) {
-    swal({
-            title: "Yakin Untuk Menghapus Data ini?",
-            text: "",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#FF5722",
-            confirmButtonText: "Ya, Hapus!",
-            cancelButtonText: "Tidak!",
-            closeOnConfirm: false,
-            closeOnCancel: true,
-            showLoaderOnConfirm: true,
-        },
-        function(isConfirm) {
-            if (isConfirm) {
-                var act = "/destroy_komponen/" + id;
+        function delete_detail_komponen(token, id) {
+            swal({
+                    title: "Yakin Untuk Menghapus Data ini?",
+                    text: "",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#FF5722",
+                    confirmButtonText: "Ya, Hapus!",
+                    cancelButtonText: "Tidak!",
+                    closeOnConfirm: false,
+                    closeOnCancel: true,
+                    showLoaderOnConfirm: true,
+                },
+                function(isConfirm) {
+                    if (isConfirm) {
+                        var act = "/destroy_komponen/" + id;
 
-                $.post(
-                    act, {
-                        _token: token,
-                    },
-                    function(data) {
-                        swal({
-                                title: "Data Terhapus!",
-                                text: "",
-                                confirmButtonColor: "#4CAF50",
-                                type: "success",
+                        $.post(
+                            act, {
+                                _token: token,
                             },
-                            function(isConfirm) {
-                                if (isConfirm) {
-                                    location.reload();
-                                }
+                            function(data) {
+                                swal({
+                                        title: "Data Terhapus!",
+                                        text: "",
+                                        confirmButtonColor: "#4CAF50",
+                                        type: "success",
+                                    },
+                                    function(isConfirm) {
+                                        if (isConfirm) {
+                                            location.reload();
+                                        }
+                                    }
+                                );
                             }
                         );
                     }
-                );
-            }
+                }
+            );
         }
-    );
-}
     </script>
     @stack('scripts')
 </body>
