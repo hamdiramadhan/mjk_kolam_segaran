@@ -129,9 +129,6 @@
                                 @php $subtotal = 0; @endphp
                                 @foreach ($details as $r1)
                                     @php
-                                        $detail_id = App\Models\Detail::where('subtitle', $r1->subtitle)
-                                            ->where('master_sub_kegiatan_id', $r1->master_sub_kegiatan_id)
-                                            ->first();
                                         $detail_rincian_pergeseran = App\Models\DetailRincian::where('pengajuan_id', $pengajuan_detail->pengajuan_id)
                                             ->where('master_sub_kegiatan_id', $id_sub_kegiatan)
                                             ->distinct()
