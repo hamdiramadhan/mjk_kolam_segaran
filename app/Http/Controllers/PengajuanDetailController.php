@@ -191,6 +191,9 @@ class PengajuanDetailController extends Controller
         $pengajuan_detail  = PengajuanDetail::find($pengajuan_detail_id);
         $data_satuan = Satuan::orderBy('satuan')->get();
    
+        $detail_rincians = DetailRincian::where('pengajuan_detail_id',$pengajuan_detail_id)->where('kode_rekening_pergeser')->count();
+        dd($pengajuan_detail_id);
+
         // $data_rekening = MasterRekening::where('kode_rek', 'like', '5.%')->get();
         $data_rekening = MasterRekening::where('kode_rek', 'like', $kode_rekening.'%')
         ->whereRaw("length(kode_rek) >= 12")
@@ -198,6 +201,7 @@ class PengajuanDetailController extends Controller
         ->select('kode_rek','nama_rek')
         ->distinct()
         ->get();
+
 
         $data = Detail::findOrFail($id);
         return view('pengajuan.pengajuan_detail.edit_rekening', compact('data','data_rekening','data_satuan','pengajuan_detail','id'));
