@@ -116,7 +116,7 @@
                                             style="width:100%" class="btn btn-info px-5"><i
                                                 class="bx bx-detail mr-1"></i>Detail {{ sizeof($p->details) }}</a></form>
                                     @if (Auth::user()->role_id != 2 || Auth::user()->role_id != 7)
-                                        @if ($p->stat->kode == 1 || $p->stat->kode == 2 || $p->stat->kode == 3)
+                                        @if ($p->stat->kode == 1 || $p->stat->kode == 3)
                                             <form><button type="button" onclick="$('#modal_verif').modal('show')"
                                                     style="width:100%;color:white" class="btn bg-gradient-deepblue px-5"><i
                                                         class="bx bx-check-circle mr-1"></i>Verif</button>
@@ -134,9 +134,9 @@
 
                                             <button type="submit" style="width:100%" class="btn btn-danger px-5"><i
                                                     class="bx bx-trash mr-1"></i>Hapus</button>
-                                        </form> 
+                                        </form>
                                     @endif
- 
+
 
                                     <div id="modal_verif" class="modal fade" tabindex="-1" role="dialog"
                                         aria-labelledby="myModalLabel" aria-hidden="true" width="100%">
