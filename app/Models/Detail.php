@@ -41,15 +41,23 @@ class Detail extends Model
 
     public static function get_rekening($master_sub_kegiatan_id, $subtitle, $subtitle2)
     { 
-    	$res = Detail::select('master_sub_kegiatan_id', 'subtitle', 'subtitle2', 'kode_rekening', 'rekenings_id')
+    	$query1 = Detail::select('master_sub_kegiatan_id', 'subtitle', 'subtitle2', 'kode_rekening')
             ->where('master_sub_kegiatan_id', $master_sub_kegiatan_id)
             ->where('subtitle', $subtitle)
             ->where('subtitle2', $subtitle2)
             ->orderBy('kode_rekening')
-            ->distinct('kode_rekening')
-            ->with(['rekening'])
-            ->get();
-    return $res;
+            ->distinct('kode_rekening');
+
+        $query2 = DetailRincian::select('master_sub_kegiatan_id', 'subtitle_pergeseran as subtitle', 'subtitle2_pergeseran as subtitle2', 'kode_rekening_pergeseran as kode_rekening')
+            ->where('master_sub_kegiatan_id', $master_sub_kegiatan_id)
+            ->where('subtitle_pergeseran', $subtitle)
+            ->where('subtitle2_pergeseran', $subtitle2)
+            ->orderBy('kode_rekening_pergeseran')
+            ->distinct('kode_rekening_pergeseran');
+
+        $result = $query1->union($query2)->with(['rekening'])->get();
+
+        return $result;
 
     }
 

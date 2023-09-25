@@ -88,9 +88,10 @@ class DetailRincian extends Model
         return $res;
     }
 
-    public static function get_komponen_fase($pengajuan_id,$detail_id,$fase_id)
+    public static function get_komponen_fase($pengajuan_id,$detail_id,$fase_id,$kode_rek)
     { 
     	$res = DetailRincian::where('pengajuan_id',$pengajuan_id)
+                ->where('kode_rekening_pergeseran',$kode_rek)
                 ->where('detail_id',$detail_id)
                 ->where('fase_id',$fase_id)
 				->orderBy('id', 'desc')

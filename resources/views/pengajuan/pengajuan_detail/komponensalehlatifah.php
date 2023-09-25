@@ -177,7 +177,8 @@
                                             $data_komponen = App\Models\Detail::get_komponen($r1->master_sub_kegiatan_id, $r1->subtitle, $r2->subtitle2, $r3->kode_rekening);
                                             $id_detail_murni = App\Models\Detail::where('kode_rekening', $r3->kode_rekening)
                                                 ->where('subtitle', $r1->subtitle)
-                                                ->where('subtitle2', $r2->subtitle2) 
+                                                ->where('subtitle2', $r2->subtitle2)
+                                                ->where('rekenings_id', $r3->rekenings_id)
                                                 ->first();
                                             
                                             ?>
@@ -266,8 +267,7 @@
 
                                                         @foreach ($fases as $f)
                                                             @php
-                                                                $rincian_geser = App\Models\DetailRincian::get_komponen_fase($pengajuan_detail->pengajuan_id, $r4->id, $f->id, $r3->kode_rekening);
-
+                                                                $rincian_geser = App\Models\DetailRincian::get_komponen_fase($pengajuan_detail->pengajuan_id, $r4->id, $f->id);
                                                                 $harga_ppn = @$rincian_geser->harga_pergeseran + (@$rincian_geser->harga_pergeseran * @$rincian_geser->ppn_pergeseran) / 100;
                                                                 $total = $harga_ppn * @$rincian_geser->volume_pergeseran;
                                                                 $selisih = $total - $selisih;
@@ -292,7 +292,7 @@
                                                             </td>
                                                         @endforeach
                                                         <td align="right">
-                                                            {!! number_format(@$selisih*(-1), 0, ',', '.') !!}
+                                                            {!! number_format(@$selisih, 0, ',', '.') !!}
                                                         </td>
 
                                                         <td style="text-align: center">
