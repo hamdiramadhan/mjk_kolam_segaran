@@ -156,7 +156,7 @@
                     : {{ $data->nomor_surat }}
                 </td>
                 <td>
-                    Yth, Ketua TAPD
+                    Yth, Ketua {{ $kepada }}
                 </td>
             </tr>
             <tr>

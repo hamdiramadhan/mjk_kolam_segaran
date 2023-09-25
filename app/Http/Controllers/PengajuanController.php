@@ -82,11 +82,15 @@ class PengajuanController extends Controller
             ->where('selesai', '>=', date('Y-m-d H:i')) 
             ->orderBy('kode')
             ->get();  
+            
+            $opd = Opd::findOrFail(Auth::user()->opd_id);
+
+            $count_pengajuan = Pengajuan::with('fase')->where('opd_id',$opd->id)->where('tahun',Auth::user()->tahun)->count();
 
         $opd = Opd::find(Auth::user()->opd_id);
         $usulan = PengajuanUsulan::all();
         $nama_header = 'Pengajuan Perubahan '.$opd->unit_name;
-        return view('pengajuan.create',['nama_header'=>$nama_header],compact('opd','usulan','fases'));
+        return view('pengajuan.create',['nama_header'=>$nama_header],compact('opd','usulan','fases','count_pengajuan'));
     }
 
     /**
@@ -141,8 +145,11 @@ class PengajuanController extends Controller
     
         $judul = 'Usulan Pergeseran Anggaran Dalam APBD TA '.$tahun;
         $url = env('APP_URL'); 
-
-        $pdf = PDF::loadView('pengajuan.print_pengajuan', compact('opd','url','usulan','pengajuan_alasan','data', 'tahun', 'id','judul'));
+        $kepada = 'PPKD';
+        if($data->usulan_id == 1){
+            $kepada = 'Sekda';
+        }
+        $pdf = PDF::loadView('pengajuan.print_pengajuan', compact('opd','url','usulan','pengajuan_alasan','data', 'tahun', 'id','judul','kepada'));
         $customPaper = array(0,0,595.35,935.55);
         $pdf->setPaper($customPaper);
         $pdf->output();

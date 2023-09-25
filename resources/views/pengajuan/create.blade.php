@@ -17,6 +17,14 @@
     <!--end breadcrumb-->
     <div class="card">
         <div class="card-body p-4">
+            @if ($count_pengajuan > 0)
+                <div class="card bg-danger text-left">
+                    <div class="card-body">
+                        <div class="p-1 text-white rounded">Warning, Sudah Pernah Melakukan Pengajuan Pergeseran Sebanyak
+                            {{ $count_pengajuan }} kali dalam 1 Tahun</div>
+                    </div>
+                </div>
+            @endif
             <h5 class="mb-4">Tambah Pengajuan</h5>
             <form method="POST" action="{{ route('pengajuan.store') }}">
                 @csrf
@@ -94,7 +102,7 @@
         function AddAlasan() {
             $('#AddAlasan').append(
                 `
-                <div class="row" id="alasan_`+noUrut+`">
+                <div class="row" id="alasan_` + noUrut + `">
                     <div class="col-md-6">
                         <label for="lampiran" class="form-label">
                             Alasan
@@ -105,7 +113,8 @@
                         <label for="lampiran" class="form-label">
                             &nbsp;
                         </label>
-                        <button class="form-control btn btn-danger btn-sm" type="button" onclick="$('#alasan_`+noUrut+`').remove()">X</button> 
+                        <button class="form-control btn btn-danger btn-sm" type="button" onclick="$('#alasan_` +
+                noUrut + `').remove()">X</button> 
                     </div>
                 </div>
                 
