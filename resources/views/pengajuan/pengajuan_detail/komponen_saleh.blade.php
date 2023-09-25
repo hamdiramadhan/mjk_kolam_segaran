@@ -273,7 +273,7 @@
                                                                 $rincian_geser = App\Models\DetailRincian::get_komponen_fase($pengajuan_detail->pengajuan_id, $r4->id, $f->id);
                                                                 $harga_ppn = @$rincian_geser->harga_pergeseran + (@$rincian_geser->harga_pergeseran * @$rincian_geser->ppn_pergeseran) / 100;
                                                                 $total = $harga_ppn * @$rincian_geser->volume_pergeseran;
-                                                                $selisih -= $total;
+                                                                $selisih = $total - $selisih;
                                                             @endphp
                                                             <td>&nbsp;&nbsp;&nbsp;
                                                                 {!! @$rincian_geser->detail_pergeseran !!} {{ @$rincian_geser->spek_pergeseran }}
