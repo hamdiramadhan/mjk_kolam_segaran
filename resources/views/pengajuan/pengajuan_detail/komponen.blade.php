@@ -208,17 +208,14 @@
                                                             @endif
                                                             @php
                                                                 $kode_rekening = substr($r3->kode_rekening, 0, $length);
-                                                            @endphp
-                                                            @if (@$data_rekening_pergeseran->flag == 0)
-                                                                <button title="Pergeseran Rekening" data-toggle="tooltip"
-                                                                    onclick="update_kode_rekening('{{ csrf_token() }}', '{{ route('update_kode_rekening') }}','{{ encrypt($pengajuan_detail->id) }}','{{ $r1->subtitle }}','{{ $r2->subtitle2 }}','{{ $kode_rekening }}','#ModalKuningSm')"
-                                                                    class="btn btn-sm btn-outline-warning">
-                                                                    <i
-                                                                        class="bx bx-message-check
-                                                                    me-0"></i>
-                                                                </button>
-                                                            @endif
-
+                                                            @endphp 
+                                                            <button title="Pergeseran Rekening" data-toggle="tooltip"
+                                                                onclick="update_kode_rekening('{{ csrf_token() }}', '{{ route('update_kode_rekening') }}','{{ encrypt($pengajuan_detail->id) }}','{{ $r1->subtitle }}','{{ $r2->subtitle2 }}','{{ $kode_rekening }}','#ModalKuningSm')"
+                                                                class="btn btn-sm btn-outline-warning">
+                                                                <i
+                                                                    class="bx bx-message-check
+                                                                me-0"></i>
+                                                            </button> 
                                                         </td>
                                                     @else
                                                         @php
@@ -236,41 +233,67 @@
                                                 </tr>
                                             @endpush
                                             @foreach ($data_komponen as $r4)
-                                                @php
-                                                    
-                                                    $data_rekening_pergeseran = App\Models\DetailRincian::get_rekening($id_sub_kegiatan, @$detail_rincian_pergeseran->subtitle_pergeseran, @$data_ket_bl_teks_pergeseran->subtitle2_pergeseran, $pengajuan_detail->pengajuan_id, $r4->id, $r3->kode_rekening);
-                                                    $harga_ppn = $r4->harga + ($r4->harga * $r4->ppn) / 100;
-                                                    $total = $harga_ppn * $r4->volume;
-                                                    $selisih = $total;
+                                                @php  
+                                                    if($r4->tipe == 'murni')
+                                                    {
+                                                        $harga_ppn = $r4->harga + ($r4->harga * $r4->ppn) / 100;
+                                                        $total = $harga_ppn * $r4->volume;
+                                                        $selisih = $total;
+                                                    } else { 
+                                                        $harga_ppn = 0;
+                                                        $total = $harga_ppn * $r4->volume;
+                                                        $selisih = $total;
+                                                    }
+                                                    $jml_geser = 0;
                                                 @endphp
                                                 @push('detail')
                                                     <tr>
                                                         <td>&nbsp;&nbsp;&nbsp;
+                                                            @if($r4->tipe == 'murni')
                                                             {!! $r4->detail !!} {{ $r4->spek }}
+                                                            @endif 
                                                         </td>
                                                         <td>
-                                                            {!! $r4->satuan !!}
+                                                            @if($r4->tipe == 'murni')
+                                                            {!! $r4->satuan !!} 
+                                                            @endif 
                                                         </td>
-                                                        <td>
+                                                        <td> 
+                                                            @if($r4->tipe == 'murni')
                                                             {!! $r4->koefisien !!}
+                                                            @endif 
                                                         </td>
                                                         <td align="right">
+                                                            @if($r4->tipe == 'murni')
                                                             {!! number_format($r4->harga, 0, ',', '.') !!}
+                                                            @endif 
                                                         </td>
                                                         <td align="right">
+                                                            @if($r4->tipe == 'murni')
                                                             {!! number_format($r4->ppn, 0, ',', '.') !!}
+                                                            @endif 
                                                         </td>
                                                         <td align="right">
+                                                            @if($r4->tipe == 'murni')
                                                             {!! number_format($total, 0, ',', '.') !!}
+                                                            @endif 
                                                         </td>
 
                                                         @foreach ($fases as $f)
                                                             @php
                                                                 $rincian_geser = App\Models\DetailRincian::get_komponen_fase($pengajuan_detail->pengajuan_id, $r4->id, $f->id, $r3->kode_rekening);
+                                                                if($r4->tipe == 'pergeseran' && $r4->fase_id == $f->id)
+                                                                { 
+                                                                    $rincian_geser = App\Models\DetailRincian::get_komponen_id($r4->id);
+                                                                }
+                                                                if($rincian_geser || $rincian_geser == 'bedarekening')
+                                                                {
+                                                                    $jml_geser ++;
+                                                                }
                                                                 
                                                                 $harga_ppn = @$rincian_geser->harga_pergeseran + (@$rincian_geser->harga_pergeseran * @$rincian_geser->ppn_pergeseran) / 100;
                                                                 $total = $harga_ppn * @$rincian_geser->volume_pergeseran;
-                                                                $selisih = $total - $selisih;
+                                                                $selisih = $total - $selisih;  
                                                             @endphp
                                                             <td>&nbsp;&nbsp;&nbsp;
                                                                 {!! @$rincian_geser->detail_pergeseran !!} {{ @$rincian_geser->spek_pergeseran }}
@@ -282,20 +305,29 @@
                                                                 {!! @$rincian_geser->koefisien_pergeseran !!}
                                                             </td>
                                                             <td align="right">
+                                                                @if($rincian_geser || $rincian_geser == 'bedarekening')
                                                                 {!! number_format(@$rincian_geser->harga_pergeseran, 0, ',', '.') !!}
+                                                                @endif 
                                                             </td>
                                                             <td align="right">
+                                                                @if($rincian_geser || $rincian_geser == 'bedarekening')
                                                                 {!! number_format(@$rincian_geser->ppn_pergeseran, 0, ',', '.') !!}
+                                                                @endif 
                                                             </td>
                                                             <td align="right">
+                                                                @if($rincian_geser || $rincian_geser == 'bedarekening')
                                                                 {!! number_format($total, 0, ',', '.') !!}
+                                                                @endif 
                                                             </td>
                                                         @endforeach
                                                         <td align="right">
-                                                            {!! number_format(@$selisih * -1, 0, ',', '.') !!}
+                                                            @if($jml_geser > 0)
+                                                            {!! number_format(@$selisih, 0, ',', '.') !!}
+                                                            @endif
                                                         </td>
 
                                                         <td style="text-align: center">
+                                                            @if($r4->tipe == 'murni')
                                                             <button title="Pergeseran Rincian" data-toggle="tooltip"
                                                                 onclick="update_detail_rincian('{{ csrf_token() }}', '{{ route('update_detail_rincian', $r4->id) }}','{{ encrypt($pengajuan_detail->id) }}', '#ModalBiruSm')"
                                                                 class="btn btn-sm btn-outline-primary">
@@ -303,6 +335,7 @@
                                                                     class="bx bx-message-check
                                                                 me-0"></i>
                                                             </button>
+                                                            @endif 
                                                         </td>
                                                     </tr>
                                                 @endpush

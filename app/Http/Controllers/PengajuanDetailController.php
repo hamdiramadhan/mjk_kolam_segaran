@@ -209,8 +209,7 @@ class PengajuanDetailController extends Controller
     
 
     public function update_rincian(Request $request)
-    {
-        // dd($request->all());
+    { 
         if (!empty($request->opd_id)) {
             $koderek = MasterRekening::where('kode_rek',$request->kode_rekening_pergeseran)->first();
             $pengajuan_detail = PengajuanDetail::find($request->pengajuan_detail_id);
@@ -221,29 +220,56 @@ class PengajuanDetailController extends Controller
             } else {
                 $ppn = $request->ppn_pergeseran;
             }
-            DetailRincian::create([
-                'pengajuan_detail_id' => $pengajuan_detail->id,
-                'fase_id' => $pengajuan->fase_id,
-                'pengajuan_id' => $pengajuan_detail->pengajuan_id,
-                'detail_id' => $request->detail_id,
-                'master_sub_kegiatan_id' => $pengajuan_detail->master_sub_kegiatan_id,
-                'opd_id' => $request->opd_id,
-                'unit_id' => $pengajuan_detail->pengajuan->unit_id,
-                'kode_sub_kegiatan' => $pengajuan_detail->sub_kegiatan->kode_sub_kegiatan,
-                'rekenings_id' => $koderek->id,
-                'kode_rekening_pergeseran' => $request->kode_rekening_pergeseran,
-                'nama_rekening_pergeseran' => $koderek->nama_rek,
-                'kode_detail_pergeseran' => $request->kode_rekening_pergeseran,
-                'detail_pergeseran' => $request->detail_pergeseran,
-                'satuan_pergeseran' => $request->satuan_pergeseran, 
-                'volume_pergeseran' => $request->volume_pergeseran,
-                'harga_pergeseran' => $request->harga_pergeseran, 
-                'spek_pergeseran' => $request->spek_pergeseran, 
-                'koefisien_pergeseran' => $request->volume_pergeseran . ' ' . $request->satuan_pergeseran,
-                'ppn_pergeseran' => $ppn ?? 0,
-                'tahun_pergeseran' => Auth::user()->tahun,
-                'created_by'=>Auth::user()->id
-            ]);
+            // DetailRincian::create([
+            //     'pengajuan_detail_id' => $pengajuan_detail->id,
+            //     'fase_id' => $pengajuan->fase_id,
+            //     'pengajuan_id' => $pengajuan_detail->pengajuan_id,
+            //     'detail_id' => $request->detail_id,
+            //     'master_sub_kegiatan_id' => $pengajuan_detail->master_sub_kegiatan_id,
+            //     'opd_id' => $request->opd_id,
+            //     'unit_id' => $pengajuan_detail->pengajuan->unit_id,
+            //     'kode_sub_kegiatan' => $pengajuan_detail->sub_kegiatan->kode_sub_kegiatan,
+            //     'rekenings_id' => $koderek->id,
+            //     'kode_rekening_pergeseran' => $request->kode_rekening_pergeseran,
+            //     'nama_rekening_pergeseran' => $koderek->nama_rek,
+            //     'kode_detail_pergeseran' => $request->kode_rekening_pergeseran,
+            //     'detail_pergeseran' => $request->detail_pergeseran,
+            //     'satuan_pergeseran' => $request->satuan_pergeseran, 
+            //     'volume_pergeseran' => $request->volume_pergeseran,
+            //     'harga_pergeseran' => $request->harga_pergeseran, 
+            //     'spek_pergeseran' => $request->spek_pergeseran, 
+            //     'koefisien_pergeseran' => $request->volume_pergeseran . ' ' . $request->satuan_pergeseran,
+            //     'ppn_pergeseran' => $ppn ?? 0,
+            //     'tahun_pergeseran' => Auth::user()->tahun,
+            //     'created_by'=>Auth::user()->id
+            // ]);
+            $update = DetailRincian::updateOrCreate(
+                [
+                    'detail_id' => $request->detail_id,
+                    'pengajuan_id' => $pengajuan_detail->pengajuan_id, 
+                    'pengajuan_detail_id' => $pengajuan_detail->id,
+                    'master_sub_kegiatan_id' => $pengajuan_detail->master_sub_kegiatan_id,
+                    'fase_id' => $pengajuan->fase_id,
+                    'opd_id' => $request->opd_id,
+                    'tahun_pergeseran' => Auth::user()->tahun
+                ],
+                [ 
+                    'unit_id' => $pengajuan_detail->pengajuan->unit_id,
+                    'kode_sub_kegiatan' => $pengajuan_detail->sub_kegiatan->kode_sub_kegiatan,
+                    'rekenings_id' => $koderek->id,
+                    'kode_rekening_pergeseran' => $request->kode_rekening_pergeseran,
+                    'nama_rekening_pergeseran' => $koderek->nama_rek,
+                    'kode_detail_pergeseran' => $request->kode_rekening_pergeseran,
+                    'detail_pergeseran' => $request->detail_pergeseran,
+                    'satuan_pergeseran' => $request->satuan_pergeseran, 
+                    'volume_pergeseran' => $request->volume_pergeseran,
+                    'harga_pergeseran' => $request->harga_pergeseran, 
+                    'spek_pergeseran' => $request->spek_pergeseran, 
+                    'koefisien_pergeseran' => $request->volume_pergeseran . ' ' . $request->satuan_pergeseran,
+                    'ppn_pergeseran' => $ppn ?? 0,
+                    'created_by'=>Auth::user()->id
+                ]
+            );            
             Detail::where('id', $request->id)->update([
                 'flag'=>1
             ]);
