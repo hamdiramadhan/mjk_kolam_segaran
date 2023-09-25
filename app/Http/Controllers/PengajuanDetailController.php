@@ -112,7 +112,7 @@ class PengajuanDetailController extends Controller
                     ->orderBy('subtitle')
                     ->get();
         $data = PengajuanDetailKomponen::where('pengajuan_detail_id',$id)->get();
-        return view('pengajuan.pengajuan_detail.komponen_saleh', ['nama_header'=>'Detail Komponen'], compact('id_sub_kegiatan', 'sub_keg', 'kode_sub_kegiatan', 'unit_id','details','data_rekening','pengajuan_detail','pengajuan','data','fases'));  
+        return view('pengajuan.pengajuan_detail.komponen', ['nama_header'=>'Detail Komponen'], compact('id_sub_kegiatan', 'sub_keg', 'kode_sub_kegiatan', 'unit_id','details','data_rekening','pengajuan_detail','pengajuan','data','fases'));  
     } 
 
     public function geser_komponen(Request $request,$id)
