@@ -107,6 +107,7 @@ class PengajuanDetailController extends Controller
 
     	$details = Detail::select('master_sub_kegiatan_id', 'subtitle')
                     ->where('master_sub_kegiatan_id', $id_sub_kegiatan)
+                    ->where('tahun', $pengajuan->fase->tahun)
                     ->distinct()
                     ->orderBy('subtitle')
                     ->get();
