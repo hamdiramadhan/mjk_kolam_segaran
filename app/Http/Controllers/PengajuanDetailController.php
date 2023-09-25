@@ -112,7 +112,7 @@ class PengajuanDetailController extends Controller
                     ->orderBy('subtitle')
                     ->get();
         $data = PengajuanDetailKomponen::where('pengajuan_detail_id',$id)->get();
-        return view('pengajuan.pengajuan_detail.komponen', ['nama_header'=>'Detail Komponen'], compact('id_sub_kegiatan', 'sub_keg', 'kode_sub_kegiatan', 'unit_id','details','data_rekening','pengajuan_detail','pengajuan','data','fases'));  
+        return view('pengajuan.pengajuan_detail.komponen_saleh', ['nama_header'=>'Detail Komponen'], compact('id_sub_kegiatan', 'sub_keg', 'kode_sub_kegiatan', 'unit_id','details','data_rekening','pengajuan_detail','pengajuan','data','fases'));  
     } 
 
     public function geser_komponen(Request $request,$id)
@@ -263,7 +263,7 @@ class PengajuanDetailController extends Controller
             } else {
                 $ppn = $request->ppn_pergeseran;
             }
-        $list_detail = Detail::where('rekenings_id',$koderek->id)->get();
+        $list_detail = Detail::where('kode_rekening',$detail->kode_rekening)->where('master_sub_kegiatan_id',$detail->master_sub_kegiatan_id)->get();
         foreach($list_detail as $r){
             DetailRincian::create([
                 'pengajuan_detail_id' => $pengajuan_detail->id,
@@ -273,9 +273,11 @@ class PengajuanDetailController extends Controller
                 'opd_id' => $r->opd_id,
                 'unit_id' => $r->unit_id,
                 'kode_sub_kegiatan' => $pengajuan_detail->sub_kegiatan->kode_sub_kegiatan,
-                'rekenings_id' => $r->rekenings_id,
-                'kode_rekening_pergeseran' => $r->kode_rekening,
+                'rekenings_id' => $koderek->id,
+                'kode_rekening_pergeseran' => $koderek->kode_rek,
                 'nama_rekening_pergeseran' => $koderek->nama_rek,
+                'subtitle_pergeseran' => $r->subtitle,
+                'subtitle2_pergeseran' => $r->subtitle2,
                 'kode_detail_pergeseran' => $r->kode_detail,
                 'detail_pergeseran' => $r->detail,
                 'satuan_pergeseran' => $r->satuan, 
@@ -283,7 +285,9 @@ class PengajuanDetailController extends Controller
                 'harga_pergeseran' => $r->harga, 
                 'spek_pergeseran' => $r->spek, 
                 'koefisien_pergeseran' => $r->koefisien,
+                'rekening_detail_id' => $r->rekenings_id,
                 'ppn_pergeseran' => $r->ppn ?? 0,
+                'fase_id' => $request->fase_id,
                 'tahun_pergeseran' => Auth::user()->tahun,
                 'created_by'=>Auth::user()->id
             ]);

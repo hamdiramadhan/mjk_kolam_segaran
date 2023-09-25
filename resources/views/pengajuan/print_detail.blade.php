@@ -151,11 +151,17 @@
                 <tbody>
                     @php
                         $no = 0;
-                        
                         $jumlah_harga_pergeseran = 0;
                     @endphp
 
-                    @foreach ($subkeg->rincians as $dr)
+                    @php
+                        $detail_rincian = App\Models\DetailRincian::where('master_sub_kegiatan_id', $subkeg->master_sub_kegiatan_id)
+                            ->distinct('kode_rekening_pergeseran')
+                            ->where('pengajuan_id', $id)
+                            ->get();
+                        $jumlah = 0;
+                    @endphp
+                    @foreach ($detail_rincian as $dr)
                         @php
                             $jumlah_harga_rekening = 0;
                             $jumlah_harga_pergeseran_rekening = 0;
@@ -165,6 +171,7 @@
                         @endphp
                         <tr>
                             <td>{{ $dr->kode_rekening_pergeseran }}</td>
+                            {{-- <td>{{ $dr->kode_rekening_pergeseran }}</td> --}}
                             <td>{{ $dr->nama_rekening_pergeseran }}</td>
                             <td></td>
                             <td></td>
@@ -179,8 +186,10 @@
                             <td style="text-align: center">{{ format_harga($total_harga_pergeseran) }}</td>
 
                         </tr>
+
                         @php
-                            $detail_rincian = App\Models\DetailRincian::where('detail_id', $dr->detail_id)
+                            $detail_rincian = App\Models\DetailRincian::where('kode_rekening_pergeseran', $dr->kode_rekening_pergeseran)
+                                ->where('master_sub_kegiatan_id', $subkeg->master_sub_kegiatan_id)
                                 ->where('pengajuan_id', $id)
                                 ->get();
                             $jumlah = 0;
