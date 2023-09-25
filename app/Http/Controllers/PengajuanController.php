@@ -309,7 +309,7 @@ class PengajuanController extends Controller
             $canvas = $pdf->getDomPDF()->getCanvas();
             $height = $canvas->get_height();
             $width = $canvas->get_width();
-            $canvas->set_opacity(0.4,"Multiply"); 
+            $canvas->set_opacity(0.2,"Multiply"); 
             $canvas->page_text($width/5.5, $height/2.5, @$data->stat->nama, null, 40, array(1,0,0),2,2,0);
             // dd($pengajuan_detail);
         }

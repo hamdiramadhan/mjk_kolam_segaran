@@ -202,8 +202,8 @@ class PengajuanDetailController extends Controller
         ->distinct()
         ->get();
 
-
         $data = Detail::where('kode_rekening','like', $kode_rekening.'%')->where('subtitle',$request->subtitle1)->where('subtitle2',$request->subtitle2)->first();
+
         return view('pengajuan.pengajuan_detail.edit_rekening', compact('data','data_rekening','data_satuan','pengajuan_detail'));
     }
     
@@ -283,7 +283,6 @@ class PengajuanDetailController extends Controller
 
     public function update_detail_rekening(Request $request)
     {
-        // dd($request->all());
         $detail = Detail::find($request->detail_id);
         if (!empty($request->opd_id)) {
             $koderek = MasterRekening::where('kode_rek',$request->kode_rekening_pergeseran)->first();

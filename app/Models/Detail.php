@@ -68,20 +68,20 @@ class Detail extends Model
 
     public static function get_komponen($master_sub_kegiatan_id, $subtitle, $subtitle2, $kode_rekening)
     { 
-    	$res = Detail::where('master_sub_kegiatan_id', $master_sub_kegiatan_id)
-				->where('subtitle', $subtitle)
-				->where('subtitle2', $subtitle2)
-				->where('kode_rekening', $kode_rekening) 
-				->orderBy('kode_rekening')
-                ->select('harga','ppn','volume','detail','spek','satuan','koefisien','id',DB::raw("'murni' as tipe"))
-				->get();
-        $res = DetailRincian::where('master_sub_kegiatan_id', $master_sub_kegiatan_id)
-                ->where('subtitle_pergeseran', $subtitle)
-                ->where('subtitle2_pergeseran', $subtitle2)
-                ->where('kode_rekening_pergeseran', $kode_rekening) 
-                ->orderBy('kode_rekening_pergeseran')
-                ->select('harga_pergeseran','ppn_pergeseran','volume_pergeseran','detail_pergeseran','spek_pergeseran','satuan_pergeseran','koefisien_pergeseran','id',DB::raw("'pergeseran' as tipe"))
-                ->get();
+    	// $res = Detail::where('master_sub_kegiatan_id', $master_sub_kegiatan_id)
+		// 		->where('subtitle', $subtitle)
+		// 		->where('subtitle2', $subtitle2)
+		// 		->where('kode_rekening', $kode_rekening) 
+		// 		->orderBy('kode_rekening')
+        //         ->select('harga','ppn','volume','detail','spek','satuan','koefisien','id',DB::raw("'murni' as tipe"))
+		// 		->get();
+        // $res = DetailRincian::where('master_sub_kegiatan_id', $master_sub_kegiatan_id)
+        //         ->where('subtitle_pergeseran', $subtitle)
+        //         ->where('subtitle2_pergeseran', $subtitle2)
+        //         ->where('kode_rekening_pergeseran', $kode_rekening) 
+        //         ->orderBy('kode_rekening_pergeseran')
+        //         ->select('harga_pergeseran','ppn_pergeseran','volume_pergeseran','detail_pergeseran','spek_pergeseran','satuan_pergeseran','koefisien_pergeseran','id',DB::raw("'pergeseran' as tipe"))
+        //         ->get();
 
         $query1 = Detail::where('master_sub_kegiatan_id', $master_sub_kegiatan_id)
         ->where('subtitle', $subtitle)
