@@ -306,6 +306,7 @@ class PengajuanController extends Controller
         $height = $canvas->get_height();
         $width = $canvas->get_width();
         if($data->status != 2) { 
+            dd($data);
             $canvas = $pdf->getDomPDF()->getCanvas();
             $height = $canvas->get_height();
             $width = $canvas->get_width();
