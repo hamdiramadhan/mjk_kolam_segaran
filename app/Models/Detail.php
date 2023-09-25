@@ -17,6 +17,11 @@ class Detail extends Model
         return $this->belongsTo(MasterRekening::class, 'kode_rekening', 'kode_rek');
     }
 
+    public function geser()
+    {
+        return $this->belongsTo(DetailRincian::class, 'kode_rekening', 'kode_rek');
+    }
+
     public function rek()
     {
         return $this->belongsTo(RincianRekening::class, 'rekenings_id');
