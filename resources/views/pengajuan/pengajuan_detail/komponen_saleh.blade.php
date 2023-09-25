@@ -184,7 +184,6 @@
                                                 ->where('rekenings_id', $r3->rekenings_id)
                                                 ->first();
                                             
-                                            $data_rekening_pergeseran = App\Models\DetailRincian::get_rekening($id_sub_kegiatan, @$detail_rincian_pergeseran->subtitle_pergeseran, @$data_ket_bl_teks_pergeseran->subtitle2_pergeseran, $pengajuan_detail->pengajuan_id, $id_detail_murni->id, $r3->kode_rekening);
                                             ?>
                                             @push('detail')
                                                 <tr>
@@ -197,6 +196,7 @@
                                                         @endphp
                                                         <td colspan="{{ $jmlcolspan }}">&nbsp;&nbsp;&nbsp;
                                                             <b>
+                                                                {{ $r3->id }}
                                                                 {!! $r3->kode_rekening !!}
                                                                 {!! @$r3->rekening->nama_rek ?? '' !!}
                                                             </b>
@@ -241,6 +241,8 @@
                                             @endpush
                                             @foreach ($data_komponen as $r4)
                                                 @php
+                                                    
+                                                    $data_rekening_pergeseran = App\Models\DetailRincian::get_rekening($id_sub_kegiatan, @$detail_rincian_pergeseran->subtitle_pergeseran, @$data_ket_bl_teks_pergeseran->subtitle2_pergeseran, $pengajuan_detail->pengajuan_id, $r4->id, $r3->kode_rekening);
                                                     $harga_ppn = $r4->harga + ($r4->harga * $r4->ppn) / 100;
                                                     $total = $harga_ppn * $r4->volume;
                                                     $selisih = $total;
@@ -298,7 +300,7 @@
 
                                                         <td style="text-align: center">
                                                             <button title="Pergeseran Rincian" data-toggle="tooltip"
-                                                                onclick="update_detail_rincian('{{ csrf_token() }}', '{{ route('update_detail_rincian', $id_detail_murni->id) }}','{{ encrypt($pengajuan_detail->id) }}', '#ModalBiruSm')"
+                                                                onclick="update_detail_rincian('{{ csrf_token() }}', '{{ route('update_detail_rincian', $r4->id) }}','{{ encrypt($pengajuan_detail->id) }}', '#ModalBiruSm')"
                                                                 class="btn btn-sm btn-outline-primary">
                                                                 <i
                                                                     class="bx bx-message-check

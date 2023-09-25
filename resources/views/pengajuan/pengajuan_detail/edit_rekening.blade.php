@@ -7,6 +7,8 @@
     <input type="hidden" class="form-control" id="pengajuan_detail_id" name="pengajuan_detail_id"
         value="{{ $pengajuan_detail->id }}">
 
+    <input type="hidden" class="form-control" id="fase_id" name="fase_id"
+        value="{{ $pengajuan_detail->pengajuan->fase->id }}">
     <input type="hidden" class="form-control" id="opd_id" name="opd_id"
         value="{{ $pengajuan_detail->sub_kegiatan->opd_id }}">
     <div class="row mb-2" style="display: none">
@@ -35,8 +37,9 @@
                 <select class="select22_modal" name="kode_rekening_pergeseran" id="kode_rekening_pergeseran"
                     style="width:100%">
                     @foreach ($data_rekening as $dt)
-                        <option {{ strlen($dt->kode_rek) == 12 ? 'disabled' : '' }} {{ $dt->kode_rek == $data->kode_rekening ? 'selected' : '' }}
-                            value="{{ $dt->kode_rek }}">{{ $dt->kode_rek }} - {{ $dt->nama_rek }}</option>
+                        <option {{ strlen($dt->kode_rek) == 12 ? 'disabled' : '' }}
+                            {{ $dt->kode_rek == $data->kode_rekening ? 'selected' : '' }} value="{{ $dt->kode_rek }}">
+                            {{ $dt->kode_rek }} - {{ $dt->nama_rek }}</option>
                     @endforeach
                 </select>
             </div>
