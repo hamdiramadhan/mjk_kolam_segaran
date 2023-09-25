@@ -304,16 +304,15 @@ class PengajuanController extends Controller
         $pdf->output();
         $canvas = $pdf->getDomPDF()->getCanvas();
         $height = $canvas->get_height();
+      
+        $height = $canvas->get_height();
         $width = $canvas->get_width();
-        $canvas = $pdf->getDomPDF()->getCanvas();
-        if($data->status != 2) { 
-            $height = $canvas->get_height();
-            $width = $canvas->get_width();
-            // dd($pengajuan_detail);
-        }
 
-        $canvas->set_opacity(0.2,"Multiply"); 
-        $canvas->page_text($width/5.5, $height/2.5, @$data->stat->nama, null, 40, array(1,0,0),2,2,0);
+        $canvas->set_opacity(0.2,"Multiply");
+
+        $canvas->page_text($width/5, $height/2, 'Nicesnippets.com', null,
+        55, array(2,0,0),2,2,-30);
+            // dd($pengajuan_detail);
         return $pdf->stream('Pengajuan_'.$tahun.'_'.date('Ymd-His').'.pdf');
     }
 
