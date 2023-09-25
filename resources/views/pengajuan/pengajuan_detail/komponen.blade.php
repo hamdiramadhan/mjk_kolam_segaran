@@ -234,9 +234,16 @@
                                             @endpush
                                             @foreach ($data_komponen as $r4)
                                                 @php  
-                                                    $harga_ppn = $r4->harga + ($r4->harga * $r4->ppn) / 100;
-                                                    $total = $harga_ppn * $r4->volume;
-                                                    $selisih = $total;
+                                                    if($r4->tipe == 'murni')
+                                                    {
+                                                        $harga_ppn = $r4->harga + ($r4->harga * $r4->ppn) / 100;
+                                                        $total = $harga_ppn * $r4->volume;
+                                                        $selisih = $total;
+                                                    } else { 
+                                                        $harga_ppn = 0;
+                                                        $total = $harga_ppn * $r4->volume;
+                                                        $selisih = $total;
+                                                    }
                                                     $jml_geser = 0;
                                                 @endphp
                                                 @push('detail')
@@ -286,7 +293,7 @@
                                                                 
                                                                 $harga_ppn = @$rincian_geser->harga_pergeseran + (@$rincian_geser->harga_pergeseran * @$rincian_geser->ppn_pergeseran) / 100;
                                                                 $total = $harga_ppn * @$rincian_geser->volume_pergeseran;
-                                                                $selisih = $total - $selisih;
+                                                                $selisih = $total - $selisih;  
                                                             @endphp
                                                             <td>&nbsp;&nbsp;&nbsp;
                                                                 {!! @$rincian_geser->detail_pergeseran !!} {{ @$rincian_geser->spek_pergeseran }}
