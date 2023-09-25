@@ -177,7 +177,7 @@
                                             $data_komponen = App\Models\Detail::get_komponen($r1->master_sub_kegiatan_id, $r1->subtitle, $r2->subtitle2, $r3->kode_rekening);
                                             $id_detail_murni = App\Models\Detail::where('kode_rekening', $r3->kode_rekening)
                                                 ->where('subtitle', $r1->subtitle)
-                                                ->where('subtitle2', $r2->subtitle2) 
+                                                ->where('subtitle2', $r2->subtitle2)
                                                 ->first();
                                             
                                             ?>
@@ -211,7 +211,7 @@
                                                             @endphp
                                                             @if (@$data_rekening_pergeseran->flag == 0)
                                                                 <button title="Pergeseran Rekening" data-toggle="tooltip"
-                                                                    onclick="update_kode_rekening('{{ csrf_token() }}', '{{ route('update_kode_rekening', $id_detail_murni->id) }}','{{ encrypt($pengajuan_detail->id) }}','{{ $kode_rekening }}','#ModalKuningSm')"
+                                                                    onclick="update_kode_rekening('{{ csrf_token() }}', '{{ route('update_kode_rekening') }}','{{ encrypt($pengajuan_detail->id) }}','{{ $r1->subtitle }}','{{ $r2->subtitle2 }}','{{ $kode_rekening }}','#ModalKuningSm')"
                                                                     class="btn btn-sm btn-outline-warning">
                                                                     <i
                                                                         class="bx bx-message-check
@@ -267,7 +267,7 @@
                                                         @foreach ($fases as $f)
                                                             @php
                                                                 $rincian_geser = App\Models\DetailRincian::get_komponen_fase($pengajuan_detail->pengajuan_id, $r4->id, $f->id, $r3->kode_rekening);
-
+                                                                
                                                                 $harga_ppn = @$rincian_geser->harga_pergeseran + (@$rincian_geser->harga_pergeseran * @$rincian_geser->ppn_pergeseran) / 100;
                                                                 $total = $harga_ppn * @$rincian_geser->volume_pergeseran;
                                                                 $selisih = $total - $selisih;
@@ -292,7 +292,7 @@
                                                             </td>
                                                         @endforeach
                                                         <td align="right">
-                                                            {!! number_format(@$selisih*(-1), 0, ',', '.') !!}
+                                                            {!! number_format(@$selisih * -1, 0, ',', '.') !!}
                                                         </td>
 
                                                         <td style="text-align: center">
@@ -379,7 +379,7 @@
             );
         }
 
-        function update_kode_rekening(token, url, pengajuan_detail_id, kode_rekening, modal) {
+        function update_kode_rekening(token, url, pengajuan_detail_id, subtitle1, subtitle2, kode_rekening, modal) {
             $(modal).modal("show");
             $(modal + "Label").html("Geser Komponen Rekening");
             $(modal + "Isi").html(loading);
@@ -387,6 +387,8 @@
             $.post(
                 act, {
                     _token: token,
+                    subtitle1: subtitle1,
+                    subtitle2: subtitle2,
                     pengajuan_detail_id: pengajuan_detail_id,
                     kode_rekening: kode_rekening
                 },

@@ -184,15 +184,15 @@ class PengajuanDetailController extends Controller
         return view('pengajuan.pengajuan_detail.edit_rincian', compact('data','data_rekening','data_satuan','pengajuan_detail','id'));
     }
 
-    public function update_kode_rekening(Request $request,$id)
+    public function update_kode_rekening(Request $request)
     {
         $kode_rekening = $request->kode_rekening;
         $pengajuan_detail_id = decrypt($request->pengajuan_detail_id);
         $pengajuan_detail  = PengajuanDetail::find($pengajuan_detail_id);
         $data_satuan = Satuan::orderBy('satuan')->get();
    
-        $detail_rincians = DetailRincian::where('pengajuan_detail_id',$pengajuan_detail_id)->where('kode_rekening_pergeser')->count();
-        dd($pengajuan_detail_id);
+        // $detail_rincians = DetailRincian::where('pengajuan_detail_id',$pengajuan_detail_id)->where('kode_rekening_pergeser')->count();
+        // dd($pengajuan_detail_id);
 
         // $data_rekening = MasterRekening::where('kode_rek', 'like', '5.%')->get();
         $data_rekening = MasterRekening::where('kode_rek', 'like', $kode_rekening.'%')
@@ -203,8 +203,8 @@ class PengajuanDetailController extends Controller
         ->get();
 
 
-        $data = Detail::findOrFail($id);
-        return view('pengajuan.pengajuan_detail.edit_rekening', compact('data','data_rekening','data_satuan','pengajuan_detail','id'));
+        $data = Detail::where('kode_rekening','like', $kode_rekening.'%')->where('subtitle',$request->subtitle1)->where('subtitle2',$request->subtitle2)->first();
+        return view('pengajuan.pengajuan_detail.edit_rekening', compact('data','data_rekening','data_satuan','pengajuan_detail'));
     }
     
 
@@ -257,6 +257,7 @@ class PengajuanDetailController extends Controller
 
     public function update_detail_rekening(Request $request)
     {
+        // dd($request->all());
         $detail = Detail::find($request->detail_id);
         if (!empty($request->opd_id)) {
             $koderek = MasterRekening::where('kode_rek',$request->kode_rekening_pergeseran)->first();
@@ -267,6 +268,11 @@ class PengajuanDetailController extends Controller
             } else {
                 $ppn = $request->ppn_pergeseran;
             }
+        $kode_rekening_pergeseran = DetailRincian::where('kode_rekening',$detail->kode_rekening)->where('pengajuan_detail_id',$request->pengajuan_detail_id)->where('master_sub_kegiatan_id',$detail->master_sub_kegiatan_id)->count();
+        
+        if($kode_rekening_pergeseran > 0){
+            DetailRincian::where('kode_rekening',$detail->kode_rekening)->where('pengajuan_detail_id',$request->pengajuan_detail_id)->where('master_sub_kegiatan_id',$detail->master_sub_kegiatan_id)->delete();
+        }
         $list_detail = Detail::where('kode_rekening',$detail->kode_rekening)->where('master_sub_kegiatan_id',$detail->master_sub_kegiatan_id)->get();
         foreach($list_detail as $r){
             DetailRincian::create([
@@ -290,6 +296,7 @@ class PengajuanDetailController extends Controller
                 'spek_pergeseran' => $r->spek, 
                 'koefisien_pergeseran' => $r->koefisien,
                 'rekening_detail_id' => $r->rekenings_id,
+                'kode_rekening' => $r->kode_rekening,
                 'ppn_pergeseran' => $r->ppn ?? 0,
                 'fase_id' => $request->fase_id,
                 'tahun_pergeseran' => Auth::user()->tahun,
