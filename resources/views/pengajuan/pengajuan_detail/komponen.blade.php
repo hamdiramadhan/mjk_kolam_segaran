@@ -210,7 +210,7 @@
                                                                 $kode_rekening = substr($r3->kode_rekening, 0, $length);
                                                             @endphp 
                                                             <button title="Pergeseran Rekening" data-toggle="tooltip"
-                                                                onclick="update_kode_rekening('{{ csrf_token() }}', '{{ route('update_kode_rekening', $id_detail_murni->id) }}','{{ encrypt($pengajuan_detail->id) }}','{{ $kode_rekening }}','#ModalKuningSm')"
+                                                                onclick="update_kode_rekening('{{ csrf_token() }}', '{{ route('update_kode_rekening') }}','{{ encrypt($pengajuan_detail->id) }}','{{ $r1->subtitle }}','{{ $r2->subtitle2 }}','{{ $kode_rekening }}','#ModalKuningSm')"
                                                                 class="btn btn-sm btn-outline-warning">
                                                                 <i
                                                                     class="bx bx-message-check
@@ -245,9 +245,9 @@
                                                             {!! $r4->detail !!} {{ $r4->spek }}
                                                         </td>
                                                         <td>
-                                                            {!! $r4->satuan !!}
+                                                            {!! $r4->satuan !!} 
                                                         </td>
-                                                        <td>
+                                                        <td> 
                                                             {!! $r4->koefisien !!}
                                                         </td>
                                                         <td align="right">
@@ -387,7 +387,7 @@
             );
         }
 
-        function update_kode_rekening(token, url, pengajuan_detail_id, kode_rekening, modal) {
+        function update_kode_rekening(token, url, pengajuan_detail_id, subtitle1, subtitle2, kode_rekening, modal) {
             $(modal).modal("show");
             $(modal + "Label").html("Geser Komponen Rekening");
             $(modal + "Isi").html(loading);
@@ -395,6 +395,8 @@
             $.post(
                 act, {
                     _token: token,
+                    subtitle1: subtitle1,
+                    subtitle2: subtitle2,
                     pengajuan_detail_id: pengajuan_detail_id,
                     kode_rekening: kode_rekening
                 },
