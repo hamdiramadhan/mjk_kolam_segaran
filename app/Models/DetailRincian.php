@@ -96,6 +96,18 @@ class DetailRincian extends Model
                 ->where('fase_id',$fase_id)
 				->orderBy('id', 'desc')
 				->first();
+        if(!$res)
+        {
+            $res = DetailRincian::where('pengajuan_id',$pengajuan_id) 
+                    ->where('detail_id',$detail_id)
+                    ->where('fase_id',$fase_id)
+                    ->orderBy('id', 'desc')
+                    ->first();
+            if($res)
+            {
+                return 'bedarekening';
+            }
+        }
         return $res;
     }
 }
