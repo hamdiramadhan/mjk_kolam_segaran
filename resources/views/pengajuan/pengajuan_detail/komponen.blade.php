@@ -242,27 +242,43 @@
                                                 @push('detail')
                                                     <tr>
                                                         <td>&nbsp;&nbsp;&nbsp;
+                                                            @if($r4->tipe == 'murni')
                                                             {!! $r4->detail !!} {{ $r4->spek }}
+                                                            @endif 
                                                         </td>
                                                         <td>
+                                                            @if($r4->tipe == 'murni')
                                                             {!! $r4->satuan !!} 
+                                                            @endif 
                                                         </td>
                                                         <td> 
+                                                            @if($r4->tipe == 'murni')
                                                             {!! $r4->koefisien !!}
+                                                            @endif 
                                                         </td>
                                                         <td align="right">
+                                                            @if($r4->tipe == 'murni')
                                                             {!! number_format($r4->harga, 0, ',', '.') !!}
+                                                            @endif 
                                                         </td>
                                                         <td align="right">
+                                                            @if($r4->tipe == 'murni')
                                                             {!! number_format($r4->ppn, 0, ',', '.') !!}
+                                                            @endif 
                                                         </td>
                                                         <td align="right">
+                                                            @if($r4->tipe == 'murni')
                                                             {!! number_format($total, 0, ',', '.') !!}
+                                                            @endif 
                                                         </td>
 
                                                         @foreach ($fases as $f)
                                                             @php
                                                                 $rincian_geser = App\Models\DetailRincian::get_komponen_fase($pengajuan_detail->pengajuan_id, $r4->id, $f->id, $r3->kode_rekening);
+                                                                if($r4->tipe == 'pergeseran' && $r4->fase_id == $f->id)
+                                                                { 
+                                                                    $rincian_geser = App\Models\DetailRincian::get_komponen_id($r4->id);
+                                                                }
                                                                 if($rincian_geser || $rincian_geser == 'bedarekening')
                                                                 {
                                                                     $jml_geser ++;

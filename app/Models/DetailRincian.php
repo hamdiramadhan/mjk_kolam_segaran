@@ -110,4 +110,10 @@ class DetailRincian extends Model
         }
         return $res;
     }
+
+    public static function get_komponen_id($id)
+    { 
+    	$res = DetailRincian::find($id); 
+        return $res;
+    }
 }
