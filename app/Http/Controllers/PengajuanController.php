@@ -145,7 +145,7 @@ class PengajuanController extends Controller
     
         $judul = 'Usulan Pergeseran Anggaran Dalam APBD TA '.$tahun;
         $url = env('APP_URL'); 
-        $kepada = 'PPKD';
+        $kepada = 'Ketua PPKD';
         if($data->usulan_id == 1){
             $kepada = 'Sekda';
         }
