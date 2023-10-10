@@ -195,24 +195,11 @@
         </table>
     </div>
     <div style="padding-left: 100px; text-indent: 0.5in; padding-right: 10px;">
-        <p style="text-align: justify; text-justify: inter-word; margin-bottom: -20px;">
+        <p style="text-align: justify; text-justify: inter-word;">
             Dengan memperhatikan ketentuan Pergeseran Anggaran sebagaimana tercantum dalam
             Peraturan Bupati Mojokerto Nomor ….. Tahun 2021 tentang Tata Cara Pergeseran
-            Anggaran, dengan hormat kami mengajukan usulan:
+            Anggaran, dengan hormat kami mengajukan usulan {{ $data->usulan->usulan }}
         </p>
-        <ol type="a">
-            @foreach ($usulan as $r)
-                <li style="text-align: justify; text-justify: inter-word; margin-bottom: 5px;">
-                    @php
-                        $pilih = '';
-                    @endphp
-                    @if ($r->id == $data->usulan_id)
-                        @php $pilih = '*)'; @endphp
-                    @endif
-                    {{ $r->usulan }} {{ $pilih }}
-                </li>
-            @endforeach
-        </ol>
         <p style="text-align: justify; text-justify: inter-word; margin-bottom: -20px;">
             dalam Anggaran Pendapatan dan Belanja Daerah (APBD) Tahun Anggaran {{ $tahun }} dengan alasan dan
             pertimbangan sebagai berikut:

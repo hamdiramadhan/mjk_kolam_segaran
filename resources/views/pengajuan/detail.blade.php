@@ -104,9 +104,9 @@
                     $total_pagu = 0;
                     ?>
                     @foreach ($pengajuan_detail as $dk)
-                        <?php 
+                        <?php
                         $n++;
-                        try { 
+                        try {
                             $pagu = @$dk->sub_kegiatan->get_total_komponen($dk->master_sub_kegiatan_id);
                         } catch (\Throwable $th) {
                             $pagu = 0;
@@ -139,17 +139,27 @@
                             </td>
                             <td>
 
+                                <button
+                                    onclick="ubah_sumberdana('{{ csrf_token() }}', '#ModalBiruSm','{{ encrypt($dk->id) }}')"
+                                    type="button" class="btn btn-sm btn-outline-primary" data-toggle="tooltip"
+                                    title="Ubah Sumber Dana">
+                                    <i class="fa fa-pen me-0"></i>
+                                </button>
+                                <br><br>
+
                                 <a href="{{ route('pengajuan_detail.komponen', encrypt($dk->id)) }}" type="button"
-                                    class="btn btn-sm btn-outline-primary" data-popup="tooltip" title="Komponen">
+                                    class="btn btn-sm btn-outline-primary" data-toggle="tooltip" title="Komponen">
                                     <i class="fa fa-list me-0"></i>
                                 </a>
                                 <br><br>
 
-                                <form method="POST" onsubmit="return confirm('Anda yakin Membatalkan Pengajuan data ini ??')"
+
+                                <form method="POST"
+                                    onsubmit="return confirm('Anda yakin Membatalkan Pengajuan data ini ??')"
                                     action="{{ route('pengajuan_detail.destroy', encrypt($dk->id)) }}">
                                     @csrf
                                     <button type="submit" class="btn btn-sm btn-outline-danger">
-                                        <i class="bx bx-trash me-0"></i> 
+                                        <i class="bx bx-trash me-0"></i>
                                     </button>
                                 </form>
                             </td>
@@ -162,8 +172,8 @@
 
 
 
-    <div id="" class="modal fade modalAddSubKegiatan" tabindex="-1" role="dialog"
-        aria-labelledby="myModalLabel" aria-hidden="true" width="100%">
+    <div id="" class="modal fade modalAddSubKegiatan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true" width="100%">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-primary">
@@ -204,6 +214,9 @@
 
 @push('scripts')
     <script type="text/javascript">
+        $(document).ready(function() {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
         // START SCRIPT TABEL 
         $(document).ready(function() {
             var table = $('.datatable-basic-subkegiatan').DataTable({
@@ -251,6 +264,7 @@
                 $('.form-check-input').hide(500);
             }
         }
+
 
         function sub_kegiatan_rincian_detail(token, id_sub_kegiatan) {
             $("#ModalFull").modal("show");

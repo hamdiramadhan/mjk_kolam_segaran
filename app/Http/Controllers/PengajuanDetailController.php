@@ -190,6 +190,9 @@ class PengajuanDetailController extends Controller
         $pengajuan_detail_id = decrypt($request->pengajuan_detail_id);
         $pengajuan_detail  = PengajuanDetail::find($pengajuan_detail_id);
         $data_satuan = Satuan::orderBy('satuan')->get();
+        $detail_id = $request->detail_id;
+        $data_detail = Detail::findOrFail($request->detail_id);
+
    
         // $detail_rincians = DetailRincian::where('pengajuan_detail_id',$pengajuan_detail_id)->where('kode_rekening_pergeser')->count();
         // dd($pengajuan_detail_id);
@@ -204,7 +207,7 @@ class PengajuanDetailController extends Controller
 
         $data = Detail::where('kode_rekening','like', $kode_rekening.'%')->where('subtitle',$request->subtitle1)->where('subtitle2',$request->subtitle2)->first();
 
-        return view('pengajuan.pengajuan_detail.edit_rekening', compact('data','data_rekening','data_satuan','pengajuan_detail'));
+        return view('pengajuan.pengajuan_detail.edit_rekening', compact('data','data_detail','data_rekening','data_satuan','pengajuan_detail'));
     }
     
 
@@ -293,12 +296,12 @@ class PengajuanDetailController extends Controller
             } else {
                 $ppn = $request->ppn_pergeseran;
             }
-        $kode_rekening_pergeseran = DetailRincian::where('kode_rekening',$detail->kode_rekening)->where('pengajuan_detail_id',$request->pengajuan_detail_id)->where('master_sub_kegiatan_id',$detail->master_sub_kegiatan_id)->count();
+        $kode_rekening_pergeseran = DetailRincian::where('kode_rekening',$detail->kode_rekening)->where('pengajuan_detail_id',$request->pengajuan_detail_id)->where('master_sub_kegiatan_id',$detail->master_sub_kegiatan_id)->where('id',$request->detail_id)->count();
         
         if($kode_rekening_pergeseran > 0){
             DetailRincian::where('kode_rekening',$detail->kode_rekening)->where('pengajuan_detail_id',$request->pengajuan_detail_id)->where('master_sub_kegiatan_id',$detail->master_sub_kegiatan_id)->delete();
         }
-        $list_detail = Detail::where('kode_rekening',$detail->kode_rekening)->where('master_sub_kegiatan_id',$detail->master_sub_kegiatan_id)->get();
+        $list_detail = Detail::where('kode_rekening',$detail->kode_rekening)->where('master_sub_kegiatan_id',$detail->master_sub_kegiatan_id)->where('id',$request->detail_id)->get();
         foreach($list_detail as $r){
             DetailRincian::create([
                 'pengajuan_detail_id' => $pengajuan_detail->id,
@@ -325,6 +328,7 @@ class PengajuanDetailController extends Controller
                 'ppn_pergeseran' => $r->ppn ?? 0,
                 'fase_id' => $request->fase_id,
                 'tahun_pergeseran' => Auth::user()->tahun,
+                'detail_id' => $request->detail_id,
                 'created_by'=>Auth::user()->id
             ]);
             $detail_rincian =  DetailRincian::orderBy('id','desc')->first();
@@ -338,6 +342,36 @@ class PengajuanDetailController extends Controller
             session()->put('statusT', 'Data Gagal ditambah');
         }
         return back();
+    }
+
+    public function edit_sumberdana(Request $request)
+    {
+        $id = decrypt($request->id);
+        $sumber_dana_pengajuan = PengajuanDetailSumberdana::where('pengajuan_detail_id',$id)->get();
+        $sumber_dana = SumberDana::all();
+        return view('pengajuan.pengajuan_detail.edit_sumberdana',compact('sumber_dana','sumber_dana_pengajuan','id'));
+
+    }
+
+    public function update_sumberdana(Request $request,$id)
+    {
+        $id = decrypt($id);
+        $sumberdana = $request->sumberdana;
+        $status = 'statusT';
+        $alert = 'Pilih Sumberdana Terlebih Dahulu';
+        if(!empty($sumberdana)){
+            $pengajuan_sumberdana = PengajuanDetailSumberdana::where('pengajuan_detail_id',$id)->delete();
+            for ($i=0; $i <sizeof($sumberdana) ; $i++) { 
+                $data = new PengajuanDetailSumberdana();
+                $data->pengajuan_detail_id = $id;
+                $data->sumber_dana_id = $sumberdana[$i];
+                $data->save();
+            }
+            $status = 'status';
+            $alert = 'Sumberdana Berhasil Diubah';
+        }
+        session()->put($status, $alert );
+        return redirect()->back();
     }
     /**
      * Display the specified resource.

@@ -41,8 +41,9 @@
                     </div>
                     <div class="col-md-12">
                         <label for="nomor_surat" class="form-label">Nomor Surat</label>
-                        <input type="text" class="form-control" name="nomor_surat" id="nomor_surat"
-                            placeholder="Masukkan Nomor Surat">
+                        <input type="text" class="form-control" value="900/-/416.970/2023" name="nomor_surat"
+                            id="nomor_surat" placeholder="Masukkan Nomor Surat">
+                        <span class="text-danger">*) 900/-/416.970/2023 digit kedua diinputkan berdasarkan urutan </span>
                     </div>
 
                     <div class="col-md-12">

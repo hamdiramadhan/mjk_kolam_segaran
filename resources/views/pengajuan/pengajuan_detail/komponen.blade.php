@@ -155,7 +155,7 @@
                                         <?php
                                         $data_ket_bl_teks_pergeseran = App\Models\DetailRincian::get_sub2(@$id_sub_kegiatan, @$detail_rincian_pergeseran->subtitle_pergeseran, @$pengajuan_detail->pengajuan_id);
                                         
-                                        $data_rekening = App\Models\Detail::get_rekening($r1->master_sub_kegiatan_id, $r1->subtitle, $r2->subtitle2);
+                                        $data_rekening = App\Models\Detail::get_rekening($r1->master_sub_kegiatan_id, $r1->subtitle, $r2->subtitle2, $pengajuan_detail->id);
                                         
                                         ?>
                                         @push('detail')
@@ -209,7 +209,7 @@
                                                             @php
                                                                 $kode_rekening = substr($r3->kode_rekening, 0, $length);
                                                             @endphp
-                                                            @if ($pengajuan_detail->pengajuan->usulan->id != 4)
+                                                            {{-- @if ($pengajuan_detail->pengajuan->usulan->id != 4)
                                                                 <button title="Pergeseran Rekening" data-toggle="tooltip"
                                                                     onclick="update_kode_rekening('{{ csrf_token() }}', '{{ route('update_kode_rekening') }}','{{ encrypt($pengajuan_detail->id) }}','{{ $r1->subtitle }}','{{ $r2->subtitle2 }}','{{ $kode_rekening }}','#ModalKuningSm')"
                                                                     class="btn btn-sm btn-outline-warning">
@@ -217,7 +217,7 @@
                                                                         class="bx bx-message-check
                                                                 me-0"></i>
                                                                 </button>
-                                                            @endif
+                                                            @endif --}}
                                                         </td>
                                                     @else
                                                         @php
@@ -326,6 +326,15 @@
                                                         </td>
 
                                                         <td style="text-align: center">
+                                                            @if ($pengajuan_detail->pengajuan->usulan->id != 4)
+                                                                <button title="Pergeseran Rekening" data-toggle="tooltip"
+                                                                    onclick="update_kode_rekening('{{ csrf_token() }}', '{{ route('update_kode_rekening') }}','{{ encrypt($pengajuan_detail->id) }}','{{ $r1->subtitle }}','{{ $r2->subtitle2 }}','{{ $kode_rekening }}','{{ $r4->id }}','#ModalKuningSm')"
+                                                                    class="btn btn-sm btn-outline-warning">
+                                                                    <i
+                                                                        class="bx bx-message-check
+                                                            me-0"></i>
+                                                                </button>
+                                                            @endif
                                                             @if ($r4->tipe == 'murni')
                                                                 @if ($pengajuan_detail->pengajuan->usulan->id == 4)
                                                                     <button title="Pergeseran Rincian" data-toggle="tooltip"
@@ -413,7 +422,8 @@
             );
         }
 
-        function update_kode_rekening(token, url, pengajuan_detail_id, subtitle1, subtitle2, kode_rekening, modal) {
+        function update_kode_rekening(token, url, pengajuan_detail_id, subtitle1, subtitle2, kode_rekening, detail_id,
+            modal) {
             $(modal).modal("show");
             $(modal + "Label").html("Geser Komponen Rekening");
             $(modal + "Isi").html(loading);
@@ -424,6 +434,7 @@
                     subtitle1: subtitle1,
                     subtitle2: subtitle2,
                     pengajuan_detail_id: pengajuan_detail_id,
+                    detail_id: detail_id,
                     kode_rekening: kode_rekening
                 },
                 function(data) {

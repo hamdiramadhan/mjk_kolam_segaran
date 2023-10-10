@@ -466,3 +466,18 @@ function pengajuan_detail_create(token, modal, id) {
             $(modal + 'Isi').html(data);
         });
 }
+
+function ubah_sumberdana(token, modal, id) {
+    $(modal).modal('show');
+    $(modal + 'Label').html('Ubah Sumber Dana');
+    $(modal + 'Isi').html(loading);
+    var public_path = $('#public_path').val(); /* di layouts */
+    var act = public_path + '/pengajuan_detail/edit_sumberdana';
+    $.post(act, {
+            _token: token,
+            id: id
+        },
+        function(data) {
+            $(modal + 'Isi').html(data);
+        });
+}

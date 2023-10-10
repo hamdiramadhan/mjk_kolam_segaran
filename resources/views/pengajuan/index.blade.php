@@ -149,8 +149,12 @@
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                         aria-label="Close"></button>
                                                 </div>
-
                                                 <div class="modal-body">
+                                                    @if ($count_pengajuan_warning > 0)
+                                                        <div class="p-1 text-danger rounded">Warning, Sudah Pernah Melakukan
+                                                            Pengajuan Pergeseran Sebanyak
+                                                            {{ $count_pengajuan_warning }} kali dalam 1 Tahun</div><br>
+                                                    @endif
                                                     <form class="row g-3" method="POST"
                                                         action="{{ route('pengajuan.verif', encrypt($p->id)) }}">
                                                         @csrf

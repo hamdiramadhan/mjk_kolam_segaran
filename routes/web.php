@@ -127,7 +127,9 @@ Route::group(['middleware' => ['XSS']], function () {
         Route::post('update_detail_rincian/{id}', [PengajuanDetailController::class, 'update_detail_rincian'])->name('update_detail_rincian');
         Route::post('store_geser_komponen', [PengajuanDetailController::class, 'store_geser_komponen'])->name('store_geser_komponen');
         Route::post('pengajuan_detail/destroy/{id}', [PengajuanDetailController::class,"destroy"])->name('pengajuan_detail.destroy');
+        Route::post('/pengajuan_detail/edit_sumberdana', [PengajuanDetailController::class, 'edit_sumberdana'])->name('edit_sumberdana');
 
+        Route::post('pengajuan_detail/update_sumberdana/{id}',[PengajuanDetailController::class, 'update_sumberdana'])->name('update_sumberdana');
         Route::post('update_rincian', [PengajuanDetailController::class, 'update_rincian'])->name('update_rincian');
         Route::post('update_kode_rekening', [PengajuanDetailController::class, 'update_kode_rekening'])->name('update_kode_rekening');
         Route::post('update_detail_rekening', [PengajuanDetailController::class, 'update_detail_rekening'])->name('update_detail_rekening');

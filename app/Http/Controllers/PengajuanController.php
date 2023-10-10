@@ -36,9 +36,16 @@ class PengajuanController extends Controller
         } 
         $pengajuan_alasan = PengajuanAlasan::All();
         $count_pengajuan = Pengajuan::with('fase')->whereIn('status',[0,1,2])->where('opd_id',$opd->id)->where('tahun',Auth::user()->tahun)->count();
+        $count_pengajuan_warning = Pengajuan::whereHas('fase', function ($query) {
+            $now = date('Y-m-d H:i:s');
+            $query->where('mulai', '<=', $now)->where('selesai', '>=', $now);
+        })
+        ->where('opd_id', $opd->id)
+        ->count();
+        
         $status = MasterStatus::whereNotIn('kode',[0,1])->get();
         $nama_header = 'Pengajuan Perubahan '.$opd->unit_name .' '. Auth::user()->tahun;
-        return view('pengajuan.index',['nama_header'=>$nama_header],compact('pengajuan','pengajuan_alasan','count_pengajuan','status'));
+        return view('pengajuan.index',['nama_header'=>$nama_header],compact('pengajuan','pengajuan_alasan','count_pengajuan_warning','count_pengajuan','status'));
     }
 
 
@@ -53,7 +60,13 @@ class PengajuanController extends Controller
         $count_pengajuan = Pengajuan::whereIn('status',[0,1,2])->where('opd_id',$opd->id)->where('tahun',Auth::user()->tahun)->count();
         $status = MasterStatus::whereNotIn('kode',[0,1])->get();
         $nama_header = 'Pengajuan Perubahan';
-        return view('pengajuan.index',['nama_header'=>$nama_header],compact('pengajuan','pengajuan_alasan','count_pengajuan','status'));
+        $count_pengajuan_warning = Pengajuan::whereHas('fase', function ($query) {
+            $now = date('Y-m-d H:i:s');
+            $query->where('mulai', '<=', $now)->where('selesai', '>=', $now);
+        })
+        ->where('opd_id', $opd->id)
+        ->count();
+        return view('pengajuan.index',['nama_header'=>$nama_header],compact('pengajuan','count_pengajuan_warning','pengajuan_alasan','count_pengajuan','status'));
     }
 
 
@@ -85,7 +98,12 @@ class PengajuanController extends Controller
             
             $opd = Opd::findOrFail(Auth::user()->opd_id);
 
-            $count_pengajuan = Pengajuan::with('fase')->where('opd_id',$opd->id)->where('tahun',Auth::user()->tahun)->count();
+            $count_pengajuan = Pengajuan::whereHas('fase', function ($query) {
+                $now = date('Y-m-d H:i:s');
+                $query->where('mulai', '<=', $now)->where('selesai', '>=', $now);
+            })
+            ->where('opd_id', $opd->id)
+            ->count();
 
         $opd = Opd::find(Auth::user()->opd_id);
         $usulan = PengajuanUsulan::all();

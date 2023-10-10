@@ -6,6 +6,8 @@
     <input type="hidden" class="form-control" id="detail_id" name="detail_id" value="{{ $data->id }}">
     <input type="hidden" class="form-control" id="pengajuan_detail_id" name="pengajuan_detail_id"
         value="{{ $pengajuan_detail->id }}">
+    <input type="hidden" class="form-control" id="detail_id" name="detail_id" value="{{ $data_detail->id }}">
+
 
     <input type="hidden" class="form-control" id="fase_id" name="fase_id"
         value="{{ $pengajuan_detail->pengajuan->fase->id }}">
