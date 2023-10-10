@@ -29,7 +29,7 @@ class UsulanSeeder extends Seeder
         ]); 
         DB::table('pengajuan_usulans')->insert([ 
             'id' => 4
-            , 'usulan' => 'D. Perubahan atau pergeseran atas uraian/ keterangan dari sub rincian obiek' 
+            , 'usulan' => 'D. Perubahan atau pergeseran atas uraian/ keterangan dari sub rincian objek' 
         ]); 
     }
 }

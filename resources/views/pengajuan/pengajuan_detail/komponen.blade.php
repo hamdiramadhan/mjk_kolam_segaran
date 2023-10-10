@@ -101,7 +101,7 @@
                                 <tr>
                                     <th style="text-align: center;" colspan="6">Rincian Murni</th>
                                     @foreach ($fases as $f)
-                                        <th style="text-align: center;" colspan="6">{{ $f->nama }}</th>
+                                        <th style="text-align: center;" colspan="5">{{ $f->nama }}</th>
                                     @endforeach
                                     <th style="text-align: center; " rowspan="2">Bertambah / <br>Berkurang</th>
                                     <th style="text-align: center; " rowspan="2">Act</th>
@@ -115,7 +115,7 @@
                                     <th style="text-align: center;">Jumlah</th>
 
                                     @foreach ($fases as $f)
-                                        <th style="text-align: center;">Uraian</th>
+                                        {{-- <th style="text-align: center;">Uraian</th> --}}
                                         <th style="text-align: center;">Satuan</th>
                                         <th style="text-align: center;">Koefisien</th>
                                         <th style="text-align: center;">Harga</th>
@@ -138,9 +138,9 @@
                                     @push('detail')
                                         <tr>
                                             @php
-                                                $jmlcolspan = 6;
+                                                $jmlcolspan = 5;
                                                 foreach ($fases as $f) {
-                                                    $jmlcolspan += 6;
+                                                    $jmlcolspan += 5;
                                                 }
                                             @endphp
                                             <td colspan="{{ $jmlcolspan }}"><b>{!! $r1->subtitle ?? '#' !!}</b></td>
@@ -161,9 +161,9 @@
                                         @push('detail')
                                             <tr>
                                                 @php
-                                                    $jmlcolspan = 6;
+                                                    $jmlcolspan = 5;
                                                     foreach ($fases as $f) {
-                                                        $jmlcolspan += 6;
+                                                        $jmlcolspan += 5;
                                                     }
                                                 @endphp
                                                 <td colspan="{{ $jmlcolspan }}">&nbsp;<b>{!! $r2->subtitle2 ?? '-' !!} </b></td>
@@ -185,9 +185,9 @@
                                                 <tr>
                                                     @if ($pengajuan_detail->pengajuan->usulan->id != 4)
                                                         @php
-                                                            $jmlcolspan = 6;
+                                                            $jmlcolspan = 5;
                                                             foreach ($fases as $f) {
-                                                                $jmlcolspan += 6;
+                                                                $jmlcolspan += 5;
                                                             }
                                                         @endphp
                                                         <td colspan="{{ $jmlcolspan }}">&nbsp;&nbsp;&nbsp;
@@ -250,9 +250,9 @@
                                                 @push('detail')
                                                     <tr>
                                                         <td>&nbsp;&nbsp;&nbsp;
-                                                            @if ($r4->tipe == 'murni')
+                                                            {{-- @if ($r4->tipe == 'murni') --}}
                                                                 {!! $r4->detail !!} {{ $r4->spek }}
-                                                            @endif
+                                                            {{-- @endif --}}
                                                         </td>
                                                         <td>
                                                             @if ($r4->tipe == 'murni')
@@ -267,17 +267,19 @@
                                                         <td align="right">
                                                             @if ($r4->tipe == 'murni')
                                                                 {!! number_format($r4->harga, 0, ',', '.') !!}
+                                                            @else 
+                                                                0
                                                             @endif
                                                         </td>
                                                         <td align="right">
-                                                            @if ($r4->tipe == 'murni')
+                                                            {{-- @if ($r4->tipe == 'murni') --}}
                                                                 {!! number_format($r4->ppn, 0, ',', '.') !!}
-                                                            @endif
+                                                            {{-- @endif --}}
                                                         </td>
                                                         <td align="right">
-                                                            @if ($r4->tipe == 'murni')
+                                                            {{-- @if ($r4->tipe == 'murni') --}}
                                                                 {!! number_format($total, 0, ',', '.') !!}
-                                                            @endif
+                                                            {{-- @endif --}}
                                                         </td>
 
                                                         @foreach ($fases as $f)
@@ -294,9 +296,9 @@
                                                                 $total = $harga_ppn * @$rincian_geser->volume_pergeseran;
                                                                 $selisih = $total - $selisih;
                                                             @endphp
-                                                            <td>&nbsp;&nbsp;&nbsp;
+                                                            {{-- <td>&nbsp;&nbsp;&nbsp;
                                                                 {!! @$rincian_geser->detail_pergeseran !!} {{ @$rincian_geser->spek_pergeseran }}
-                                                            </td>
+                                                            </td> --}}
                                                             <td>
                                                                 {!! @$rincian_geser->satuan_pergeseran !!}
                                                             </td>
