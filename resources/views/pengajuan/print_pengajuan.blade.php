@@ -203,8 +203,8 @@
             </tr>
         </table>
     </div>
-    <div style="padding-left: 100px; text-indent: 0.5in; padding-right: 10px;">
-        <p style="text-align: justify; text-justify: inter-word;">
+    <div style="padding-left: 100px; padding-right: 10px;">
+        <p style="text-align: justify; text-justify: inter-word;margin-bottom: -10px; text-indent: 38px; ">
             Dengan memperhatikan ketentuan Pergeseran Anggaran sebagaimana tercantum dalam
             Peraturan Bupati Mojokerto Nomor ….. Tahun 2021 tentang Tata Cara Pergeseran
             Anggaran, dengan hormat kami mengajukan usulan {{ $data->usulan->usulan }}. Dalam Anggaran Pendapatan dan
@@ -213,19 +213,21 @@
         </p>
         <ol>
             @foreach ($pengajuan_alasan as $r)
-                <li style="text-align: justify; text-justify: inter-word; margin-bottom: 5px;">
-                    {{ $r->alasan }}
-                </li>
+                @if (!empty($r->alasan))
+                    <li style="margin-bottom: 5px; text-align: justify;">
+                        {{ $r->alasan }}
+                    </li>
+                @endif
             @endforeach
         </ol>
-        <p style="text-align: justify; text-indent: 0.5in; text-justify: inter-word;">
+        <p style="text-align: justify; text-justify: inter-word; text-indent: 38px; ">
             Berkaitan dengan hal tersebut di atas, kami mohon kiranya Bapak dapat menyetujui usulan Pergeseran Anggaran
             yang
             kami ajukan agar dapat ditampung dalam Peraturan Bupati tentang Perubahan Penjabaran APBD sebagai dasar
             penerbitan Perubahan Dokumen Pelaksanaan Anggaran Satuan Kerja Perangkat Daerah (Perubahan DPA-SKPD), dengan
             rincian pergeseran/ perubahan anggaran dan rancangan DPPA sebagaimana terlampir.
         </p>
-        <p style="text-align: justify; text-justify: inter-word;">
+        <p style="text-align: justify; text-justify: inter-word; text-indent: 38px; ">
             Demikian disampaikan, atas perhatian dan kerjasamanya diucapkan terima kasih.
         </p>
     </div>
