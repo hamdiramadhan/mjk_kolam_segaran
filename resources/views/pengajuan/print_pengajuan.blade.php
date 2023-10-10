@@ -2,43 +2,43 @@
     function hari_ini($d)
     {
         $hari = date('D', strtotime($d));
-    
+
         switch ($hari) {
             case 'Sun':
                 $hari_ini = 'Minggu';
                 break;
-    
+
             case 'Mon':
                 $hari_ini = 'Senin';
                 break;
-    
+
             case 'Tue':
                 $hari_ini = 'Selasa';
                 break;
-    
+
             case 'Wed':
                 $hari_ini = 'Rabu';
                 break;
-    
+
             case 'Thu':
                 $hari_ini = 'Kamis';
                 break;
-    
+
             case 'Fri':
                 $hari_ini = 'Jumat';
                 break;
-    
+
             case 'Sat':
                 $hari_ini = 'Sabtu';
                 break;
-    
+
             default:
                 $hari_ini = '';
                 break;
         }
         return $hari_ini;
     }
-    
+
     function tgl_indo($tanggal)
     {
         try {
@@ -57,7 +57,7 @@
                 'Desember',
             ];
             $pecahkan = explode('-', $tanggal);
-    
+
             return $pecahkan[2] . ' ' . $bulan[(int) $pecahkan[1]] . ' ' . $pecahkan[0];
         } catch (\Throwable $th) {
             return '';
@@ -141,6 +141,7 @@
             <tr>
                 <td width="10%" style="text-align: left;">
                 </td>
+                <td width="1%"></td>
                 <td width="60%">
                 </td>
                 <td>
@@ -153,7 +154,10 @@
                     Nomor
                 </td>
                 <td>
-                    : {{ $data->nomor_surat }}
+                    :
+                </td>
+                <td>
+                    {{ $data->nomor_surat }}
                 </td>
                 <td>
                     Yth, {{ $kepada }}
@@ -164,7 +168,10 @@
                     Sifat
                 </td>
                 <td>
-                    : {{ $data->sifat_surat }}
+                    :
+                </td>
+                <td>
+                    {{ $data->sifat_surat }}
                 </td>
                 <td style="text-align: left;">
                     c.q. PPKD Kab. Mojokerto
@@ -180,15 +187,17 @@
                 <td>
                     di -
                 </td>
+                <td></td>
             </tr>
             <tr>
-                <td style="text-align: left;">
+                <td style="text-align: left; vertical-align: top">
                     Hal
                 </td>
-                <td>
-                    : Usulan Pergeseran Anggaran<br> Dalam APBD TA {{ Auth::user()->tahun }}
+                <td style="text-align: left; vertical-align: top">
+                    :
                 </td>
-                <td>
+                <td> Usulan Pergeseran Anggaran<br> Dalam APBD TA {{ Auth::user()->tahun }}</td>
+                <td style="text-align: left; vertical-align: top">
                     MOJOKERTO
                 </td>
             </tr>
@@ -198,10 +207,8 @@
         <p style="text-align: justify; text-justify: inter-word;">
             Dengan memperhatikan ketentuan Pergeseran Anggaran sebagaimana tercantum dalam
             Peraturan Bupati Mojokerto Nomor ….. Tahun 2021 tentang Tata Cara Pergeseran
-            Anggaran, dengan hormat kami mengajukan usulan {{ $data->usulan->usulan }}
-        </p>
-        <p style="text-align: justify; text-justify: inter-word; margin-bottom: -20px;">
-            dalam Anggaran Pendapatan dan Belanja Daerah (APBD) Tahun Anggaran {{ $tahun }} dengan alasan dan
+            Anggaran, dengan hormat kami mengajukan usulan {{ $data->usulan->usulan }}. Dalam Anggaran Pendapatan dan
+            Belanja Daerah (APBD) Tahun Anggaran {{ $tahun }} dengan alasan dan
             pertimbangan sebagai berikut:
         </p>
         <ol>
