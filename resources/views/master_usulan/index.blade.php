@@ -13,11 +13,11 @@
                 </ol>
             </nav>
         </div>
-        <div class="ms-auto">
+        {{-- <div class="ms-auto">
 
             <a href="{{ route('jenis_usulan.create') }}" type="button" class="btn btn-primary px-5"><i
                     class="bx bx-plus mr-1"></i>Tambah</a>
-        </div>
+        </div> --}}
     </div>
 
     <!--end breadcrumb-->
@@ -83,14 +83,14 @@
                                         style="width:100%" class="btn btn-success px-5"><i
                                             class="bx bx-pencil mr-1"></i>Edit</a>
 
-                                    <form method="POST" onsubmit="return confirm('Anda yakin menghapus data ini ??')"
+                                    {{-- <form method="POST" onsubmit="return confirm('Anda yakin menghapus data ini ??')"
                                         action="{{ route('jenis_usulan.destroy', encrypt($r->id)) }}">
                                         @csrf
 
                                         <button type="submit" onclick="hapus_data('{{ $r->id }}')"
                                             style="width:100%" class="btn btn-danger px-5"><i
                                                 class="bx bx-trash mr-1"></i>Hapus</button>
-                                    </form>
+                                    </form> --}}
                                 </td>
                             </tr>
                         @endforeach
