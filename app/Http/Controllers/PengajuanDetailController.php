@@ -378,12 +378,11 @@ class PengajuanDetailController extends Controller
     public function tambah_komponen_rekening(Request $request)
     {
         $kode_rekening = $request->kode_rekening;
+        $kode_rekening_full = $request->kode_rekening_full;
         $pengajuan_detail_id = decrypt($request->pengajuan_detail_id);
         $pengajuan_detail  = PengajuanDetail::find($pengajuan_detail_id);
         $data_satuan = Satuan::orderBy('satuan')->get();
-        $detail_id = $request->detail_id;
-
-   
+        
         // $detail_rincians = DetailRincian::where('pengajuan_detail_id',$pengajuan_detail_id)->where('kode_rekening_pergeser')->count();
         // dd($pengajuan_detail_id);
         // $data_rekening = MasterRekening::where('kode_rek', 'like', '5.%')->get();
@@ -396,7 +395,7 @@ class PengajuanDetailController extends Controller
 
         $data = Detail::where('kode_rekening','like', $kode_rekening.'%')->where('subtitle',$request->subtitle1)->where('subtitle2',$request->subtitle2)->first();
 
-        return view('pengajuan.pengajuan_detail.tambah_komponen_rekening', compact('data','data_rekening','data_satuan','pengajuan_detail'));
+        return view('pengajuan.pengajuan_detail.tambah_komponen_rekening', compact('data','data_rekening','data_satuan','pengajuan_detail','kode_rekening_full'));
     }
 
     public function store_komponen_rekening(Request $request)

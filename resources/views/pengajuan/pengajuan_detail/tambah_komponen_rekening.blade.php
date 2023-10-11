@@ -32,8 +32,14 @@
             <div class="form-group">
                 <select class="select2onmodal" name="kode_rekening" id="tmb_kode_rekening" style="width: 100%">
                     @foreach ($data_rekening as $dt)
-                        <option value="{{ $dt->kode_rek }}" {{ strlen($dt->kode_rek) <= 12 ? 'disabled' : '' }}>
-                            {{ $dt->kode_rek }} - {{ $dt->nama_rek }} </option>
+                        @if ($kode_rekening_full == $dt->kode_rek)
+                            <option selected value="{{ $dt->kode_rek }}"
+                                {{ strlen($dt->kode_rek) <= 12 ? 'disabled' : '' }}>
+                                {{ $dt->kode_rek }} - {{ $dt->nama_rek }} </option>
+                        @else
+                            <option value="{{ $dt->kode_rek }}" {{ strlen($dt->kode_rek) <= 12 ? 'disabled' : '' }}>
+                                {{ $dt->kode_rek }} - {{ $dt->nama_rek }} </option>
+                        @endif
                     @endforeach
                 </select>
             </div>

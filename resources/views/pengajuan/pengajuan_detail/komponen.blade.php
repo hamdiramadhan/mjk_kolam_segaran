@@ -222,7 +222,7 @@
                                                         </td>
                                                         <td>
                                                             <button title="Tambah Komponen"
-                                                                onclick="tambah_komponen_rekening('{{ csrf_token() }}', '{{ route('tambah_komponen_rekening') }}','{{ encrypt($pengajuan_detail->id) }}','{{ $r1->subtitle }}','{{ $r2->subtitle2 }}','{{ $kode_rekening }}','#ModalHijau')"
+                                                                onclick="tambah_komponen_rekening('{{ csrf_token() }}', '{{ route('tambah_komponen_rekening') }}','{{ encrypt($pengajuan_detail->id) }}','{{ $r1->subtitle }}','{{ $r2->subtitle2 }}','{{ $kode_rekening }}', '{{ $r3->kode_rekening }}','#ModalHijau')"
                                                                 class="btn btn-sm btn-outline-success">
                                                                 <i class="bx bx-plus me-0"></i>
                                                             </button><br><br>
@@ -466,7 +466,8 @@
         });
 
 
-        function tambah_komponen_rekening(token, url, pengajuan_detail_id, subtitle1, subtitle2, kode_rekening, modal) {
+        function tambah_komponen_rekening(token, url, pengajuan_detail_id, subtitle1, subtitle2, kode_rekening,
+            kode_rekening_full, modal) {
             $(modal).modal("show");
             $(modal + "Label").html("Tambah Komponen Rekening");
             $(modal + "Isi").html(loading);
@@ -477,7 +478,8 @@
                     subtitle1: subtitle1,
                     subtitle2: subtitle2,
                     pengajuan_detail_id: pengajuan_detail_id,
-                    kode_rekening: kode_rekening
+                    kode_rekening: kode_rekening,
+                    kode_rekening_full: kode_rekening_full
                 },
                 function(data) {
                     $(modal + "Isi").html(data);
