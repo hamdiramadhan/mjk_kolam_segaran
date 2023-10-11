@@ -134,6 +134,8 @@ Route::group(['middleware' => ['XSS']], function () {
         Route::post('update_kode_rekening', [PengajuanDetailController::class, 'update_kode_rekening'])->name('update_kode_rekening');
         Route::post('update_detail_rekening', [PengajuanDetailController::class, 'update_detail_rekening'])->name('update_detail_rekening');
         Route::post('pengajuan/detail_print/{id}', [PengajuanController::class, 'print_detail'])->name('pengajuan.print_detail');
+        Route::post('tambah_komponen_rekening', [PengajuanDetailController::class, 'tambah_komponen_rekening'])->name('tambah_komponen_rekening');
+        Route::post('store_komponen_rekening', [PengajuanDetailController::class, 'store_komponen_rekening'])->name('store_komponen_rekening');
         
         // PENGAJUAN DETAIL
 

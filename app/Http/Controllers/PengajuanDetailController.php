@@ -373,6 +373,79 @@ class PengajuanDetailController extends Controller
         session()->put($status, $alert );
         return redirect()->back();
     }
+
+
+    public function tambah_komponen_rekening(Request $request)
+    {
+        $kode_rekening = $request->kode_rekening;
+        $pengajuan_detail_id = decrypt($request->pengajuan_detail_id);
+        $pengajuan_detail  = PengajuanDetail::find($pengajuan_detail_id);
+        $data_satuan = Satuan::orderBy('satuan')->get();
+        $detail_id = $request->detail_id;
+
+   
+        // $detail_rincians = DetailRincian::where('pengajuan_detail_id',$pengajuan_detail_id)->where('kode_rekening_pergeser')->count();
+        // dd($pengajuan_detail_id);
+        // $data_rekening = MasterRekening::where('kode_rek', 'like', '5.%')->get();
+        $data_rekening = MasterRekening::where('kode_rek', 'like', $kode_rekening.'%')
+        ->whereRaw("length(kode_rek) >= 12")
+        ->orderBy('kode_rek')
+        ->select('kode_rek','nama_rek')
+        ->distinct()
+        ->get();
+
+        $data = Detail::where('kode_rekening','like', $kode_rekening.'%')->where('subtitle',$request->subtitle1)->where('subtitle2',$request->subtitle2)->first();
+
+        return view('pengajuan.pengajuan_detail.tambah_komponen_rekening', compact('data','data_rekening','data_satuan','pengajuan_detail'));
+    }
+
+    public function store_komponen_rekening(Request $request)
+    {
+        // dd($request->all());
+        if (!empty($request->opd_id)) {
+            $opd = Opd::find($request->opd_id);
+            $subgiat = MasterSubKegiatan::find($request->id_kegiatan);
+            $rekenings = MasterRekening::where('kode_rek',$request->kode_rekening)->first();
+            $pengajuan_detail = PengajuanDetail::find($request->pengajuan_detail_id);
+            // dd($pengajuan_detail);
+            // $detail = Detail::find($request->detail_id);
+            $new = new DetailRincian();
+            $new->pengajuan_detail_id = $pengajuan_detail->id;
+                $new->pengajuan_id = $pengajuan_detail->pengajuan_id;
+                $new->detail_id = $request->id;
+                $new->master_sub_kegiatan_id = $pengajuan_detail->sub_kegiatan->id;
+                $new->opd_id = $opd->id;
+                $new->unit_id = $opd->unit_id;
+                $new->kode_sub_kegiatan = $pengajuan_detail->sub_kegiatan->kode_sub_kegiatan;
+                $new->rekenings_id = $rekenings->id;
+                $new->kode_rekening_pergeseran = $rekenings->kode_rek;
+                $new->nama_rekening_pergeseran = $rekenings->nama_rek;
+                $new->subtitle_pergeseran = $request->subtitle;
+                $new->subtitle2_pergeseran = $request->subtitle2;
+                // $new->kode_detail_pergeseran = $detail->kode_detail;
+                $new->detail_pergeseran = $request->detail;
+                $new->satuan_pergeseran = $request->satuan; 
+                $new->volume_pergeseran = $request->volume;
+                $new->harga_pergeseran = $request->harga; 
+                $new->spek_pergeseran = $request->spek; 
+                $new->koefisien_pergeseran = $request->volume . ' ' . $request->satuan;
+                $new->rekening_detail_id = $rekenings->id;
+                $new->kode_rekening = $request->kode_rekening;
+                $new->ppn_pergeseran = $request->ppn ?? 0;
+                $new->fase_id = $pengajuan_detail->pengajuan->fase->id;
+                $new->tahun_pergeseran = Auth::user()->tahun;
+                $new->detail_id = $request->detail_id;
+                $new->created_by=Auth::user()->id;
+            // dd($new);
+            // dd($new);
+            $new->save(); 
+
+            session()->put('status', 'Data berhasil ditambah');
+        } else {
+            session()->put('statusT', 'Data Gagal ditambah'); 
+        } 
+        return back();
+    }
     /**
      * Display the specified resource.
      *

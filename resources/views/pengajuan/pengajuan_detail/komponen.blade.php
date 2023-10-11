@@ -218,6 +218,14 @@
                                                                 me-0"></i>
                                                                 </button>
                                                             @endif --}}
+
+                                                        </td>
+                                                        <td>
+                                                            <button title="Tambah Komponen"
+                                                                onclick="tambah_komponen_rekening('{{ csrf_token() }}', '{{ route('tambah_komponen_rekening') }}','{{ encrypt($pengajuan_detail->id) }}','{{ $r1->subtitle }}','{{ $r2->subtitle2 }}','{{ $kode_rekening }}','#ModalHijau')"
+                                                                class="btn btn-sm btn-outline-success">
+                                                                <i class="bx bx-plus me-0"></i>
+                                                            </button><br><br>
                                                         </td>
                                                     @else
                                                         @php
@@ -251,7 +259,7 @@
                                                     <tr>
                                                         <td>&nbsp;&nbsp;&nbsp;
                                                             {{-- @if ($r4->tipe == 'murni') --}}
-                                                                {!! $r4->detail !!} {{ $r4->spek }}
+                                                            {!! $r4->detail !!} {{ $r4->spek }}
                                                             {{-- @endif --}}
                                                         </td>
                                                         <td>
@@ -267,18 +275,20 @@
                                                         <td align="right">
                                                             @if ($r4->tipe == 'murni')
                                                                 {!! number_format($r4->harga, 0, ',', '.') !!}
-                                                            @else 
+                                                            @else
+                                                                0
+                                                            @endif
+                                                        </td>
+                                                        <td align="right">
+                                                            @if ($r4->tipe == 'murni')
+                                                                {!! number_format($r4->ppn, 0, ',', '.') !!}
+                                                            @else
                                                                 0
                                                             @endif
                                                         </td>
                                                         <td align="right">
                                                             {{-- @if ($r4->tipe == 'murni') --}}
-                                                                {!! number_format($r4->ppn, 0, ',', '.') !!}
-                                                            {{-- @endif --}}
-                                                        </td>
-                                                        <td align="right">
-                                                            {{-- @if ($r4->tipe == 'murni') --}}
-                                                                {!! number_format($total, 0, ',', '.') !!}
+                                                            {!! number_format($total, 0, ',', '.') !!}
                                                             {{-- @endif --}}
                                                         </td>
 
@@ -291,7 +301,7 @@
                                                                 if ($rincian_geser || $rincian_geser == 'bedarekening') {
                                                                     $jml_geser++;
                                                                 }
-                                                                
+
                                                                 $harga_ppn = @$rincian_geser->harga_pergeseran + (@$rincian_geser->harga_pergeseran * @$rincian_geser->ppn_pergeseran) / 100;
                                                                 $total = $harga_ppn * @$rincian_geser->volume_pergeseran;
                                                                 $selisih = $total - $selisih;
@@ -329,6 +339,13 @@
 
                                                         <td style="text-align: center">
                                                             @if ($pengajuan_detail->pengajuan->usulan->id != 4)
+                                                                {{-- onclick="$('.modalAddKomponen').modal('show');
+                                                                        $('#tmb_subtitle').val('{!! $r1->subtitle !!}');
+                                                                        $('#tmb_subtitle2').val('{!! $r2->subtitle2 !!}');
+                                                                        $('#tmb_kode_rekening').val('{!! $r3->kode_rekening !!}');
+                                                                        $('#tmb_kode_rekening').trigger('change');
+                                                                        "> --}}
+
                                                                 <button title="Pergeseran Rekening" data-toggle="tooltip"
                                                                     onclick="update_kode_rekening('{{ csrf_token() }}', '{{ route('update_kode_rekening') }}','{{ encrypt($pengajuan_detail->id) }}','{{ $r1->subtitle }}','{{ $r2->subtitle2 }}','{{ $kode_rekening }}','{{ $r4->id }}','#ModalKuningSm')"
                                                                     class="btn btn-sm btn-outline-warning">
@@ -437,6 +454,29 @@
                     subtitle2: subtitle2,
                     pengajuan_detail_id: pengajuan_detail_id,
                     detail_id: detail_id,
+                    kode_rekening: kode_rekening
+                },
+                function(data) {
+                    $(modal + "Isi").html(data);
+                }
+            );
+        }
+        $(document).ready(function() {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+
+
+        function tambah_komponen_rekening(token, url, pengajuan_detail_id, subtitle1, subtitle2, kode_rekening, modal) {
+            $(modal).modal("show");
+            $(modal + "Label").html("Tambah Komponen Rekening");
+            $(modal + "Isi").html(loading);
+            var act = url;
+            $.post(
+                act, {
+                    _token: token,
+                    subtitle1: subtitle1,
+                    subtitle2: subtitle2,
+                    pengajuan_detail_id: pengajuan_detail_id,
                     kode_rekening: kode_rekening
                 },
                 function(data) {

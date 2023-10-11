@@ -64,7 +64,6 @@ class Detail extends Model
         $result = $query1->union($query2)->with(['rekening'])->orderBy('kode_rekening')->get();
 
         return $result;
-
     }
 
     public static function get_komponen($master_sub_kegiatan_id, $subtitle, $subtitle2, $kode_rekening)
