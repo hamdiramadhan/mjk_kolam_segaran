@@ -357,6 +357,7 @@ class PengajuanController extends Controller
      {
          $id = decrypt($id);
          $pengajuan_alasan = PengajuanAlasan::where('pengajuan_id',$id)->delete();
+         $pengajuan_detail = PengajuanDetail::where('pengajuan_id',$id)->delete();
          $data = Pengajuan::find($id);
          session()->put('status', 'Data User dengan nama: ' . $data->nama . ', Berhasil dihapus!');
          $data->delete();
