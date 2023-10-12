@@ -7,6 +7,7 @@ use App\Http\Controllers\SubOpdController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PengajuanController;
 use App\Http\Controllers\PengajuanDetailController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SubKegiatanController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -141,6 +142,10 @@ Route::group(['middleware' => ['XSS']], function () {
 
         // START PENGATURAN FASE
             Route::resource('fase', FaseController::class); 
-        // END PENGATURAN FASE  
+        // END PENGATURAN FASE 
+        
+        // START REPORT //
+        Route::resource('/report', ReportController::class);
+        // END REPORT //
     });
 });

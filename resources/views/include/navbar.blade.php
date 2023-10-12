@@ -72,7 +72,7 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('sub_kegiatan') }}">
+                    <a class="nav-link" href="{{ route('report.index') }}">
                         <div class="parent-icon">
                             <i class="lni lni-book"></i>
                         </div>
@@ -99,7 +99,7 @@
                         <li>
                             <a class="dropdown-item {{ Request::is('fase*') ? 'active' : '' }}"
                                 href="{{ route('fase.index') }}">
-                                Fase 
+                                Fase
                             </a>
                         </li>
 
