@@ -81,7 +81,13 @@ class PengajuanController extends Controller
         $count_pengajuan = Pengajuan::whereIn('status',[0,1,2])->where('opd_id',$opd->id)->count();
         $status = MasterStatus::whereNotIn('kode',[0,1])->get();
         $nama_header = 'Pengajuan Perubahan';
-        return view('pengajuan.index',['nama_header'=>$nama_header],compact('pengajuan','pengajuan_alasan','count_pengajuan','status'));
+        $count_pengajuan_warning = Pengajuan::whereHas('fase', function ($query) {
+            $now = date('Y-m-d H:i:s');
+            $query->where('mulai', '<=', $now)->where('selesai', '>=', $now);
+        })
+        ->where('opd_id', $opd->id)
+        ->count();
+        return view('pengajuan.index',['nama_header'=>$nama_header],compact('pengajuan','pengajuan_alasan','count_pengajuan_warning','count_pengajuan','status'));
     }
 
     /**
