@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ReportPengajuan;
 use App\Models\Pengajuan;
 use App\Models\PengajuanDetail;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
 {
@@ -19,6 +21,15 @@ class ReportController extends Controller
         $nama_header= 'Report Pengajuan Pergeseran Anggaran';
         return view('report.index',['nama_header'=>$nama_header],compact('pengajuandetail'));
     }
+
+    public function export_excel()
+    {
+        $pengajuandetail= PengajuanDetail::all();
+        $date_now = date('Y-m-d');
+        $nama_file = 'Rekap Pengajuan '.$date_now.'.xlsx';
+        return Excel::download(new ReportPengajuan($pengajuandetail),$nama_file);
+    }
+
 
     /**
      * Show the form for creating a new resource.

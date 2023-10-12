@@ -13,6 +13,15 @@
                 </ol>
             </nav>
         </div>
+        <div class="ms-auto">
+
+            <form action="{{ route('export_excel') }}" method="post" target="_blank">
+                @csrf
+                <button type="submit" class="btn btn-sm btn-success">
+                    <i class="fa fa-upload"></i> Export Excel
+                </button>
+            </form>
+        </div>
     </div>
     <!--end breadcrumb-->
 
