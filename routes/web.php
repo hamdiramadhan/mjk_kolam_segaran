@@ -34,6 +34,7 @@ Route::group(['middleware' => ['XSS']], function () {
         'verify' => false, // Email Verification Routes...
     ]);
     Route::group(['middleware' => 'auth'], function () {
+        Route::get('/insertuseropd', [UserController::class, 'insert_user'])->name('insertuseropd');
         // DASHBOARD //
         Route::get('/', [HomeController::class, 'index'])->name('home');
         Route::get('/home', [HomeController::class, 'index'])->name('home');

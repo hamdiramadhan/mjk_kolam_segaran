@@ -165,6 +165,25 @@ class UserController extends Controller
         
     }
 
+    public function insert_user()
+    {
+        $user = User::where('role_id',2)->delete();
+        $opd = Opd::all();
+        foreach($opd as $r){
+            $user = new User();
+            $user->name = $r->unit_name;
+            $user->email = $r->unit_name.'@gmail.com';
+            $user->username = $r->unit_id;
+            $user->password = bcrypt($r->unit_id);
+            $user->opd_id = $r->id;
+            $user->role_id = 2;
+            $user->save();
+        }
+        
+
+        
+    }
+
     /**
      * Remove the specified resource from storage.
      *
