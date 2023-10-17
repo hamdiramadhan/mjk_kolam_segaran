@@ -126,9 +126,11 @@
                 </span>
                 <br>
                 <span style="font-size: 11pt;">
-                    Jl. A. Yani Nomor 16, Kode Pos 61318, Jawa Timur.
+                    {!! Auth::user()->skpd->alamat ?? 'Jl. A. Yani Nomor 16, Kode Pos 61318, Jawa Timur' !!} <br>
+                    Telp. {{ Auth::user()->skpd->telp }} Email: {{ Auth::user()->email }}
+                    {{-- Jl. A. Yani Nomor 16, Kode Pos 61318, Jawa Timur.
                     <br>
-                    Telp. (0321) 322744 email: bpkad@mojokertokab.go.id
+                    Telp. (0321) 322744 email: bpkad@mojokertokab.go.id --}}
                 </span>
             </td>
         </tr>

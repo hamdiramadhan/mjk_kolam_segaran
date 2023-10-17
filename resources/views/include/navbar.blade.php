@@ -72,7 +72,8 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('report.index') }}">
+                    <a class="nav-link {{ Request::is('*report*') ? 'active' : '' }}"
+                        href="{{ route('report.index') }}">
                         <div class="parent-icon">
                             <i class="lni lni-book"></i>
                         </div>
