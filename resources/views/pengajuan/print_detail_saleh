@@ -1,0 +1,581 @@
+<html>
+@php
+    $arrbulan = ['', 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+    $arr_huruf_besar = [];
+    $arr_huruf_kecil = [];
+    $chartambahan = ['', '', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+    $char = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+    for ($i = 1; $i <= 20; $i++) {
+        foreach ($char as $c) {
+            $isi_besar = $c;
+            if ($i > 1) {
+                $isi_besar = $chartambahan[$i] . $c;
+            }
+            $isi_besar = strtoupper($isi_besar);
+            if (!in_array($isi_besar, $arr_huruf_besar)) {
+                array_push($arr_huruf_besar, $isi_besar);
+            }
+
+            $isi_kecil = $c;
+            if ($i > 1) {
+                $isi_kecil = $chartambahan[$i] . $c;
+            }
+            if (!in_array($isi_kecil, $arr_huruf_kecil)) {
+                array_push($arr_huruf_kecil, $isi_kecil);
+            }
+        }
+    }
+@endphp
+
+<head>
+    <title>Lampiran Pergeseran</title>
+    <style>
+        .table,
+        .table td,
+        .table th {
+            border: 1px solid;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        } 
+        footer {
+            position: fixed;
+            bottom: -35px;
+            left: 0px;
+            right: 0px;
+            height: 50px;
+
+            /** Extra personal styles **/
+            /* background-color: #03a9f4; */
+            /* color: white; */
+            font-size: 7pt;
+            font-family: Arial, Helvetica, sans-serif;
+            justify-content: center;
+        }
+        .d-none {
+            display: none;
+            background-color: red;
+        }
+    </style>
+</head>
+
+@foreach ($pengajuan_details as $pengajuan_detail) 
+    <body style="font-size: 12pt">
+        <footer>
+            <table style="width: 100%;border-top: 1px solid gray" border="0">
+                <tr>
+                    <td>
+                        @if($data->status != 2)
+                        <b>{{ @$data->stat->nama }}</b> - 
+                        @endif 
+                        Dicetak pada {{ date('Y-m-d H:i') }} -
+                        {{ str_replace('https://', '', str_replace('http://', '', url('/'))) }}
+                        {{-- - * merupakan usulan SKPD lain. ** merupakan data manual --}}
+                    </td>
+                </tr>
+            </table>
+        </footer>
+        <br>
+
+        <div style="width: 100%; text-align: left;">
+            <table style="width: 100%;">
+                <tr>
+                    <td style="width: 100px">Nomor </td>
+                    <td style="width: 10px"> : </td>
+                    <td>
+                        {{ $data->nomor_surat }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>Tanggal</td>
+                    <td> : </td>
+                    <td>
+                        {{ format_tanggal($data->tanggal_surat) }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div style="width: 100%; text-align: center;">
+            {{ strtoupper($opd->unit_name) }}
+            <br>
+            TAHUN ANGGARAN {{ $tahun }}
+            <br>
+            Sub Kegiatan ({{ $pengajuan_detail->sub_kegiatan->kode_sub_kegiatan }}) {{ $pengajuan_detail->sub_kegiatan->nama_sub_kegiatan }}
+            {{-- {{ strtoupper($uk->unit_name) }} --}}
+            <br>
+            Sumber Dana:
+            @foreach ($pengajuan_detail->sumberdanas as $sb)
+                {{ $sb->sumber_dana->nama }}
+                @if (!$loop->last)
+                    ,
+                @endif
+            @endforeach
+        </div>
+        <br>
+        <div style="width: 100%;">
+            <table class="table table-sm table-bordered table-hover datatable-not-sortable-paging"
+                style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                <thead>
+                    <tr>
+                        <th style="text-align: center;" rowspan="2">Kode</th>
+                        <th style="text-align: center;" rowspan="2">Uraian</th>
+                        @if(sizeof($fases) <= 1)
+                        <th style="text-align: center;" colspan="5">Rincian Murni</th>
+                        @endif 
+                        @foreach ($fases as $f)
+                            <th style="text-align: center;" colspan="5">{{ $f->nama }}</th>
+                        @endforeach
+                        <th style="text-align: center; " rowspan="2">Bertambah / <br>Berkurang</th> 
+                    </tr>
+                    <tr>
+
+                        @if(sizeof($fases) <= 1)
+                        <th style="text-align: center;">Satuan</th>
+                        <th style="text-align: center;">Koefisien</th>
+                        <th style="text-align: center;">Harga</th>
+                        <th style="text-align: center;">PPN</th>
+                        <th style="text-align: center;">Jumlah</th>
+                        @endif 
+
+                        @foreach ($fases as $f)
+                            {{-- <th style="text-align: center;">Uraian</th> --}}
+                            <th style="text-align: center;">Satuan</th>
+                            <th style="text-align: center;">Koefisien</th>
+                            <th style="text-align: center;">Harga</th>
+                            <th style="text-align: center;">PPN</th>
+                            <th style="text-align: center;">Jumlah</th>
+                        @endforeach 
+                    </tr>
+                </thead>
+                <tbody>
+                    @php 
+                        $subtotal = 0; 
+                        
+                        $no = 0;
+                        $details = App\Models\Detail::select('master_sub_kegiatan_id', 'subtitle')
+                                    ->where('master_sub_kegiatan_id', $pengajuan_detail->master_sub_kegiatan_id)
+                                    ->where('tahun', $data->tahun)
+                                    ->distinct()
+                                    ->orderBy('subtitle')
+                                    ->get();    
+                    @endphp
+                    @foreach ($details as $r1)
+                        @php
+                            $detail_rincian_pergeseran = App\Models\DetailRincian::where('pengajuan_id', $pengajuan_detail->pengajuan_id)
+                                ->where('master_sub_kegiatan_id', $r1->master_sub_kegiatan_id)
+                                ->distinct()
+                                ->orderBy('subtitle_pergeseran')
+                                ->first();
+                        @endphp
+                        @push('detail')
+                            <tr>
+                                @php
+                                    $jmlcolspan = 0;
+                                    if(sizeof($fases) <= 1){
+                                        $jmlcolspan = 5;
+                                    }
+                                    foreach ($fases as $f) {
+                                        $jmlcolspan += 5;
+                                    }
+                                    $jmlcolspan++;
+                                @endphp
+                                <td colspan="{{ $jmlcolspan }}"><b>{!! $r1->subtitle ?? '#' !!}</b></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        @endpush
+                        <?php
+                        $data_ket_bl_teks = App\Models\Detail::get_sub2($r1->master_sub_kegiatan_id, $r1->subtitle);
+                        ?>
+                        @foreach ($data_ket_bl_teks as $r2)
+                            <?php
+                            $data_ket_bl_teks_pergeseran = App\Models\DetailRincian::get_sub2(@$id_sub_kegiatan, @$detail_rincian_pergeseran->subtitle_pergeseran, @$pengajuan_detail->pengajuan_id);
+                            
+                            $data_rekening = App\Models\Detail::get_rekening($r1->master_sub_kegiatan_id, $r1->subtitle, $r2->subtitle2, $pengajuan_detail->id);
+                            
+                            ?>
+                            @push('detail')
+                                <tr>
+                                    @php
+                                        $jmlcolspan = 0;
+                                        if(sizeof($fases) <= 1){
+                                            $jmlcolspan = 5;
+                                        }
+                                        foreach ($fases as $f) {
+                                            $jmlcolspan += 5;
+                                        }
+                                    $jmlcolspan++;
+                                    @endphp
+                                    <td colspan="{{ $jmlcolspan }}">&nbsp;<b>{!! $r2->subtitle2 ?? '-' !!} </b></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            @endpush
+                            @foreach ($data_rekening as $r3)
+                                <?php
+                                $length = 0;
+                                $data_komponen = App\Models\Detail::get_komponen($r1->master_sub_kegiatan_id, $r1->subtitle, $r2->subtitle2, $r3->kode_rekening);
+                                $id_detail_murni = App\Models\Detail::where('kode_rekening', $r3->kode_rekening)
+                                    ->where('subtitle', $r1->subtitle)
+                                    ->where('subtitle2', $r2->subtitle2)
+                                    ->first();
+                                
+                                ?>
+                                @push('detail')
+                                    <tr> 
+                                        @php
+                                            $jmlcolspan = 0;
+                                            if(sizeof($fases) <= 1){
+                                                $jmlcolspan = 5;
+                                            }
+                                            foreach ($fases as $f) {
+                                                $jmlcolspan += 5;
+                                            }
+                                        @endphp
+                                        <td><b>{!! $r3->kode_rekening !!}</b></td>
+                                        <td colspan="{{ $jmlcolspan }}"> 
+                                            <b>  
+                                                {!! @$r3->rekening->nama_rek ?? '' !!}
+                                            </b>
+                                        </td>
+                                        <td></td>
+                                        <td></td>  
+                                    </tr>
+                                @endpush
+                                @foreach ($data_komponen as $r4)
+                                    @php
+                                        if ($r4->tipe == 'murni') {
+                                            $harga_ppn = $r4->harga + ($r4->harga * $r4->ppn) / 100;
+                                            $total = $harga_ppn * $r4->volume;
+                                            $selisih = $total;
+                                        } else {
+                                            $harga_ppn = 0;
+                                            $total = $harga_ppn * $r4->volume;
+                                            $selisih = $total;
+                                        }
+                                        $jml_geser = 0;
+                                        $no++;
+
+                                        foreach ($fases as $f)
+                                        { 
+                                            $rincian_geser = App\Models\DetailRincian::get_komponen_fase($pengajuan_detail->pengajuan_id, $r4->id, $f->id, $r3->kode_rekening);
+                                            if ($r4->tipe == 'pergeseran' && $r4->fase_id == $f->id) {
+                                                $rincian_geser = App\Models\DetailRincian::get_komponen_id($r4->id);
+                                            }
+                                            if ($rincian_geser || $rincian_geser == 'bedarekening') {
+                                                $jml_geser++;
+                                            }
+                                        }
+                                    @endphp
+                                    @push('detail')
+                                        @if($jml_geser > 0)
+                                            <tr class="dt_{{ $no }}">
+                                                <td></td>
+                                                <td> 
+                                                    {{-- @if ($r4->tipe == 'murni') --}}
+                                                    {!! $r4->detail !!} {{ $r4->spek }}
+                                                    {{-- @endif --}}
+                                                </td> 
+                                                @if(sizeof($fases) <= 1) 
+                                                <td>
+                                                    @if ($r4->tipe == 'murni')
+                                                        {!! $r4->satuan !!}
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if ($r4->tipe == 'murni')
+                                                        {!! $r4->koefisien !!}
+                                                    @endif
+                                                </td>
+                                                <td align="right">
+                                                    @if ($r4->tipe == 'murni')
+                                                        {!! number_format($r4->harga, 0, ',', '.') !!}
+                                                    @else
+                                                        0
+                                                    @endif
+                                                </td>
+                                                <td align="right">
+                                                    @if ($r4->tipe == 'murni')
+                                                        {!! number_format($r4->ppn, 0, ',', '.') !!}
+                                                    @else
+                                                        0
+                                                    @endif
+                                                </td>
+                                                <td align="right">
+                                                    {{-- @if ($r4->tipe == 'murni') --}}
+                                                    {!! number_format($total, 0, ',', '.') !!}
+                                                    {{-- @endif --}}
+                                                </td>
+                                                @endif 
+
+                                                @foreach ($fases as $f)
+                                                    @php
+                                                        $rincian_geser = App\Models\DetailRincian::get_komponen_fase($pengajuan_detail->pengajuan_id, $r4->id, $f->id, $r3->kode_rekening);
+                                                        if ($r4->tipe == 'pergeseran' && $r4->fase_id == $f->id) {
+                                                            $rincian_geser = App\Models\DetailRincian::get_komponen_id($r4->id);
+                                                        }
+                                                        if ($rincian_geser || $rincian_geser == 'bedarekening') {
+                                                            $jml_geser++;
+                                                        }
+
+                                                        $harga_ppn = @$rincian_geser->harga_pergeseran + (@$rincian_geser->harga_pergeseran * @$rincian_geser->ppn_pergeseran) / 100;
+                                                        $total = $harga_ppn * @$rincian_geser->volume_pergeseran;
+                                                        $selisih = $total - $selisih;
+                                                    @endphp
+                                                    {{-- <td>&nbsp;&nbsp;&nbsp;
+                                                        {!! @$rincian_geser->detail_pergeseran !!} {{ @$rincian_geser->spek_pergeseran }}
+                                                    </td> --}}
+                                                    <td>
+                                                        {!! @$rincian_geser->satuan_pergeseran !!}
+                                                    </td>
+                                                    <td>
+                                                        {!! @$rincian_geser->koefisien_pergeseran !!}
+                                                    </td>
+                                                    <td align="right">
+                                                        @if ($rincian_geser || $rincian_geser == 'bedarekening')
+                                                            {!! number_format(@$rincian_geser->harga_pergeseran, 0, ',', '.') !!}
+                                                        @endif
+                                                    </td>
+                                                    <td align="right">
+                                                        @if ($rincian_geser || $rincian_geser == 'bedarekening')
+                                                            {!! number_format(@$rincian_geser->ppn_pergeseran, 0, ',', '.') !!}
+                                                        @endif
+                                                    </td>
+                                                    <td align="right">
+                                                        @if ($rincian_geser || $rincian_geser == 'bedarekening')
+                                                            {!! number_format($total, 0, ',', '.') !!}
+                                                        @endif
+                                                    </td>
+                                                @endforeach
+                                                <td align="right">
+                                                    @if ($jml_geser > 0)
+                                                        {!! number_format(@$selisih, 0, ',', '.') !!} 
+                                                    @endif
+                                                </td> 
+                                            </tr>
+                                        @endif
+                                    @endpush
+                                    @php
+                                        $subtotal += $harga_ppn;
+                                    @endphp
+                                @endforeach
+                            @endforeach
+                        @endforeach
+                    @endforeach
+
+                    @push('subtotal')
+                        {{-- <tr>
+                            <td colspan="5" style="text-align: right"><b>Total</b></td>
+                            <td align="right">
+                                <b>
+                                    {!! number_format($subtotal, 0, ',', '.') !!}
+                                </b>
+                            </td>
+                            <td></td>
+                        </tr> --}}
+                    @endpush
+                    @stack('subtotal')
+                    @stack('detail')
+                </tbody>
+            </table>
+            <hr>
+            <hr>
+            <table class="table table-sm table-bordered table-hover datatable-not-sortable-paging"
+                style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                <thead> 
+                    <tr>
+                        <th rowspan="2">Kode</th>
+                        <th rowspan="2">Uraian</th>
+                        <th colspan="5" style="text-align: center">Sebelum Perubahan</th>
+                        <th colspan="5" style="text-align: center">Setelah Perubahan</th>
+                        <th rowspan="2">Bertambah / Berkurang</th>
+                    </tr>
+                    <tr>
+                        <th>Koefisien</th>
+                        <th>Satuan</th>
+                        <th>Harga</th>
+                        <th>PPN</th>
+                        <th>Jumlah</th>
+                        <th>Koefisien</th>
+                        <th>Satuan</th>
+                        <th>Harga</th>
+                        <th>PPN</th>
+                        <th>Jumlah</th>
+                    </tr>
+                    <tr>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5</th>
+                        <th>6</th>
+                        <th>7</th>
+                        <th>8</th>
+                        <th>9</th>
+                        <th>10</th>
+                        <th>11</th>
+                        <th>12</th>
+                        <th>13 = 12 - 7</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php
+                        $no = 0;
+                        $jumlah_harga_pergeseran = 0;
+                    @endphp
+
+                    @php
+                        $detail_rincian = App\Models\DetailRincian::where('master_sub_kegiatan_id', $pengajuan_detail->master_sub_kegiatan_id)
+                                    ->distinct('kode_rekening_pergeseran')
+                                    ->where('pengajuan_id', $id)
+                                    ->get();
+
+                        // $detail_rincian = App\Models\Detail::select('master_sub_kegiatan_id', 'subtitle')
+                        //             ->where('master_sub_kegiatan_id', $pengajuan_detail->master_sub_kegiatan_id)
+                        //             ->where('tahun', $data->fase->tahun)
+                        //             ->distinct()
+                        //             ->orderBy('subtitle')
+                        //             ->get();
+                        $jumlah = 0;
+                    @endphp
+                    @foreach ($detail_rincian as $dr)
+                        @php
+                            $jumlah_harga_rekening = 0;
+                            $jumlah_harga_pergeseran_rekening = 0;
+                            $jumlah_harga_rekening += $dr->detail->harga + ($dr->detail->harga * $dr->detail->ppn) / 100;
+                            $jumlah_harga_pergeseran_rekening += $dr->harga_pergeseran + ($dr->harga_pergeseran * $dr->ppn_pergharga_pergeseran) / 100;
+                            $total_harga_pergeseran = $jumlah_harga_pergeseran_rekening - $jumlah_harga_rekening;
+                        @endphp
+                        <tr>
+                            <td>{{ $dr->kode_rekening_pergeseran }}</td>
+                            {{-- <td>{{ $dr->kode_rekening_pergeseran }}</td> --}}
+                            <td>{{ $dr->nama_rekening_pergeseran }}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>{{ format_harga($jumlah_harga_rekening) }}</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>{{ format_harga($jumlah_harga_pergeseran_rekening) }}</td>
+                            <td style="text-align: center">{{ format_harga($total_harga_pergeseran) }}</td>
+
+                        </tr>
+
+                        @php
+                            $detail_rincian = App\Models\DetailRincian::where('kode_rekening_pergeseran', $dr->kode_rekening_pergeseran)
+                                ->where('master_sub_kegiatan_id', $pengajuan_detail->master_sub_kegiatan_id)
+                                ->where('pengajuan_id', $id)
+                                ->get();
+                            $jumlah = 0;
+                        @endphp
+                        @foreach ($detail_rincian as $r)
+                            @php
+                                $no++;
+                                $warnadiv = '';
+                                $jumlah_sebelum_pergeseran = $r->detail->harga + ($r->detail->harga * $r->detail->ppn) / 100;
+                                $jumlah += $jumlah_sebelum_pergeseran;
+                                $jumlah_setelah_pergeseran = $r->harga_pergeseran + ($r->harga_pergeseran * $r->ppn_pergeseran) / 100;
+
+                                $total = $jumlah_setelah_pergeseran - $jumlah_sebelum_pergeseran;
+                                // if (empty(@$r->sub_kegiatan->nama_sub_kegiatan)) {
+                                //     $warnadiv = 'danger';
+                                // }
+                            @endphp
+                            <tr>
+                                <td>
+
+                                </td>
+                                <td><span class="cls_edit">{{ $r->detail->detail }}</span>
+                                </td>
+                                <td style="text-align: center"><span
+                                        class="cls_edit">{{ $r->detail->koefisien }}</span>
+                                </td>
+                                <td style="text-align: center">
+                                    <span class="cls_edit">{{ $r->detail->satuan }}</span>
+                                </td>
+                                <td style="text-align: center">
+                                    {{ format_harga($r->detail->harga) }}
+                                </td>
+
+                                <td style="text-align: center">
+                                    {{ $r->detail->ppn }}
+                                </td>
+                                <td>
+                                    <span
+                                        class="cls_edit div_mulai_setujui">{{ format_harga($jumlah_sebelum_pergeseran) }}</span>
+                                </td>
+
+                                <td style="text-align: center"><span
+                                        class="cls_edit">{{ $r->koefisien_pergeseran }}</span>
+                                </td>
+                                <td style="text-align: center">
+                                    <span class="cls_edit">{{ $r->satuan_pergeseran }}</span>
+                                </td>
+                                <td style="text-align: center">
+                                    {{ format_harga($r->harga_pergeseran) }}
+                                </td>
+
+                                <td style="text-align: center">
+                                    {{ $r->ppn_pergeseran }}
+                                </td>
+                                <td style="text-align: center">
+                                    <span class="cls_edit div_mulai_setujui">{{ format_harga($jumlah_setelah_pergeseran) }}</span>
+                                </td>
+                                <td style="text-align: center">
+                                    <span class="cls_edit div_mulai_setujui">{{ format_harga($total) }}</span>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+        <div style="width: 100%; text-align: right;">
+            <br><br>
+            <table style="width: 100%;" border="0">
+                <tr>
+                    <td colspan="5" style="width: 5%">
+                    </td>
+                    <td colspan="11" style="width: 60%">
+                        Mengetahui
+                        <br>
+                        Kepala SKPD
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <b><u>{{ $opd->kepala_nama }}</u></b>
+                        <br>
+                        Pangkat. {{ $opd->kepala_jabatan }}
+                        <br>
+                        NIP. {{ $opd->kepala_nip }}
+                    </td>
+                    <td style="text-align: center;width: 30%">
+                        Mengetahui
+                        <br>
+                        Kepala SKPD/KPA/PPATK
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                        <b><u>{{ $opd->kepala_nama }}</u></b>
+                        <br>
+                        Pangkat. {{ $opd->kepala_jabatan }}
+                        <br>
+                        NIP. {{ $opd->kepala_nip }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </body>
+@endforeach
+@stack('scripts')
+</html>

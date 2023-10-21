@@ -317,17 +317,23 @@ class PengajuanController extends Controller
         $data = Pengajuan::findOrFail($id);
         $tahun = Auth::user()->tahun;
         $opd_id = Auth::user()->opd_id;
-        $opd =Opd::findOrFail($opd_id);
-        $pengajuan_alasan = PengajuanAlasan::where('pengajuan_id',$id)->get();
-        $usulan = PengajuanUsulan::all();
-        $pengajuan_detail = PengajuanDetail::with(['rincians'])->where('pengajuan_id',$id)->get(); 
-        $detail_sumberdana = PengajuanDetailSumberdana::all();
-        $detail_rekening = DetailRincian::where('pengajuan_id',$id)->get();
-        
-        $judul = 'Usulan Pergeseran Anggaran Dalam APBD TA '.$tahun;
+        $opd =Opd::findOrFail($opd_id); 
+        $pengajuan_details = PengajuanDetail::with(['rincians','pengajuan'])->where('pengajuan_id',$id)->get();   
         $url = env('APP_URL'); 
+
+        $fases = Fase::where('tahun', @$data->tahun)
+            ->whereRaw("kode::integer <= " . @$data->fase->kode )    
+            ->orderByRaw("kode::integer desc")
+            ->limit(2)
+            ->get()
+            ->sortBy(function($fase) {
+                return $fase->kode;
+            }); 
         
-        $pdf = PDF::loadView('pengajuan.print_detail', compact('opd','url','usulan','pengajuan_alasan','data', 'pengajuan_detail','tahun', 'id','judul','detail_sumberdana','detail_rekening'));
+        // Resetting array keys
+        $fases = $fases->values();
+        
+        $pdf = PDF::loadView('pengajuan.print_detail', compact('opd','url','data', 'pengajuan_details','tahun', 'id','fases'));
         // $customPaper = array(0,0,595.35,935.55);
         $customPaper = array(0, 0, 935.55, 595.35); // Swap width and height for landscape
         
@@ -337,12 +343,11 @@ class PengajuanController extends Controller
         $height = $canvas->get_height();
         $width = $canvas->get_width();
         if($data->status != 2) { 
-            $canvas = $pdf->getDomPDF()->getCanvas();
-            $height = $canvas->get_height();
-            $width = $canvas->get_width();
-            $canvas->set_opacity(0.2,"Multiply"); 
-            $canvas->page_text($width/5.5, $height/2.5, @$data->stat->nama, null, 40, array(1,0,0),2,2,0);
-            // dd($pengajuan_detail);
+            // $canvas = $pdf->getDomPDF()->getCanvas();
+            // $height = $canvas->get_height();
+            // $width = $canvas->get_width();
+            // $canvas->set_opacity(0.2,"Multiply"); 
+            // $canvas->page_text($width/5.5, $height/2.5, @$data->stat->nama, null, 40, array(1,0,0),2,2,0); 
         }
         return $pdf->stream('Pengajuan_'.$tahun.'_'.date('Ymd-His').'.pdf');
     }

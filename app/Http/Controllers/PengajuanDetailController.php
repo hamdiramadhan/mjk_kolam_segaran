@@ -95,24 +95,24 @@ class PengajuanDetailController extends Controller
         $id = decrypt($id); 
         $pengajuan_detail = PengajuanDetail::find($id);
         $pengajuan = $pengajuan_detail->pengajuan;
-        $fases = Fase::where('tahun', $pengajuan->fase->tahun)
-                ->whereRaw("kode::integer <= {$pengajuan->fase->kode}")    
-                ->orderByRaw("kode::integer")    
-                ->get(); 
         $id_sub_kegiatan = $pengajuan_detail->sub_kegiatan->id;
         $sub_keg = MasterSubKegiatan::find($id_sub_kegiatan);
         $kode_sub_kegiatan = $sub_keg->kode_sub_kegiatan;
         $unit_id = $sub_keg->opd->unit_id;
         $data_rekening = MasterRekening::orderBy('kode_rek')->get();
 
+        $fases = Fase::where('tahun', $pengajuan->tahun)
+                ->whereRaw("kode::integer <= {$pengajuan->fase->kode}")    
+                ->orderByRaw("kode::integer")    
+                ->get(); 
     	$details = Detail::select('master_sub_kegiatan_id', 'subtitle')
                     ->where('master_sub_kegiatan_id', $id_sub_kegiatan)
-                    ->where('tahun', $pengajuan->fase->tahun)
+                    ->where('tahun', $pengajuan->tahun)
                     ->distinct()
                     ->orderBy('subtitle')
                     ->get();
-        $data = PengajuanDetailKomponen::where('pengajuan_detail_id',$id)->get();
-        return view('pengajuan.pengajuan_detail.komponen', ['nama_header'=>'Detail Komponen'], compact('id_sub_kegiatan', 'sub_keg', 'kode_sub_kegiatan', 'unit_id','details','data_rekening','pengajuan_detail','pengajuan','data','fases'));  
+        // $data = PengajuanDetailKomponen::where('pengajuan_detail_id',$id)->get();
+        return view('pengajuan.pengajuan_detail.komponen', ['nama_header'=>'Detail Komponen'], compact('id_sub_kegiatan', 'sub_keg', 'kode_sub_kegiatan', 'unit_id','details','data_rekening','pengajuan_detail','pengajuan','fases'));  
     } 
 
     public function geser_komponen(Request $request,$id)

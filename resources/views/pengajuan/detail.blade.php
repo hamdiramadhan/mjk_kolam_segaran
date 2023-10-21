@@ -32,7 +32,7 @@
             @endif
             @if (sizeof($pengajuan_detail) > 0)
                 <button type="button" class="btn btn-warning px-5" onclick="$('#frm_cetak').submit();">
-                    <i class="bx bx-printer mr-1"></i> Cetak
+                    <i class="bx bx-printer mr-1"></i> Permohonan
                 </button>
                 <button type="button" class="btn btn-info px-5" onclick="$('#frm_pengajuan').submit();">
                     <i class="bx bx-printer mr-1"></i> Pengajuan

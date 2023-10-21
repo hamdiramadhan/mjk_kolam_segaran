@@ -99,7 +99,8 @@
                         <table class="table table-bordered table-hover" border="1">
                             <thead>
                                 <tr>
-                                    <th style="text-align: center;" colspan="6">Rincian Murni</th>
+                                    <th style="text-align: center;" rowspan="2">Uraian</th>
+                                    <th style="text-align: center;" colspan="5">Rincian Murni</th>
                                     @foreach ($fases as $f)
                                         <th style="text-align: center;" colspan="5">{{ $f->nama }}</th>
                                     @endforeach
@@ -107,7 +108,6 @@
                                     <th style="text-align: center; " rowspan="2">Act</th>
                                 </tr>
                                 <tr>
-                                    <th style="text-align: center;">Uraian</th>
                                     <th style="text-align: center;">Satuan</th>
                                     <th style="text-align: center;">Koefisien</th>
                                     <th style="text-align: center;">Harga</th>
@@ -121,8 +121,7 @@
                                         <th style="text-align: center;">Harga</th>
                                         <th style="text-align: center;">PPN</th>
                                         <th style="text-align: center;">Jumlah</th>
-                                    @endforeach
-
+                                    @endforeach 
                                 </tr>
                             </thead>
                             <tbody>
@@ -252,15 +251,14 @@
                                                         $harga_ppn = 0;
                                                         $total = $harga_ppn * $r4->volume;
                                                         $selisih = $total;
+                                                        // dd($selisih);
                                                     }
                                                     $jml_geser = 0;
                                                 @endphp
                                                 @push('detail')
                                                     <tr>
-                                                        <td>&nbsp;&nbsp;&nbsp;
-                                                            {{-- @if ($r4->tipe == 'murni') --}}
-                                                            {!! $r4->detail !!} {{ $r4->spek }}
-                                                            {{-- @endif --}}
+                                                        <td>&nbsp;&nbsp;&nbsp; 
+                                                            {!! $r4->detail !!} {{ $r4->spek }}  
                                                         </td>
                                                         <td>
                                                             @if ($r4->tipe == 'murni')
@@ -301,6 +299,7 @@
                                                                 if ($rincian_geser || $rincian_geser == 'bedarekening') {
                                                                     $jml_geser++;
                                                                 }
+
 
                                                                 $harga_ppn = @$rincian_geser->harga_pergeseran + (@$rincian_geser->harga_pergeseran * @$rincian_geser->ppn_pergeseran) / 100;
                                                                 $total = $harga_ppn * @$rincian_geser->volume_pergeseran;
