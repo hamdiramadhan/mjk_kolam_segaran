@@ -21,7 +21,7 @@
                 <div class="card bg-danger text-left">
                     <div class="card-body">
                         <div class="p-1 text-white rounded">Warning, Sudah Pernah Melakukan Pengajuan Pergeseran Sebanyak
-                            {{ $count_pengajuan }} kali dalam 1 Tahun</div>
+                            {{ $count_pengajuan }} kali dalam 1 Fase</div>
                     </div>
                 </div>
             @endif
@@ -31,19 +31,19 @@
                 <div class="row">
                     <div class="col-md-12">
                         <label for="pptk_nip" class="form-label">NIP PPTK</label>
-                        <input type="text" class="form-control" name="pptk_nip" placeholder="Masukkan NIP PPTK"> 
+                        <input type="text" class="form-control" name="pptk_nip" placeholder="Masukkan NIP PPTK">
                     </div>
                     <div class="col-md-12">
                         <label for="pptk_nama" class="form-label">Nama PPTK</label>
-                        <input type="text" class="form-control" name="pptk_nama" placeholder="Masukkan Nama PPTK"> 
+                        <input type="text" class="form-control" name="pptk_nama" placeholder="Masukkan Nama PPTK">
                     </div>
                     <div class="col-md-12">
                         <label for="pptk_pangkat" class="form-label">Pangkat PPTK</label>
-                        <input type="text" class="form-control" name="pptk_pangkat" placeholder="Masukkan Pangkat PPTK"> 
+                        <input type="text" class="form-control" name="pptk_pangkat" placeholder="Masukkan Pangkat PPTK">
                     </div>
                     <div class="col-md-12">
                         <label for="pptk_jabatan" class="form-label">Jabatan PPTK</label>
-                        <input type="text" class="form-control" name="pptk_jabatan" placeholder="Masukkan Jabatan PPTK"> 
+                        <input type="text" class="form-control" name="pptk_jabatan" placeholder="Masukkan Jabatan PPTK">
                     </div>
                     <hr>
                     <hr>
@@ -106,7 +106,8 @@
                     <hr>
                     <div class="col-md-2">
                         <div class="d-md-flex d-grid align-items-center gap-3">
-                            <a href="{{ route('pengajuan.index') }}" type="button" class="btn btn-danger px-4">Kembali</a>
+                            <a href="{{ route('pengajuan.index') }}" type="button"
+                                class="btn btn-danger px-4">Kembali</a>
                             <button type="submit" class="btn btn-primary px-4">Submit</button>
                         </div>
                     </div>

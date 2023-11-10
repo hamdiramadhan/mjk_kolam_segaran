@@ -153,7 +153,7 @@
                                                     @if ($count_pengajuan_warning > 0)
                                                         <div class="p-1 text-danger rounded">Warning, Sudah Pernah Melakukan
                                                             Pengajuan Pergeseran Sebanyak
-                                                            {{ $count_pengajuan_warning }} kali dalam 1 Tahun</div><br>
+                                                            {{ $count_pengajuan_warning }} kali dalam 1 Fase</div><br>
                                                     @endif
                                                     <form class="row g-3" method="POST"
                                                         action="{{ route('pengajuan.verif', encrypt($p->id)) }}">
