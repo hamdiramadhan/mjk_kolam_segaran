@@ -240,7 +240,7 @@
                     <td align="center" style="width: 55%">
                     </td>
                     <td align="center">
-                        <b>{{ $opd->kepala_opd ?? 'Kepala SKPD' }}
+                        <b>Kepala SKPD
                         </b>
                         <br>
                         <br>
@@ -248,11 +248,11 @@
                         <br>
                         <br>
                         <br>
-                        <b><u>NAMA LENGKAP</u></b>
+                        <b><u>{{ $opd->kepala_nama ?? 'NAMA LENGKAP' }}</u></b>
                         <br>
-                        PANGKAT / GOL
+                        {{ $opd->kepala_pangkat ?? 'PANGKAT / GOL' }}
                         <br>
-                        NIP
+                        {{ $opd->kepala_nip ?? 'NIP' }}
                     </td>
                 </tr>
             </table>
