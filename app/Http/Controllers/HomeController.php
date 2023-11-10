@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Fase;
 use App\Models\Opd;
+use App\Models\Pengajuan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +28,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $pengajuan = Pengajuan::all();
+        $fases = Fase::All();
+        
+        return view('home',compact('pengajuan','fases'));
     }
 
     public function change_tahun_app_login(Request $request)
@@ -47,13 +52,35 @@ class HomeController extends Controller
     }
     public function calendar_dashboard() 
     {
-        $events = [
-            'id' => 1,
-            'title' => 'tes',
-            'start' => '2023-09-01 00:00', // assuming 'start_date' is a column in your events table
-            'end' => '2023-09-02 00:00',     // similarly, assuming 'end_date' is a column
-        ];
 
+        $pengajuan = Pengajuan::all();
+        $events = [];
+        foreach ($pengajuan as $data) {
+            $event = [
+                'id' => $data->id,
+                'title' => $data->nomor_surat,
+                'start' => $data->tanggal_surat,
+                'end' => $data->tanggal_surat,
+            ];
+    
+            switch ($data->status) {
+                case 0:
+                    $event['backgroundColor'] = 'red';
+                    break;
+                case 1:
+                    $event['backgroundColor'] = 'blue';
+                    break;
+                case 2:
+                    $event['backgroundColor'] = 'green';
+                    break;
+                default:
+                    $event['backgroundColor'] = 'gray';
+                    break;
+            }
+            $events[] = $event;
+        }
+    
+        // dd($events);
         return response()->json($events);
     }
     public function generateDocx()

@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-@section('content')
     <div class="row row-sm">
         <div class="col-lg-5">
             <div class="row">
@@ -74,6 +73,49 @@
                 <div class="card-body">
                     <div id="calendar"></div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="card">
+                <div class="card-body overflow-hidden p-relative z-index-1 scrollable">
+                    <table class="table text-md-nowrap datatable-basic-subkegiatan ">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%">No</th>
+                                @foreach ($fases as $f)
+                                    <th>{{ $f->nama }}</th>
+                                @endforeach
+                                <th>Usulan</th>
+                                <th>Tanggal Surat</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php $no = 0; @endphp
+                            @foreach ($fases as $f)
+                                @foreach ($pengajuan->where('fase_id', $f->id) as $p)
+                                    <tr>
+                                        <td>{{ $no += 1 }}</td>
+                                        <td>
+                                            {{ $p->skpd->unit_name }}
+                                        </td>
+                                        <td>
+                                            {{ $p->usulan->usulan }}
+                                        </td>
+                                        <td> <span
+                                                class="badge bg-{{ $p->stat->color_div }} text-white shadow-sm w-100">{{ $p->stat->nama }}</span>
+                                        </td>
+                                        <td> {{ $p->tanggal_surat }}</td>
+                                    </tr>
+                                @endforeach
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
             </div>
         </div>
     </div>
