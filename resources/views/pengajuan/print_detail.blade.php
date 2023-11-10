@@ -430,24 +430,24 @@
                             <br>
                             <b><u>{{ $opd->kepala_nama }}</u></b>
                             <br>
-                            Pangkat. {{ $opd->kepala_jabatan }}
+                            Pangkat. {{ $opd->kepala_pangkat }}
                             <br>
                             NIP. {{ $opd->kepala_nip }}
                         </td>
                         <td style="text-align: center;width: 30%">
                             Mengetahui
                             <br>
-                            {{ $nama_skpd_kanan }}
+                            {{ $data->pptk_jabatan }}
                             <br>
                             <br>
                             <br>
                             <br>
                             <br>
-                            <b><u>{{ $opd->kepala_nama }}</u></b>
+                            <b><u>{{ $data->pptk_nama }}</u></b>
                             <br>
-                            {{ $opd->kepala_pangkat }}
+                            {{ $data->pptk_pangkat }}
                             <br>
-                            NIP. {{ $opd->kepala_nip }}
+                            NIP. {{ $data->pptk_nip }}
                         </td>
                     @elseif($data->usulan->id == 1 || $data->usulan->id == 2 || $data->usulan->id == 3)
                         <td width="75%">
