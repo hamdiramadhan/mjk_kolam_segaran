@@ -334,7 +334,7 @@ class PengajuanController extends Controller
             $nama_skpd_kanan = 'Kepala SKPD';
         }else if($data->usulan->id == 4){
             $nama_skpd_kiri = 'Kepala SKPD';
-            $nama_skpd_kanan = 'Kepala PPTK';
+            $nama_skpd_kanan = 'PPTK';
         }
 
         $pengajuan_details = PengajuanDetail::with(['rincians','pengajuan'])->where('pengajuan_id',$id)->get();   
