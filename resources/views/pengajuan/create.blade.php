@@ -30,6 +30,24 @@
                 @csrf
                 <div class="row">
                     <div class="col-md-12">
+                        <label for="pptk_nip" class="form-label">NIP PPTK</label>
+                        <input type="text" class="form-control" name="pptk_nip" placeholder="Masukkan NIP PPTK"> 
+                    </div>
+                    <div class="col-md-12">
+                        <label for="pptk_nama" class="form-label">Nama PPTK</label>
+                        <input type="text" class="form-control" name="pptk_nama" placeholder="Masukkan Nama PPTK"> 
+                    </div>
+                    <div class="col-md-12">
+                        <label for="pptk_pangkat" class="form-label">Pangkat PPTK</label>
+                        <input type="text" class="form-control" name="pptk_pangkat" placeholder="Masukkan Pangkat PPTK"> 
+                    </div>
+                    <div class="col-md-12">
+                        <label for="pptk_jabatan" class="form-label">Jabatan PPTK</label>
+                        <input type="text" class="form-control" name="pptk_jabatan" placeholder="Masukkan Jabatan PPTK"> 
+                    </div>
+                    <hr>
+                    <hr>
+                    <div class="col-md-12">
                         <label for="fase_id" class="form-label">Fase Perubahan</label>
                         <select class="select22" name="fase_id" id="fase_id" style="width: 100%" required>
                             @foreach ($fases as $f)
