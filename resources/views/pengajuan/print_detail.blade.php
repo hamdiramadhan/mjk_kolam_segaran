@@ -450,11 +450,11 @@
                             NIP. {{ $opd->kepala_nip }}
                         </td>
                     @elseif($data->usulan->id == 1 || $data->usulan->id == 2 || $data->usulan->id == 3)
-                        <td width="15%">
+                        <td width="75%">
                         </td>
 
                         </td>
-                        <td style="width: 60%">
+                        <td style="width: 25%">
                             Mengetahui
                             <br>
                             {{ $nama_skpd_kiri }}
