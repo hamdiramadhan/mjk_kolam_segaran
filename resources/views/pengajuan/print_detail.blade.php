@@ -445,7 +445,7 @@
                             <br>
                             <b><u>{{ $opd->kepala_nama }}</u></b>
                             <br>
-                            Pangkat. {{ $opd->kepala_jabatan }}
+                            {{ $opd->kepala_pangkat }}
                             <br>
                             NIP. {{ $opd->kepala_nip }}
                         </td>
@@ -465,7 +465,7 @@
                             <br>
                             <b><u>{{ $opd->kepala_nama }}</u></b>
                             <br>
-                            Pangkat. {{ $opd->kepala_jabatan }}
+                            {{ $opd->kepala_pangkat }}
                             <br>
                             NIP. {{ $opd->kepala_nip }}
                         </td>
