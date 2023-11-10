@@ -328,6 +328,15 @@ class PengajuanController extends Controller
         $tahun = Auth::user()->tahun;
         $opd_id = Auth::user()->opd_id;
         $opd =Opd::findOrFail($opd_id); 
+        $nama_skpd_kiri = 'Kepala SKPD';
+        $nama_skpd_kanan = 'Kepala SKPD';
+        if($data->usulan->id == 1 || $data->usulan->id == 2){
+            $nama_skpd_kanan = 'Kepala SKPD';
+        }else if($data->usulan->id == 4){
+            $nama_skpd_kiri = 'Kepala SKPD';
+            $nama_skpd_kanan = 'Kepala PPTK';
+        }
+
         $pengajuan_details = PengajuanDetail::with(['rincians','pengajuan'])->where('pengajuan_id',$id)->get();   
         $url = env('APP_URL'); 
 
@@ -343,7 +352,7 @@ class PengajuanController extends Controller
         // Resetting array keys
         $fases = $fases->values();
         
-        $pdf = PDF::loadView('pengajuan.print_detail', compact('opd','url','data', 'pengajuan_details','tahun', 'id','fases'));
+        $pdf = PDF::loadView('pengajuan.print_detail', compact('opd','url','data', 'pengajuan_details','tahun', 'id','fases','nama_skpd_kiri','nama_skpd_kanan'));
         // $customPaper = array(0,0,595.35,935.55);
         $customPaper = array(0, 0, 935.55, 595.35); // Swap width and height for landscape
         

@@ -414,40 +414,62 @@
 
         <div style="width: 100%; text-align: right;">
             <br><br>
-            <table style="width: 100%;" border="0">
+            <table style="width: 100%;">
                 <tr>
-                    <td colspan="5" style="width: 5%">
-                    </td>
-                    <td colspan="11" style="width: 60%">
-                        Mengetahui
-                        <br>
-                        Kepala SKPD
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <b><u>{{ $opd->kepala_nama }}</u></b>
-                        <br>
-                        Pangkat. {{ $opd->kepala_jabatan }}
-                        <br>
-                        NIP. {{ $opd->kepala_nip }}
-                    </td>
-                    <td style="text-align: center;width: 30%">
-                        Mengetahui
-                        <br>
-                        Kepala SKPD/KPA/PPATK
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <b><u>{{ $opd->kepala_nama }}</u></b>
-                        <br>
-                        Pangkat. {{ $opd->kepala_jabatan }}
-                        <br>
-                        NIP. {{ $opd->kepala_nip }}
-                    </td>
+                    @if ($data->usulan->id == 4)
+                        <td colspan="5" style="width: 5%">
+                        </td>
+                        <td colspan="11" style="width: 60%">
+                            Mengetahui
+                            <br>
+                            {{ $nama_skpd_kiri }}
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <b><u>{{ $opd->kepala_nama }}</u></b>
+                            <br>
+                            Pangkat. {{ $opd->kepala_jabatan }}
+                            <br>
+                            NIP. {{ $opd->kepala_nip }}
+                        </td>
+                        <td style="text-align: center;width: 30%">
+                            Mengetahui
+                            <br>
+                            {{ $nama_skpd_kanan }}
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <b><u>{{ $opd->kepala_nama }}</u></b>
+                            <br>
+                            Pangkat. {{ $opd->kepala_jabatan }}
+                            <br>
+                            NIP. {{ $opd->kepala_nip }}
+                        </td>
+                    @elseif($data->usulan->id == 1 || $data->usulan->id == 2 || $data->usulan->id == 3)
+                        <td width="15%">
+                        </td>
+
+                        </td>
+                        <td style="width: 60%">
+                            Mengetahui
+                            <br>
+                            {{ $nama_skpd_kiri }}
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <b><u>{{ $opd->kepala_nama }}</u></b>
+                            <br>
+                            Pangkat. {{ $opd->kepala_jabatan }}
+                            <br>
+                            NIP. {{ $opd->kepala_nip }}
+                        </td>
+                    @endif
                 </tr>
             </table>
     </body>
