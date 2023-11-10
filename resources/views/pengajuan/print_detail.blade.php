@@ -39,8 +39,7 @@
         .table {
             width: 100%;
             border-collapse: collapse;
-        }
-
+        } 
         footer {
             position: fixed;
             bottom: -35px;
@@ -55,7 +54,6 @@
             font-family: Arial, Helvetica, sans-serif;
             justify-content: center;
         }
-
         .d-none {
             display: none;
             background-color: red;
@@ -63,16 +61,15 @@
     </style>
 </head>
 
-@foreach ($pengajuan_details as $pengajuan_detail)
-
+@foreach ($pengajuan_details as $pengajuan_detail) 
     <body style="font-size: 12pt">
         <footer>
             <table style="width: 100%;border-top: 1px solid gray" border="0">
                 <tr>
                     <td>
-                        @if ($data->status != 2)
-                            <b>{{ @$data->stat->nama }}</b> -
-                        @endif
+                        @if($data->status != 2)
+                        <b>{{ @$data->stat->nama }}</b> - 
+                        @endif 
                         Dicetak pada {{ date('Y-m-d H:i') }} -
                         {{ str_replace('https://', '', str_replace('http://', '', url('/'))) }}
                         {{-- - * merupakan usulan SKPD lain. ** merupakan data manual --}}
@@ -105,8 +102,7 @@
             <br>
             TAHUN ANGGARAN {{ $tahun }}
             <br>
-            Sub Kegiatan ({{ $pengajuan_detail->sub_kegiatan->kode_sub_kegiatan }})
-            {{ $pengajuan_detail->sub_kegiatan->nama_sub_kegiatan }}
+            Sub Kegiatan ({{ $pengajuan_detail->sub_kegiatan->kode_sub_kegiatan }}) {{ $pengajuan_detail->sub_kegiatan->nama_sub_kegiatan }}
             {{-- {{ strtoupper($uk->unit_name) }} --}}
             <br>
             Sumber Dana:
@@ -125,23 +121,23 @@
                     <tr>
                         <th style="text-align: center;" rowspan="2">Kode</th>
                         <th style="text-align: center;" rowspan="2">Uraian</th>
-                        @if (sizeof($fases) <= 1)
-                            <th style="text-align: center;" colspan="5">Rincian Murni</th>
-                        @endif
+                        @if(sizeof($fases) <= 1)
+                        <th style="text-align: center;" colspan="5">Rincian Murni</th>
+                        @endif 
                         @foreach ($fases as $f)
                             <th style="text-align: center;" colspan="5">{{ $f->nama }}</th>
                         @endforeach
-                        <th style="text-align: center; " rowspan="2">Bertambah / <br>Berkurang</th>
+                        <th style="text-align: center; " rowspan="2">Bertambah / <br>Berkurang</th> 
                     </tr>
                     <tr>
 
-                        @if (sizeof($fases) <= 1)
-                            <th style="text-align: center;">Satuan</th>
-                            <th style="text-align: center;">Koefisien</th>
-                            <th style="text-align: center;">Harga</th>
-                            <th style="text-align: center;">PPN</th>
-                            <th style="text-align: center;">Jumlah</th>
-                        @endif
+                        @if(sizeof($fases) <= 1)
+                        <th style="text-align: center;">Satuan</th>
+                        <th style="text-align: center;">Koefisien</th>
+                        <th style="text-align: center;">Harga</th>
+                        <th style="text-align: center;">PPN</th>
+                        <th style="text-align: center;">Jumlah</th>
+                        @endif 
 
                         @foreach ($fases as $f)
                             {{-- <th style="text-align: center;">Uraian</th> --}}
@@ -150,20 +146,20 @@
                             <th style="text-align: center;">Harga</th>
                             <th style="text-align: center;">PPN</th>
                             <th style="text-align: center;">Jumlah</th>
-                        @endforeach
+                        @endforeach 
                     </tr>
                 </thead>
                 <tbody>
-                    @php
-                        $subtotal = 0;
-
+                    @php 
+                        $subtotal = 0; 
+                        
                         $no = 0;
                         $details = App\Models\Detail::select('master_sub_kegiatan_id', 'subtitle')
-                            ->where('master_sub_kegiatan_id', $pengajuan_detail->master_sub_kegiatan_id)
-                            ->where('tahun', $data->tahun)
-                            ->distinct()
-                            ->orderBy('subtitle')
-                            ->get();
+                                    ->where('master_sub_kegiatan_id', $pengajuan_detail->master_sub_kegiatan_id)
+                                    ->where('tahun', $data->tahun)
+                                    ->distinct()
+                                    ->orderBy('subtitle')
+                                    ->get();    
                     @endphp
                     @foreach ($details as $r1)
                         @php
@@ -177,7 +173,7 @@
                             <tr>
                                 @php
                                     $jmlcolspan = 0;
-                                    if (sizeof($fases) <= 1) {
+                                    if(sizeof($fases) <= 1){
                                         $jmlcolspan = 5;
                                     }
                                     foreach ($fases as $f) {
@@ -204,13 +200,13 @@
                                 <tr>
                                     @php
                                         $jmlcolspan = 0;
-                                        if (sizeof($fases) <= 1) {
+                                        if(sizeof($fases) <= 1){
                                             $jmlcolspan = 5;
                                         }
                                         foreach ($fases as $f) {
                                             $jmlcolspan += 5;
                                         }
-                                        $jmlcolspan++;
+                                    $jmlcolspan++;
                                     @endphp
                                     <td colspan="{{ $jmlcolspan }}">&nbsp;<b>{!! $r2->subtitle2 ?? '-' !!} </b></td>
                                     <td></td>
@@ -218,7 +214,7 @@
                                 </tr>
                             @endpush
                             @foreach ($data_rekening as $r3)
-                                <?php
+                                @php
                                 $length = 0;
                                 $data_komponen = App\Models\Detail::get_komponen($r1->master_sub_kegiatan_id, $r1->subtitle, $r2->subtitle2, $r3->kode_rekening);
                                 $id_detail_murni = App\Models\Detail::where('kode_rekening', $r3->kode_rekening)
@@ -227,7 +223,8 @@
                                     ->first();
                                 
                                 $jml_geser = 0;
-                                foreach ($data_komponen as $r4) {
+                                foreach ($data_komponen as $r4)
+                                { 
                                     if ($r4->tipe == 'murni') {
                                         $harga_ppn = $r4->harga + ($r4->harga * $r4->ppn) / 100;
                                         $total = $harga_ppn * $r4->volume;
@@ -238,8 +235,9 @@
                                         $selisih = $total;
                                     }
                                     $no++;
-                                
-                                    foreach ($fases as $f) {
+
+                                    foreach ($fases as $f)
+                                    { 
                                         $rincian_geser = App\Models\DetailRincian::get_komponen_fase($pengajuan_detail->pengajuan_id, $r4->id, $f->id, $r3->kode_rekening);
                                         if ($r4->tipe == 'pergeseran' && $r4->fase_id == $f->id) {
                                             $rincian_geser = App\Models\DetailRincian::get_komponen_id($r4->id);
@@ -249,14 +247,13 @@
                                         }
                                     }
                                 }
-                                @endphp;
-                                ?>
-                                @if ($jml_geser > 0)
+                                @endphp
+                                @if($jml_geser > 0)
                                     @push('detail')
-                                        <tr>
+                                        <tr> 
                                             @php
                                                 $jmlcolspan = 0;
-                                                if (sizeof($fases) <= 1) {
+                                                if(sizeof($fases) <= 1){
                                                     $jmlcolspan = 5;
                                                 }
                                                 foreach ($fases as $f) {
@@ -264,13 +261,13 @@
                                                 }
                                             @endphp
                                             <td><b>{!! $r3->kode_rekening !!}</b></td>
-                                            <td colspan="{{ $jmlcolspan }}">
-                                                <b>
+                                            <td colspan="{{ $jmlcolspan }}"> 
+                                                <b>  
                                                     {!! @$r3->rekening->nama_rek ?? '' !!}
                                                 </b>
                                             </td>
                                             <td></td>
-                                            <td></td>
+                                            <td></td>  
                                         </tr>
                                     @endpush
                                     @foreach ($data_komponen as $r4)
@@ -287,7 +284,8 @@
                                             $jml_geser = 0;
                                             $no++;
 
-                                            foreach ($fases as $f) {
+                                            foreach ($fases as $f)
+                                            { 
                                                 $rincian_geser = App\Models\DetailRincian::get_komponen_fase($pengajuan_detail->pengajuan_id, $r4->id, $f->id, $r3->kode_rekening);
                                                 if ($r4->tipe == 'pergeseran' && $r4->fase_id == $f->id) {
                                                     $rincian_geser = App\Models\DetailRincian::get_komponen_id($r4->id);
@@ -298,45 +296,45 @@
                                             }
                                         @endphp
                                         @push('detail')
-                                            @if ($jml_geser > 0)
+                                            @if($jml_geser > 0)
                                                 <tr class="dt_{{ $no }}">
                                                     <td></td>
-                                                    <td>
+                                                    <td> 
                                                         {{-- @if ($r4->tipe == 'murni') --}}
                                                         {!! $r4->detail !!} {{ $r4->spek }}
                                                         {{-- @endif --}}
+                                                    </td> 
+                                                    @if(sizeof($fases) <= 1) 
+                                                    <td>
+                                                        @if ($r4->tipe == 'murni')
+                                                            {!! $r4->satuan !!}
+                                                        @endif
                                                     </td>
-                                                    @if (sizeof($fases) <= 1)
-                                                        <td>
-                                                            @if ($r4->tipe == 'murni')
-                                                                {!! $r4->satuan !!}
-                                                            @endif
-                                                        </td>
-                                                        <td>
-                                                            @if ($r4->tipe == 'murni')
-                                                                {!! $r4->koefisien !!}
-                                                            @endif
-                                                        </td>
-                                                        <td align="right">
-                                                            @if ($r4->tipe == 'murni')
-                                                                {!! number_format($r4->harga, 0, ',', '.') !!}
-                                                            @else
-                                                                0
-                                                            @endif
-                                                        </td>
-                                                        <td align="right">
-                                                            @if ($r4->tipe == 'murni')
-                                                                {!! number_format($r4->ppn, 0, ',', '.') !!}
-                                                            @else
-                                                                0
-                                                            @endif
-                                                        </td>
-                                                        <td align="right">
-                                                            {{-- @if ($r4->tipe == 'murni') --}}
-                                                            {!! number_format($total, 0, ',', '.') !!}
-                                                            {{-- @endif --}}
-                                                        </td>
-                                                    @endif
+                                                    <td>
+                                                        @if ($r4->tipe == 'murni')
+                                                            {!! $r4->koefisien !!}
+                                                        @endif
+                                                    </td>
+                                                    <td align="right">
+                                                        @if ($r4->tipe == 'murni')
+                                                            {!! number_format($r4->harga, 0, ',', '.') !!}
+                                                        @else
+                                                            0
+                                                        @endif
+                                                    </td>
+                                                    <td align="right">
+                                                        @if ($r4->tipe == 'murni')
+                                                            {!! number_format($r4->ppn, 0, ',', '.') !!}
+                                                        @else
+                                                            0
+                                                        @endif
+                                                    </td>
+                                                    <td align="right">
+                                                        {{-- @if ($r4->tipe == 'murni') --}}
+                                                        {!! number_format($total, 0, ',', '.') !!}
+                                                        {{-- @endif --}}
+                                                    </td>
+                                                    @endif 
 
                                                     @foreach ($fases as $f)
                                                         @php
@@ -379,9 +377,9 @@
                                                     @endforeach
                                                     <td align="right">
                                                         @if ($jml_geser > 0)
-                                                            {!! number_format(@$selisih, 0, ',', '.') !!}
+                                                            {!! number_format(@$selisih, 0, ',', '.') !!} 
                                                         @endif
-                                                    </td>
+                                                    </td> 
                                                 </tr>
                                             @endif
                                         @endpush
@@ -389,7 +387,7 @@
                                             $subtotal += $harga_ppn;
                                         @endphp
                                     @endforeach
-                                @endif
+                                @endif 
                             @endforeach
                         @endforeach
                     @endforeach
@@ -408,7 +406,7 @@
                     @stack('subtotal')
                     @stack('detail')
                 </tbody>
-            </table>
+            </table> 
         </div>
 
         <div style="width: 100%; text-align: right;">
@@ -443,7 +441,7 @@
                         <br>
                         <b><u>{{ $opd->kepala_nama }}</u></b>
                         <br>
-                        Pangkat. {{ $opd->kepala_pangkat }}
+                        Pangkat. {{ $opd->kepala_jabatan }}
                         <br>
                         NIP. {{ $opd->kepala_nip }}
                     </td>
@@ -453,5 +451,4 @@
     </body>
 @endforeach
 @stack('scripts')
-
 </html>
