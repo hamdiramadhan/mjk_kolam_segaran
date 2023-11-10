@@ -7,9 +7,6 @@
 
         </tr>
         <tr>
-
-        </tr>
-        <tr>
             <th style="width: 5%">No</th>
             <th>SKPD</th>
             <th>Level</th>
