@@ -85,31 +85,30 @@
                         <thead>
                             <tr>
                                 <th style="width: 5%">No</th>
+                                <th>OPD</th>
                                 @foreach ($fases as $f)
                                     <th>{{ $f->nama }}</th>
                                 @endforeach
-                                <th>Usulan</th>
-                                <th>Tanggal Surat</th>
                             </tr>
                         </thead>
                         <tbody>
                             @php $no = 0; @endphp
-                            @foreach ($fases as $f)
-                                @foreach ($pengajuan->where('fase_id', $f->id) as $p)
-                                    <tr>
-                                        <td>{{ $no += 1 }}</td>
-                                        <td>
-                                            {{ $p->skpd->unit_name }}
-                                        </td>
-                                        <td>
-                                            {{ $p->usulan->usulan }}
-                                        </td>
-                                        <td> <span
-                                                class="badge bg-{{ $p->stat->color_div }} text-white shadow-sm w-100">{{ $p->stat->nama }}</span>
-                                        </td>
-                                        <td> {{ $p->tanggal_surat }}</td>
-                                    </tr>
-                                @endforeach
+                            @foreach ($opd as $o)
+                                <tr>
+                                    <td>{{ $no += 1 }}</td>
+                                    <td>
+                                        {{ $o->unit_name }}
+                                    </td>
+                                    @foreach ($fases as $f)
+                                        @php
+                                            $count = $pengajuan
+                                                ->where('fase_id', $f->id)
+                                                ->where('opd_id', $o->id)
+                                                ->count();
+                                        @endphp
+                                        <td>{{ $count }}</td>
+                                    @endforeach
+                                </tr>
                             @endforeach
                         </tbody>
                     </table>

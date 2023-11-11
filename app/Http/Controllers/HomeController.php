@@ -30,8 +30,9 @@ class HomeController extends Controller
     {
         $pengajuan = Pengajuan::all();
         $fases = Fase::All();
+        $opd= Opd::all();
         
-        return view('home',compact('pengajuan','fases'));
+        return view('home',compact('pengajuan','fases','opd'));
     }
 
     public function change_tahun_app_login(Request $request)
