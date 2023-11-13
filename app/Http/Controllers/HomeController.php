@@ -66,16 +66,16 @@ class HomeController extends Controller
     
             switch ($data->status) {
                 case 0:
-                    $event['backgroundColor'] = 'red';
+                    $event['backgroundColor'] = 'blue';
                     break;
                 case 1:
-                    $event['backgroundColor'] = 'blue';
+                    $event['backgroundColor'] = 'orange';
                     break;
                 case 2:
                     $event['backgroundColor'] = 'green';
                     break;
                 default:
-                    $event['backgroundColor'] = 'gray';
+                    $event['backgroundColor'] = 'red';
                     break;
             }
             $events[] = $event;
