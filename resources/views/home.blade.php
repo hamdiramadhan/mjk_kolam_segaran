@@ -79,7 +79,7 @@
             <div class="card">
 
                 <div class="card-body overflow-hidden p-relative z-index-1 scrollable">
-                    <table class="table text-md-nowrap datatable-basic-subkegiatan ">
+                    <table class="table text-md-nowrap datatable-basic ">
                         <thead>
                             <tr>
                                 <th style="width: 5%">No</th>
