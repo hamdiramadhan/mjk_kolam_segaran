@@ -3,6 +3,14 @@
 @section('content')
     <div class="row row-sm">
         <div class="col-lg-5">
+            <div class="card">
+                <div class="card-body">
+                    <div id="calendar"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
             <div class="row">
                 <div class="col">
                     <div class="card radius-10 bg-primary bg-gradient">
@@ -63,23 +71,13 @@
                                 <div class="widgets-icons bg-white text-dark ms-auto"><i class="bx bxs-group"></i>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-lg-7">
             <div class="card">
-                <div class="card-body">
-                    <div id="calendar"></div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="card">
-        <div class="card-body">
-            <div class="card">
                 <div class="card-body overflow-hidden p-relative z-index-1 scrollable">
                     <table class="table text-md-nowrap datatable-basic-subkegiatan ">
                         <thead>
@@ -113,8 +111,6 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-            <div class="row">
             </div>
         </div>
     </div>
