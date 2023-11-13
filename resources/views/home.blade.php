@@ -130,7 +130,14 @@
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
-                events: "{{ route('calendar_dashboard') }}" // URL to fetch events from the backend
+                events: "{{ route('calendar_dashboard') }}", // URL to fetch events from the backend
+                eventClick: function(info) {
+                    // Redirect to the URL when an event is clicked
+                    var eventUrl = "{{ route('pengajuan.detail', ':eventId') }}".replace(':eventId',
+                        info
+                        .event.id);
+                    window.open(eventUrl, '_blank');
+                }
             });
             calendar.render();
         });

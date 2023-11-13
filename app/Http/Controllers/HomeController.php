@@ -54,11 +54,11 @@ class HomeController extends Controller
     public function calendar_dashboard() 
     {
 
-        $pengajuan = Pengajuan::all();
+        $pengajuan = Pengajuan::where('tahun',Auth::user()->tahun)->where('opd_id',Auth::user()->opd_id)->get();
         $events = [];
         foreach ($pengajuan as $data) {
             $event = [
-                'id' => $data->id,
+                'id' => encrypt($data->id),
                 'title' => $data->nomor_surat,
                 'start' => $data->tanggal_surat,
                 'end' => $data->tanggal_surat,
