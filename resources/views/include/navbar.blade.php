@@ -80,57 +80,59 @@
                         <div class="menu-title d-flex align-items-center">Report</div>
                     </a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle dropdown-toggle-nocaret 
+                @if (Auth::user()->role_id == 1)
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle dropdown-toggle-nocaret 
                         {{ Request::is('master_opd*') ? 'active' : '' }}
                         {{ Request::is('master_sub_opd*') ? 'active' : '' }}
                         {{ Request::is('usulan*') ? 'active' : '' }}
                         "
-                        href="javascript:;" data-bs-toggle="dropdown">
-                        <div class="parent-icon"><i class='bx bx-cube'></i>
-                        </div>
-                        <div class="menu-title d-flex align-items-center">Master</div>
-                        <div class="ms-auto dropy-icon"><i class='bx bx-chevron-down'></i></div>
-                    </a>
-                    <ul class="dropdown-menu">
+                            href="javascript:;" data-bs-toggle="dropdown">
+                            <div class="parent-icon"><i class='bx bx-cube'></i>
+                            </div>
+                            <div class="menu-title d-flex align-items-center">Master</div>
+                            <div class="ms-auto dropy-icon"><i class='bx bx-chevron-down'></i></div>
+                        </a>
+                        <ul class="dropdown-menu">
 
-                        <li style="text-align: center">
-                            <span style="text-align: center"><b><u>Pengaturan</u></b></span>
-                        </li>
-                        <li>
-                            <a class="dropdown-item {{ Request::is('fase*') ? 'active' : '' }}"
-                                href="{{ route('fase.index') }}">
-                                Fase
-                            </a>
-                        </li>
+                            <li style="text-align: center">
+                                <span style="text-align: center"><b><u>Pengaturan</u></b></span>
+                            </li>
+                            <li>
+                                <a class="dropdown-item {{ Request::is('fase*') ? 'active' : '' }}"
+                                    href="{{ route('fase.index') }}">
+                                    Fase
+                                </a>
+                            </li>
 
-                        <li style="text-align: center">
-                            <span style="text-align: center"><b><u>OPD</u></b></span>
-                        </li>
-                        <li>
-                            <a class="dropdown-item {{ Request::is('usulan*') ? 'active' : '' }}"
-                                href="{{ route('jenis_usulan.index') }}">
-                                Jenis Usulan
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item {{ Request::is('master_opd*') ? 'active' : '' }}"
-                                href="{{ route('master_opd') }}">
-                                SKPD
-                            </a>
-                        </li>
-                        <li><a class="dropdown-item" href="{{ route('master_sub_opd') }}">Sub SKPD</a></li>
-                        <li><a class="dropdown-item" href="{{ route('sumber_dana.index') }}">Sumber Dana</a></li>
-                        <li style="text-align: center">
-                            <span style="text-align: center"><b><u>Pengguna</u></b></span>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="{{ route('users.index') }}">
-                                User
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+                            <li style="text-align: center">
+                                <span style="text-align: center"><b><u>OPD</u></b></span>
+                            </li>
+                            <li>
+                                <a class="dropdown-item {{ Request::is('usulan*') ? 'active' : '' }}"
+                                    href="{{ route('jenis_usulan.index') }}">
+                                    Jenis Usulan
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item {{ Request::is('master_opd*') ? 'active' : '' }}"
+                                    href="{{ route('master_opd') }}">
+                                    SKPD
+                                </a>
+                            </li>
+                            <li><a class="dropdown-item" href="{{ route('master_sub_opd') }}">Sub SKPD</a></li>
+                            <li><a class="dropdown-item" href="{{ route('sumber_dana.index') }}">Sumber Dana</a></li>
+                            <li style="text-align: center">
+                                <span style="text-align: center"><b><u>Pengguna</u></b></span>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ route('users.index') }}">
+                                    User
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                @endif
             </ul>
         </div>
     </div>

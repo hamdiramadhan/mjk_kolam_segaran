@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Exports\ReportPengajuan;
+use App\Models\Fase;
 use App\Models\Pengajuan;
 use App\Models\PengajuanDetail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
@@ -18,8 +20,9 @@ class ReportController extends Controller
     public function index()
     {
         $pengajuandetail= PengajuanDetail::all();
+        $fase = Fase::all();
         $nama_header= 'Report Pengajuan Pergeseran Anggaran';
-        return view('report.index',['nama_header'=>$nama_header],compact('pengajuandetail'));
+        return view('report.index',['nama_header'=>$nama_header],compact('pengajuandetail','fase'));
     }
 
     public function export_excel()
@@ -58,9 +61,18 @@ class ReportController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
+        $fase_id = $request->fase_id;
+
+        $pengajuandetail = PengajuanDetail::with(['pengajuan.fase'])
+        ->whereHas('pengajuan', function ($query) use ($fase_id) {
+            $query->where('fase_id', $fase_id)->where('opd_id',Auth::user()->opd_id);
+        })
+        ->get();
+        $fase = Fase::where('id',$fase_id)->first();
+        $nama_header= 'Report Pengajuan '.Auth::user()->skpd->unit_name.' Fase <b>'.$fase->nama.'</b>';
+        return view('report.show',['nama_header'=>$nama_header],compact('pengajuandetail','fase'));
     }
 
     /**

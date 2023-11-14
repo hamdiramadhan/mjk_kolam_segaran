@@ -30,7 +30,8 @@ class HomeController extends Controller
     {
         $pengajuan = Pengajuan::all();
         $fases = Fase::All();
-        $opd= Opd::all();
+        $opd= Opd::where('id',Auth::user()->opd_id)->get();
+        // $opd=Opd::all();
         
         return view('home',compact('pengajuan','fases','opd'));
     }
