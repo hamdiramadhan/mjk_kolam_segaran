@@ -148,7 +148,7 @@ Route::group(['middleware' => ['XSS']], function () {
         // START REPORT //
         Route::resource('/report', ReportController::class);
         Route::post('/report/show', [ReportController::class, 'show'])->name('show_report');
-        Route::post('/report/export_excel', [ReportController::class, 'export_excel'])->name('export_excel');
+        Route::post('/report/export_excel/{id}', [ReportController::class, 'export_excel'])->name('export_excel');
         // END REPORT //
     });
 });

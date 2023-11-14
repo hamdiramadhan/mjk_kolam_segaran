@@ -12,7 +12,7 @@
     </div>
     <div class="ms-auto">
 
-        <form action="{{ route('export_excel') }}" method="post" target="_blank">
+        <form action="{{ route('export_excel', $fase->id) }}" method="post" target="_blank">
             @csrf
             <button type="submit" class="btn btn-sm btn-success">
                 <i class="fa fa-upload"></i> Export Excel

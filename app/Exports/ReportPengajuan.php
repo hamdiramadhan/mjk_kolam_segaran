@@ -2,10 +2,12 @@
 
 namespace App\Exports;
 
+use App\Models\Opd;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
 use Maatwebsite\Excel\Concerns\Exportable;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Concerns\FromView;
 
 class ReportPengajuan implements FromView 
@@ -23,7 +25,9 @@ class ReportPengajuan implements FromView
     public function view(): View 
     {   
         $pengajuandetail = $this->pengajuandetail;
+        $opd_id = Auth::user()->opd_id;
+        $opd = Opd::find($opd_id);
        
-        return view('report.export', compact('pengajuandetail'));
+        return view('report.export', compact('pengajuandetail','opd'));
     }    
 }

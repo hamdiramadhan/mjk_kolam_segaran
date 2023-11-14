@@ -25,9 +25,13 @@ class ReportController extends Controller
         return view('report.index',['nama_header'=>$nama_header],compact('pengajuandetail','fase'));
     }
 
-    public function export_excel()
+    public function export_excel($fase_id)
     {
-        $pengajuandetail= PengajuanDetail::all();
+        $pengajuandetail = PengajuanDetail::with(['pengajuan.fase'])
+        ->whereHas('pengajuan', function ($query) use ($fase_id) {
+            $query->where('fase_id', $fase_id)->where('opd_id',Auth::user()->opd_id);
+        })
+        ->get();
         $date_now = date('Y-m-d');
         $nama_file = 'Rekap Pengajuan '.$date_now.'.xlsx';
         return Excel::download(new ReportPengajuan($pengajuandetail),$nama_file);
