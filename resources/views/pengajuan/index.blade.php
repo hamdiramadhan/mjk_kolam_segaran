@@ -14,10 +14,12 @@
             </nav>
         </div>
         {{-- @if ($count_pengajuan == 0) --}}
-        <div class="ms-auto">
-            <a href="{{ route('pengajuan.create') }}" type="button" class="btn btn-primary px-5"><i
-                    class="bx bx-plus mr-1"></i>Tambah</a>
-        </div>
+        @if ($step_status == 0)
+            <div class="ms-auto">
+                <a href="{{ route('pengajuan.create') }}" type="button" class="btn btn-primary px-5"><i
+                        class="bx bx-plus mr-1"></i>Tambah</a>
+            </div>
+        @endif
         {{-- @endif --}}
     </div>
 
@@ -115,7 +117,31 @@
                                     <form><a href="{{ route('pengajuan.detail', encrypt($p->id)) }}" type="button"
                                             style="width:100%" class="btn btn-info px-5"><i
                                                 class="bx bx-detail mr-1"></i>Detail {{ sizeof($p->details) }}</a></form>
-                                    @if (Auth::user()->role_id != 2 || Auth::user()->role_id != 7)
+
+                                    <form id="frm_kirim" method="POST"
+                                        onsubmit="return confirm('Anda yakin mengirim data ini ??')"
+                                        action="{{ route('pengajuan.send', encrypt($p->id)) }}">
+                                        @csrf
+                                    </form>
+                                    @if (sizeof($p->details) <= 0)
+                                        <form id="frm_cetak" target="_blank"
+                                            action="{{ route('pengajuan.print', encrypt($p->id)) }}" method="POST">
+                                            @csrf
+                                        </form>
+                                        <form id="frm_pengajuan" target="_blank"
+                                            action="{{ route('pengajuan.print_detail', encrypt($p->id)) }}" method="POST">
+                                            @csrf
+                                        </form>
+                                        <button type="button" class="btn btn-warning px-5" style="width:100%"
+                                            onclick="$('#frm_cetak').submit();">
+                                            <i class="bx bx-printer mr-1"></i> Permohonan
+                                        </button>
+                                        <button type="button" class="btn btn-info px-5" style="width:100%"
+                                            onclick="$('#frm_pengajuan').submit();">
+                                            <i class="bx bx-printer mr-1"></i> Pengajuan
+                                        </button>
+                                    @endif
+                                    @if (Auth::user()->role_id != 2 && Auth::user()->role_id != 7)
                                         @if ($p->stat->kode == 1 || $p->stat->kode == 3)
                                             <form><button type="button" onclick="$('#modal_verif').modal('show')"
                                                     style="width:100%;color:white" class="btn bg-gradient-deepblue px-5"><i
@@ -151,7 +177,8 @@
                                                 </div>
                                                 <div class="modal-body">
                                                     @if ($count_pengajuan_warning > 0)
-                                                        <div class="p-1 text-danger rounded">Warning, Sudah Pernah Melakukan
+                                                        <div class="p-1 text-danger rounded">Warning, Sudah Pernah
+                                                            Melakukan
                                                             Pengajuan Pergeseran Sebanyak
                                                             {{ $count_pengajuan_warning }} kali dalam 1 Fase</div><br>
                                                     @endif

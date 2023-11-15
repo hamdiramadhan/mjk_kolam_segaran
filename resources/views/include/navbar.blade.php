@@ -61,14 +61,16 @@
                         <li><a class="dropdown-item {{ Request::is('pengajuan/selesai') ? 'active' : '' }}"
                                 href="{{ route('pengajuan.selesai') }}">Selesai</a></li>
 
-                        <li style="text-align: center">
-                            <span style="text-align: center"><b><u>Verifikator</u></b></span>
-                        </li>
+                        @if (Auth::user()->role_id == 1 || Auth::user()->role_id == 3)
+                            <li style="text-align: center">
+                                <span style="text-align: center"><b><u>Verifikator</u></b></span>
+                            </li>
 
-                        <li><a class="dropdown-item {{ Request::is('pengajuan/masuk') ? 'active' : '' }}"
-                                href="{{ route('pengajuan.masuk') }}">Usulan Masuk</a></li>
-                        <li><a class="dropdown-item {{ Request::is('pengajuan/selesai_verif') ? 'active' : '' }}"
-                                href="{{ route('pengajuan.selesai_verif') }}">Selesai</a></li>
+                            <li><a class="dropdown-item {{ Request::is('pengajuan/masuk') ? 'active' : '' }}"
+                                    href="{{ route('pengajuan.masuk') }}">Usulan Masuk</a></li>
+                            <li><a class="dropdown-item {{ Request::is('pengajuan/selesai_verif') ? 'active' : '' }}"
+                                    href="{{ route('pengajuan.selesai_verif') }}">Selesai</a></li>
+                        @endif
                     </ul>
                 </li>
                 <li class="nav-item">

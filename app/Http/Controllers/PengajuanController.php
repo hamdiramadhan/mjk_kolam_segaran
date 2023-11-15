@@ -34,6 +34,8 @@ class PengajuanController extends Controller
         if(Auth::user()->role_id == 1 || Auth::user()->role_id == 3){
             $pengajuan = Pengajuan::with('fase')->where('status',0)->get();
         } 
+        // STEP STATUS = STATUS SAAT INI
+        $step_status = 0;
         $pengajuan_alasan = PengajuanAlasan::All();
         $count_pengajuan = Pengajuan::with('fase')->whereIn('status',[0,1,2])->where('opd_id',$opd->id)->where('tahun',Auth::user()->tahun)->count();
         $count_pengajuan_warning = Pengajuan::whereHas('fase', function ($query) {
@@ -45,7 +47,7 @@ class PengajuanController extends Controller
         
         $status = MasterStatus::whereNotIn('kode',[0,1])->get();
         $nama_header = 'Pengajuan Perubahan '.$opd->unit_name .' '. Auth::user()->tahun;
-        return view('pengajuan.index',['nama_header'=>$nama_header],compact('pengajuan','pengajuan_alasan','count_pengajuan_warning','count_pengajuan','status'));
+        return view('pengajuan.index',['nama_header'=>$nama_header],compact('pengajuan','pengajuan_alasan','count_pengajuan_warning','count_pengajuan','status','step_status'));
     }
 
 
@@ -54,8 +56,9 @@ class PengajuanController extends Controller
         $opd = Opd::find(Auth::user()->opd_id);
         $pengajuan = Pengajuan::where('status',1)->where('opd_id',$opd->id)->where('tahun',Auth::user()->tahun)->get();
         if(Auth::user()->role_id == 1 || Auth::user()->role_id == 3){
-            $pengajuan = Pengajuan::where('status',1)->get();
+            $pengajuan = Pengajuan::where('status',1)->where('opd_id',$opd->id)->get();
         }
+        $step_status = 1;
         $pengajuan_alasan = PengajuanAlasan::All();
         $count_pengajuan = Pengajuan::whereIn('status',[0,1,2])->where('opd_id',$opd->id)->where('tahun',Auth::user()->tahun)->count();
         $status = MasterStatus::whereNotIn('kode',[0,1])->get();
@@ -66,7 +69,7 @@ class PengajuanController extends Controller
         })
         ->where('opd_id', $opd->id)
         ->count();
-        return view('pengajuan.index',['nama_header'=>$nama_header],compact('pengajuan','count_pengajuan_warning','pengajuan_alasan','count_pengajuan','status'));
+        return view('pengajuan.index',['nama_header'=>$nama_header],compact('pengajuan','count_pengajuan_warning','pengajuan_alasan','count_pengajuan','status','step_status'));
     }
 
 
@@ -77,6 +80,7 @@ class PengajuanController extends Controller
         if(Auth::user()->role_id == 1 || Auth::user()->role_id == 3){
             $pengajuan = Pengajuan::where('status',2)->get();
         }
+        $step_status = 2;
         $pengajuan_alasan = PengajuanAlasan::All();
         $count_pengajuan = Pengajuan::whereIn('status',[0,1,2])->where('opd_id',$opd->id)->count();
         $status = MasterStatus::whereNotIn('kode',[0,1])->get();
@@ -87,7 +91,7 @@ class PengajuanController extends Controller
         })
         ->where('opd_id', $opd->id)
         ->count();
-        return view('pengajuan.index',['nama_header'=>$nama_header],compact('pengajuan','pengajuan_alasan','count_pengajuan_warning','count_pengajuan','status'));
+        return view('pengajuan.index',['nama_header'=>$nama_header],compact('pengajuan','pengajuan_alasan','count_pengajuan_warning','count_pengajuan','status','step_status'));
     }
 
     /**
