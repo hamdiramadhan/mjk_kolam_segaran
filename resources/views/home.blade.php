@@ -18,7 +18,7 @@
                             <div class="d-flex align-items-center">
                                 <div>
                                     <p class="mb-0 text-white">Total Pengajuan</p>
-                                    <h4 class="my-1 text-white">1</h4>
+                                    <h4 class="my-1 text-white">{{ $total_pengajuan }}</h4>
                                 </div>
                                 <div class="text-white ms-auto font-35"><i class="bx bx-cart-alt"></i>
                                 </div>
@@ -32,7 +32,7 @@
                             <div class="d-flex align-items-center">
                                 <div>
                                     <p class="mb-0 text-white">Pengajuan Bulan Ini</p>
-                                    <h4 class="my-1 text-white">10</h4>
+                                    <h4 class="my-1 text-white">{{ $total_pengajuan_bulan_ini }}</h4>
                                 </div>
                                 <div class="text-white ms-auto font-35"><i class="bx bx-minus-back"></i>
                                 </div>
@@ -48,7 +48,7 @@
                             <div class="d-flex align-items-center">
                                 <div>
                                     <p class="mb-0 text-white">Total OPD</p>
-                                    <h4 class="my-1 text-white">54</h4>
+                                    <h4 class="my-1 text-white">{{ $total_opd }}</h4>
                                     {{-- <p class="mb-0 font-13 text-white"><i class="bx bxs-up-arrow align-middle"></i>$34 from
                                         last week</p> --}}
                                 </div>
@@ -64,7 +64,7 @@
                             <div class="d-flex align-items-center">
                                 <div>
                                     <p class="mb-0 text-dark">Pengajuan Selesai</p>
-                                    <h4 class="my-1 text-dark">6</h4>
+                                    <h4 class="my-1 text-dark">{{ $total_pengajuan_selesai }}</h4>
                                     {{-- <p class="mb-0 font-13 text-dark"><i class="bx bxs-up-arrow align-middle"></i>$24 from
                                         last week</p> --}}
                                 </div>
