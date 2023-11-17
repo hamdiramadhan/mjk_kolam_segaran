@@ -31,7 +31,7 @@ class HomeController extends Controller
         $pengajuan = Pengajuan::all();
         $fases = Fase::All();
         $opd= Opd::where('id',Auth::user()->opd_id)->get();
-        $total_opd = Opd::count();
+        $total_opd = Opd::whereNull('induk')->count();  
         $total_pengajuan = Pengajuan::where('opd_id',Auth::user()->opd_id)->count();
         $total_pengajuan_bulan_ini = Pengajuan::whereRaw('EXTRACT(MONTH FROM tanggal_surat) = ?', [date('n')])->where('opd_id',Auth::user()->opd_id)->count();
         $total_pengajuan_selesai = Pengajuan::where('opd_id',Auth::user()->opd_id)->whereIn('status',[2,3])->count();
