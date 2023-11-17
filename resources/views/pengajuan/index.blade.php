@@ -136,10 +136,12 @@
                                             onclick="$('#frm_cetak').submit();">
                                             <i class="bx bx-printer mr-1"></i> Permohonan
                                         </button>
+                                        <br><br>
                                         <button type="button" class="btn btn-info px-5" style="width:100%"
                                             onclick="$('#frm_pengajuan').submit();">
                                             <i class="bx bx-printer mr-1"></i> Pengajuan
                                         </button>
+                                        <br><br>
                                     @endif
                                     @if (Auth::user()->role_id != 2 && Auth::user()->role_id != 7)
                                         @if ($p->stat->kode == 1 || $p->stat->kode == 3)

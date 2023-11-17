@@ -32,7 +32,7 @@ class PengajuanController extends Controller
         $opd = Opd::findOrFail(Auth::user()->opd_id);
         $pengajuan = Pengajuan::with('fase')->where('status',0)->where('opd_id',$opd->id)->where('tahun',Auth::user()->tahun)->get();
         if(Auth::user()->role_id == 1 || Auth::user()->role_id == 3){
-            $pengajuan = Pengajuan::with('fase')->where('status',0)->get();
+            $pengajuan = Pengajuan::with('fase')->where('status',0)->where('opd_id',$opd->id)->get();
         } 
         // STEP STATUS = STATUS SAAT INI
         $step_status = 0;
@@ -78,7 +78,7 @@ class PengajuanController extends Controller
         $opd = Opd::find(Auth::user()->opd_id);
         $pengajuan = Pengajuan::where('status',2)->where('opd_id',$opd->id)->where('tahun',Auth::user()->tahun)->get();
         if(Auth::user()->role_id == 1 || Auth::user()->role_id == 3){
-            $pengajuan = Pengajuan::where('status',2)->get();
+            $pengajuan = Pengajuan::where('status',2)->where('opd_id',$opd->id)->get();
         }
         $step_status = 2;
         $pengajuan_alasan = PengajuanAlasan::All();
