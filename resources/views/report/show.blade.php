@@ -32,7 +32,7 @@
                         <thead>
                             <tr>
                                 <th style="width: 5%">No</th>
-                                <th>SKPD</th>
+                                <th>Nomor Pengajuan</th>
                                 <th>Level</th>
                                 <th>Kode Sub Kegiatan</th>
                                 <th>Nama Sub Kegiatan</th>
@@ -47,7 +47,7 @@
                                 <tr>
                                     <td>{{ $i }}</td>
                                     <td>
-                                        {{ $r->pengajuan->skpd->unit_name }}
+                                        {{ $r->pengajuan->nomor_surat }}
                                     </td>
                                     <td>{{ $r->pengajuan->usulan->usulan }}</td>
                                     <td> {{ $r->sub_kegiatan->kode_sub_kegiatan }}</td>
@@ -67,3 +67,26 @@
     </div>
 </div>
 <!-- End Row -->
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+    // START SCRIPT TABEL 
+    $(document).ready(function() {
+        var table = $('.datatable-report').DataTable({
+            "ordering": false,
+            "paginate": false,
+            "autoWidth": true,
+            "columnDefs": [{
+                "visible": false,
+                "targets": [1]
+            }],
+            rowGroup: {
+                dataSrc: [1],
+                className: 'table-group'
+            }
+        });
+    });
+    // END SCRIPT TABEL   
+</script>

@@ -28,7 +28,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $pengajuan = Pengajuan::all();
+        $pengajuan = Pengajuan::where('opd_id',433)->where('fase_id','1')->get();
         $fases = Fase::All();
         $opd= Opd::where('id',Auth::user()->opd_id)->get();
         // $opd=Opd::all();
