@@ -88,6 +88,10 @@
                             Format 3 <a target="_blank" href="{{ asset('format_upload_program_kegiatan_3.xlsx') }}">Klik
                                 disini untuk contoh Format 3 </a> khusus untuk upload ALL SKPD
                         </li>
+                        <li>
+                            Format 4 <a target="_blank" href="{{ asset('format_upload_program_kegiatan_4.xlsx') }}">Klik
+                                disini untuk contoh Format 4 </a> khusus untuk upload ALL SKPD
+                        </li>
                         @endif
                     </ol>
                     </p>
@@ -103,6 +107,7 @@
                                     <option value="2">Format 2</option>
                                     @if(@Auth::user()->skpd->id ?? 0 == 0)
                                     <option value="3">Format 3</option>
+                                    <option value="4">Format 4</option>
                                     @endif
                                 </select>
                             </div>

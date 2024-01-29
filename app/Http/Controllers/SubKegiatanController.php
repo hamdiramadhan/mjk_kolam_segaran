@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Imports\ImportKegiatan;
 use App\Imports\ImportKegiatan2;
 use App\Imports\ImportKegiatan3;
+use App\Imports\ImportKegiatan4;
 use App\Models\Detail;
 use App\Models\MasterSubKegiatan;
 use App\Models\MasterKegiatan;
@@ -164,6 +165,8 @@ class SubKegiatanController extends Controller
                 Excel::import(new ImportKegiatan2($tahun, $jenis_upload, $konsep, $opd_id), public_path($path));   
             } else if($format == 3) {
                 Excel::import(new ImportKegiatan3($tahun, $jenis_upload, $konsep, $opd_id), public_path($path));  
+            } else if($format == 4) {
+                Excel::import(new ImportKegiatan4($tahun, $jenis_upload, $konsep, $opd_id), public_path($path));  
             }
             
             
@@ -195,9 +198,10 @@ class SubKegiatanController extends Controller
     public function ajax(Request $request)
     {  
         $tahun = Auth::user()->tahun ?? date('Y'); 
-        $id_dinas = Auth::user()->opd_id;
+        $id_dinas = Auth::user()->opd_id; 
         $data_kegiatan = MasterSubKegiatan::where('tahun', $tahun);
-        if(!empty($id_dinas) && $id_dinas != 'null' ) { 
+        // if(!empty($id_dinas) && $id_dinas != 'null' ) { 
+        if($id_dinas != 'null' ) { 
             $data_kegiatan = $data_kegiatan->where('opd_id', $id_dinas);
         }   
         $data_kegiatan = $data_kegiatan->get();
