@@ -8,6 +8,7 @@ use App\Http\Controllers\AsbController;
 use App\Models\DataAwalImportKegiatan4;
 use App\Models\MasterKegiatan;
 use App\Models\MasterProgram;
+use App\Models\MasterRekening;
 use App\Models\MasterSubKegiatan;
 use App\Models\MasterSubKegiatanImport;
 use App\Models\Opd;
@@ -249,7 +250,10 @@ class ImportKegiatan4 implements ToCollection, WithMultipleSheets
                 $delete = MasterProgram::where('tahun', $tahun)->delete();
                 $delete = MasterKegiatan::where('tahun', $tahun)->delete();
                 $delete = MasterSubKegiatan::where('tahun', $tahun)->delete(); 
+                $delete = DB::table('rekenings')->where('tahun', $tahun)->delete(); 
+                $delete = DB::table('detail')->where('tahun', $tahun)->delete(); 
             }
+            
             for ($i=0; $i < sizeof($arr_import) ; $i++) {   
                 $new = new DataAwalImportKegiatan4();
                 $new->sync_kode = $arr_import[$i]['sync_kode']; 
@@ -392,9 +396,131 @@ class ImportKegiatan4 implements ToCollection, WithMultipleSheets
                 echo 'subkegiatan opd ' . $th->getMessage();exit();
                 //throw $th;
             }
-            /* END INSERT SUBKEGIATAN */ 
+            /* END INSERT SUBKEGIATAN */
+
+            /* START INSERT REKENINGS */ 
+            try {
+                $insertprogramglobal = DB::statement("INSERT INTO rekenings (opd_id, unit_id, master_sub_kegiatan_id, kode_sub_kegiatan, kode_rekening, nama_rekening, harga, tahun, sync_kode)
+                SELECT (select id from opds where unit_id=d.kode_sub_unit) opd_id,
+                (select unit_id from opds where unit_id=d.kode_sub_unit) unit_id,
+                (
+                    select id 
+					from master_sub_kegiatan  
+                    where master_kegiatan_id = 
+                        (select id from master_kegiatan 
+						 where opd_id=(select id from opds where unit_id=d.kode_sub_unit)
+                            and tahun=d.tahun::integer
+                            and master_program_id=((select id from master_program where opd_id=(select id from opds where unit_id=d.kode_sub_unit)
+                                    and tahun=d.tahun::integer
+                                    and kode_program=d.kode_program
+                                ))
+                            and kode_kegiatan = d.kode_kegiatan
+                        ) 
+                    and kode_sub_kegiatan = d.kode_sub_giat
+                ) master_sub_kegiatan_id,
+                kode_sub_giat,
+                kode_rekening,
+                nama_rekening,
+                sum(pagu::double precision),
+                {$tahun},
+                '{$kode_unik}'
+                from data_awal_import_kegiatan4s d
+                where sync_kode='{$kode_unik}'
+                group by kode_sub_unit,
+                kode_sub_giat,
+                kode_rekening,
+                nama_rekening,
+                d.tahun,
+                d.kode_program,
+                d.kode_kegiatan
+                "); 
+            } catch (\Throwable $th) {
+                echo 'rekenings opd ' . $th->getMessage();exit();
+                //throw $th;
+            }
+            /* END INSERT REKENINGS */
+
+            /* START INSERT DETAIL */ 
+            try {
+                $insertprogramglobal = DB::statement("INSERT INTO detail (opd_id, 
+                unit_id, 
+                master_sub_kegiatan_id, 
+                kode_sub_kegiatan, 
+                rekenings_id, 
+                kode_rekening, 
+                nama_rekening, 
+                kode_detail, 
+                detail, 
+                merk, 
+                spek, 
+                volume,  
+                harga,  
+                subtitle, 
+                subtitle2, 
+                tahun, 
+                sync_kode)
+                SELECT (select id from opds where unit_id=d.kode_sub_unit) opd_id, 
+                (select unit_id from opds where unit_id=d.kode_sub_unit) unit_id, 
+                (
+                    select id 
+                    from master_sub_kegiatan  
+                    where master_kegiatan_id = 
+                        (select id from master_kegiatan 
+                            where opd_id=(select id from opds where unit_id=d.kode_sub_unit)
+                            and tahun=d.tahun::integer
+                            and master_program_id=((select id from master_program where opd_id=(select id from opds where unit_id=d.kode_sub_unit)
+                                    and tahun=d.tahun::integer
+                                    and kode_program=d.kode_program
+                                ))
+                            and kode_kegiatan = d.kode_kegiatan
+                        ) 
+                    and kode_sub_kegiatan = d.kode_sub_giat
+                ) master_sub_kegiatan_id, 
+                kode_sub_giat, 
+                (
+                    select id from rekenings where opd_id=(select id from opds where unit_id=d.kode_sub_unit) and master_sub_kegiatan_id=(
+                            select id 
+                            from master_sub_kegiatan  
+                            where master_kegiatan_id = 
+                                (select id from master_kegiatan 
+                                    where opd_id=(select id from opds where unit_id=d.kode_sub_unit)
+                                    and tahun=d.tahun::integer
+                                    and master_program_id=((select id from master_program where opd_id=(select id from opds where unit_id=d.kode_sub_unit)
+                                            and tahun=d.tahun::integer
+                                            and kode_program=d.kode_program
+                                        ))
+                                    and kode_kegiatan = d.kode_kegiatan
+                                ) 
+                            and kode_sub_kegiatan = d.kode_sub_giat
+                        ) and kode_rekening=d.kode_rekening 
+                ) rekenings_id, 
+                kode_rekening, 
+                nama_rekening, 
+                kode_ssh as kode_detail, 
+                nama_ssh as detail,  
+                1 as volume,  
+                pagu as harga,   
+                '[#]' as subtitle, 
+                '[-]' as subtitle2, 
+                tahun, 
+                sync_kode 
+                FROM data_awal_import_kegiatan4s d
+                where sync_kode='{$kode_unik}'
+                "); 
+            } catch (\Throwable $th) {
+                echo 'rekenings opd ' . $th->getMessage();exit();
+                //throw $th;
+            }
+            /* END INSERT DETAIL */
             
         } 
+
+        /*
+        DELETE FROM data_awal_import_kegiatan4s;
+        DELETE FROM master_program where tahun=2024;
+        DELETE FROM master_kegiatan where tahun=2024;
+        DELETE FROM master_sub_kegiatan where tahun=2024; 
+        */
         ?>
 	    </table>
         <?php
