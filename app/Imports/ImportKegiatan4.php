@@ -497,7 +497,7 @@ class ImportKegiatan4 implements ToCollection, WithMultipleSheets
                 kode_ssh as kode_detail, 
                 nama_ssh as detail,  
                 1 as volume,  
-                pagu as harga,   
+                pagu::double precision as harga,   
                 '[#]' as subtitle, 
                 '[-]' as subtitle2, 
                 tahun, 
