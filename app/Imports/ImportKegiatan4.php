@@ -500,7 +500,7 @@ class ImportKegiatan4 implements ToCollection, WithMultipleSheets
                 pagu::double precision as harga,   
                 '[#]' as subtitle, 
                 '[-]' as subtitle2, 
-                tahun, 
+                tahun::integer, 
                 sync_kode 
                 FROM data_awal_import_kegiatan4s d
                 where sync_kode='{$kode_unik}'
