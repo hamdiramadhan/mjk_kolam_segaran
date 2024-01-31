@@ -52,7 +52,7 @@
         <div class="col-md-9">
             <div class="form-group">
                 <input type="text" class="form-control" placeholder="Masukkan Uraian" id="detail_pergeseran"
-                    name="detail_pergeseran" value="{{ $data->detail }}" required>
+                    name="detail_pergeseran" value="{{ $data->detail }}">
             </div>
         </div>
     </div>
