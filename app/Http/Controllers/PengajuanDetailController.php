@@ -65,6 +65,10 @@ class PengajuanDetailController extends Controller
     { 
         $id = decrypt($id);
         $sub_kegiatan = $request->sub_kegiatan;
+        if($sub_kegiatan == null){
+            session()->put('statusT', 'Isi Sub Kegiatan Terlebih Dahulu! ' );
+            return redirect()->back();
+        }
         for ($i = 0; $i < sizeof($sub_kegiatan); $i++) { 
             $data_sub_kegiatan = MasterSubKegiatan::find($sub_kegiatan[$i]); 
             $pengajuan_detail = new PengajuanDetail();

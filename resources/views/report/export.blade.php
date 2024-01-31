@@ -22,6 +22,7 @@
             @php $i++; @endphp
             <tr>
                 <td>{{ $i }}</td>
+                <td>{{ $opd->unit_name }}</td>
                 <td>{{ $r->pengajuan->usulan->usulan }}</td>
                 <td> {{ $r->sub_kegiatan->kode_sub_kegiatan }}</td>
                 <td> {{ $r->sub_kegiatan->nama_sub_kegiatan }}</td>
