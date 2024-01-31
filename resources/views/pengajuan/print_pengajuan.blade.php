@@ -147,7 +147,7 @@
                 <td width="50%">
                 </td>
                 <td width="5%">
-                </td> 
+                </td>
                 <td>
                     Mojokerto, {{ tgl_indo($data->tanggal_surat) }}<br>
                     Kepada
@@ -193,7 +193,7 @@
                 <td></td>
                 <td>
                     di -
-                </td> 
+                </td>
                 <td></td>
             </tr>
             <tr>
@@ -214,7 +214,8 @@
     <div style="padding-left: 100px; padding-right: 10px;">
         <p style="text-align: justify; text-justify: inter-word;margin-bottom: -10px; text-indent: 38px; ">
             Dengan memperhatikan ketentuan Pergeseran Anggaran sebagaimana tercantum dalam
-            Peraturan Bupati Mojokerto Nomor ….. Tahun 2021 tentang Sistem Dan Prosedur Pengelolaan Keuangan Daerah, dengan hormat kami mengajukan usulan {{ $data->usulan->usulan }}. Dalam Anggaran Pendapatan dan
+            Peraturan Bupati Mojokerto Nomor ….. Tahun 2021 tentang Sistem Dan Prosedur Pengelolaan Keuangan Daerah,
+            dengan hormat kami mengajukan usulan {{ $data->usulan->usulan }}. Dalam Anggaran Pendapatan dan
             Belanja Daerah (APBD) Tahun Anggaran {{ $tahun }} dengan alasan dan
             pertimbangan sebagai berikut:
         </p>
@@ -240,67 +241,67 @@
     </div>
     <div style="padding-left: 10px;">
         <div style="font-size: 11pt;">
-            @if($data->usulan_id == 1 || $data->usulan_id == 2 || $data->usulan_id == 3)
-            <table border="0" style="width:100%">
-                <tr>
-                    <td align="center" style="width: 55%">
-                    </td>
-                    <td align="center">
-                        Mengetahui, 
-                        <br>
-                        <b>{{ $opd->kepala_jabatan ?? 'Kepala Dinas' }}
-                        </b>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <b><u>{{ $opd->kepala_nama }}</u></b>
-                        <br>
-                        {{ $opd->kepala_pangkat }} 
-                        <br>
-                        NIP. {{ $opd->kepala_nip }} 
-                    </td>
-                </tr>
-            </table>
+            @if ($data->usulan_id == 1 || $data->usulan_id == 2 || $data->usulan_id == 3)
+                <table border="0" style="width:100%">
+                    <tr>
+                        <td align="center" style="width: 55%">
+                        </td>
+                        <td align="center">
+                            Mengetahui,
+                            <br>
+                            <b>{{ $opd->kepala_jabatan ?? 'Kepala Dinas' }}
+                            </b>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <b><u>{{ $opd->kepala_nama }}</u></b>
+                            <br>
+                            {{ $opd->kepala_pangkat }}
+                            <br>
+                            NIP. {{ $opd->kepala_nip }}
+                        </td>
+                    </tr>
+                </table>
             @elseif($data->usulan_id == 4)
-            <br>
-            <table border="0" style="width:100%">
-                <tr>
-                    <td align="center" style="width: 55%">
-                        <b>{{ $opd->kepala_jabatan ?? 'Kepala Dinas' }}
-                        </b>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <b><u>{{ $opd->kepala_nama }}</u></b>
-                        <br>
-                        {{ $opd->kepala_pangkat }} 
-                        <br>
-                        NIP. {{ $opd->kepala_nip }}
-                    </td>
-                    <td align="center">
-                        <b>{{ $data->pptk_jabatan ?? 'Kepala Dinas' }}
-                        </b>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <b><u>{{ $data->pptk_nama }}</u></b>
-                        <br>
-                        {{ $data->pptk_pangkat }} 
-                        <br>
-                        NIP. {{ $data->pptk_nip }} 
-                    </td>
-                </tr>
-            </table>
-            @endif 
+                <br>
+                <table border="0" style="width:100%">
+                    <tr>
+                        <td align="center" style="width: 55%">
+                            <b>{{ $opd->kepala_jabatan ?? 'Kepala Dinas' }}
+                            </b>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <b><u>{{ $opd->kepala_nama }}</u></b>
+                            <br>
+                            {{ $opd->kepala_pangkat }}
+                            <br>
+                            NIP. {{ $opd->kepala_nip }}
+                        </td>
+                        <td align="center">
+                            <b>{{ $data->pptk_jabatan ?? 'Kepala Dinas' }}
+                            </b>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <b><u>{{ $data->pptk_nama }}</u></b>
+                            <br>
+                            {{ $data->pptk_pangkat }}
+                            <br>
+                            NIP. {{ $data->pptk_nip }}
+                        </td>
+                    </tr>
+                </table>
+            @endif
         </div>
     </div>
     <br>
